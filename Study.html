@@ -6,39 +6,136 @@
     <title>CLOCK-e-verse | Study Mode</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            transition: all 0.3s ease;
+        }
+        body.dark-mode {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        }
+        body:not(.dark-mode) {
+            background: linear-gradient(to bottom right, #e0e7ff, #c7d2fe, #a5b4fc);
+        }
+        .dark-mode .card {
+            background: rgba(17, 24, 39, 0.95);
+            backdrop-filter: blur(10px);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        .dark-mode .text-dark {
+            color: #e2e8f0;
+        }
+        .dark-mode .bg-dark {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .dark-mode .border-dark {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        .celebration {
+            animation: celebrate 0.5s ease-in-out;
+        }
+        @keyframes celebrate {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .main-card {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        .stats-box {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+        }
+        .timer-box {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+        }
+        .preset-timer {
+            background: rgba(79, 70, 229, 0.1);
+            border: 1px solid rgba(79, 70, 229, 0.2);
+            transition: all 0.3s ease;
+        }
+        .preset-timer:hover {
+            background: rgba(79, 70, 229, 0.2);
+            transform: translateY(-2px);
+        }
+        .dark-mode .preset-timer {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        .dark-mode .preset-timer:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+        .text-primary {
+            color: #1e40af;
+        }
+        .dark-mode .text-primary {
+            color: #93c5fd;
+        }
+        .text-secondary {
+            color: #4b5563;
+        }
+        .dark-mode .text-secondary {
+            color: #e5e7eb;
+        }
+    </style>
 </head>
-<body class="bg-gradient-to-br from-emerald-800 via-teal-700 to-cyan-600 min-h-screen flex flex-col items-center justify-center p-4">
-    <div class="bg-white/95 backdrop-blur-sm p-8 rounded-2xl shadow-2xl w-full max-w-lg text-center border border-white/20">
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+    <div class="main-card p-8 rounded-2xl shadow-2xl w-full max-w-lg text-center border border-white/20 transition-colors duration-300 card">
         <!-- Header -->
-        <div class="flex items-center justify-center mb-4">
-            <h1 class="text-3xl font-bold text-indigo-800">Study Time</h1>
-            <span class="text-4xl ml-3">📖</span>
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center">
+                <h1 class="text-3xl font-bold text-primary">Study Time</h1>
+                <span class="text-4xl ml-3">📖</span>
+            </div>
+            <button onclick="toggleDarkMode()" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                🌙
+            </button>
         </div>
         
         <!-- Motivational quote -->
-        <p id="quote" class="text-sm text-gray-600 italic mb-6 min-h-[2rem]">
+        <p id="quote" class="text-sm text-secondary italic mb-6 min-h-[2rem]">
             "Success is the sum of small efforts repeated day in and day out."
         </p>
 
+        <!-- Study stats -->
+        <div class="stats-box p-6 rounded-xl shadow-inner mb-8">
+            <div class="text-2xl text-white/90 mb-2">Study Time Today</div>
+            <div id="studyTime" class="text-7xl font-mono text-white font-bold mb-2 min-h-[5rem]">
+                0:00
+            </div>
+            <div id="focusLevel" class="text-lg text-white/80 font-medium">
+                Ready
+            </div>
+        </div>
+
         <!-- Clock display -->
-        <div class="bg-gradient-to-r from-indigo-50 to-blue-50 p-6 rounded-xl shadow-inner mb-6 border-2 border-indigo-100">
-            <div id="clock" class="text-6xl font-mono text-indigo-900 font-bold mb-2">
+        <div class="timer-box p-4 rounded-xl shadow-inner mb-6">
+            <div id="clock" class="text-3xl font-mono text-white font-bold mb-1 min-h-[2.5rem]">
                 --:--:--
             </div>
-            <div id="date" class="text-lg text-indigo-600 font-medium">
+            <div id="date" class="text-sm text-white/80">
                 Loading date...
             </div>
         </div>
 
-        <!-- Study stats -->
-        <div class="grid grid-cols-2 gap-4 mb-6">
-            <div class="bg-green-50 p-3 rounded-lg border border-green-200">
-                <div class="text-2xl font-bold text-green-700" id="studyTime">0:00</div>
-                <div class="text-xs text-green-600">Study Time Today</div>
-            </div>
-            <div class="bg-blue-50 p-3 rounded-lg border border-blue-200">
-                <div class="text-2xl font-bold text-blue-700" id="focusLevel">Ready</div>
-                <div class="text-xs text-blue-600">Focus Mode</div>
+        <!-- Preset Timers -->
+        <div class="grid grid-cols-2 gap-3 mb-6">
+            <button onclick="setTimer(30)" class="preset-timer p-3 rounded-lg">
+                <div class="text-xl font-bold text-primary">30 min</div>
+                <div class="text-xs text-secondary">Quick Study</div>
+            </button>
+            <button onclick="setTimer(60)" class="preset-timer p-3 rounded-lg">
+                <div class="text-xl font-bold text-primary">1 hour</div>
+                <div class="text-xs text-secondary">Standard</div>
+            </button>
+            <button onclick="setTimer(120)" class="preset-timer p-3 rounded-lg">
+                <div class="text-xl font-bold text-primary">2 hours</div>
+                <div class="text-xs text-secondary">Long Session</div>
+            </button>
+            <div class="preset-timer p-3 rounded-lg">
+                <input type="number" id="customTimer" placeholder="Custom (min)" class="w-full text-center bg-transparent border-b-2 border-primary focus:outline-none focus:border-primary text-primary" min="1">
+                <button onclick="setCustomTimer()" class="mt-2 text-sm text-primary hover:text-indigo-800 dark:hover:text-indigo-200">Set Time</button>
             </div>
         </div>
 
@@ -59,10 +156,22 @@
         </div>
 
         <!-- Study tip -->
-        <div class="mt-6 p-3 bg-yellow-50 rounded-lg border border-yellow-200">
-            <div class="text-yellow-800 text-sm">
+        <div class="mt-6 p-3 bg-yellow-50 dark:bg-yellow-900/50 rounded-lg border border-yellow-200 dark:border-yellow-800">
+            <div class="text-yellow-800 dark:text-yellow-200 text-sm">
                 💡 <strong>Study Tip:</strong> <span id="studyTip">Take breaks every 25-30 minutes to maintain focus!</span>
             </div>
+        </div>
+    </div>
+
+    <!-- Celebration Modal -->
+    <div id="celebrationModal" class="fixed inset-0 bg-black/50 flex items-center justify-center hidden">
+        <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl text-center max-w-sm mx-4 celebration">
+            <div class="text-6xl mb-4">🎉</div>
+            <h2 class="text-2xl font-bold text-primary mb-2">Congratulations!</h2>
+            <p class="text-secondary mb-4">You've completed your study goal! Take a well-deserved break.</p>
+            <button onclick="closeCelebration()" class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+                Awesome!
+            </button>
         </div>
     </div>
 
@@ -71,6 +180,8 @@
         let studyStartTime = null;
         let isStudying = false;
         let isOnBreak = false;
+        let targetTime = null;
+        let isDarkMode = false;
 
         const motivationalQuotes = [
             "Success is the sum of small efforts repeated day in and day out.",
@@ -94,24 +205,51 @@
             "Practice active recall instead of just re-reading."
         ];
 
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark-mode');
+            document.querySelectorAll('.card').forEach(card => card.classList.toggle('dark-mode'));
+            
+            // Update the moon/sun icon
+            const darkModeButton = document.querySelector('button[onclick="toggleDarkMode()"]');
+            darkModeButton.innerHTML = isDarkMode ? '☀️' : '🌙';
+        }
+
+        function setTimer(minutes) {
+            targetTime = minutes * 60;
+            document.getElementById('focusLevel').textContent = `${minutes} min Goal`;
+        }
+
+        function setCustomTimer() {
+            const minutes = parseInt(document.getElementById('customTimer').value);
+            if (minutes > 0) {
+                setTimer(minutes);
+            }
+        }
+
+        function showCelebration() {
+            document.getElementById('celebrationModal').classList.remove('hidden');
+        }
+
+        function closeCelebration() {
+            document.getElementById('celebrationModal').classList.add('hidden');
+        }
+
         function updateClock() {
             const date = new Date();
             let hour = date.getHours();
             let minute = date.getMinutes();
             let second = date.getSeconds();
 
-            // Format to two digits
             hour = hour < 10 ? '0' + hour : hour;
             minute = minute < 10 ? '0' + minute : minute;
             second = second < 10 ? '0' + second : second;
 
             document.getElementById('clock').textContent = `${hour}:${minute}:${second}`;
             
-            // Update date
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             document.getElementById('date').textContent = date.toLocaleDateString('en-US', options);
 
-            // Update study time if studying
             if (isStudying && studyStartTime) {
                 updateStudyTime();
             }
@@ -123,6 +261,12 @@
             const minutes = Math.floor(elapsed / 60);
             const seconds = elapsed % 60;
             document.getElementById('studyTime').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+            // Check if target time is reached
+            if (targetTime && elapsed >= targetTime) {
+                showCelebration();
+                resetSession();
+            }
         }
 
         function startClock() {
@@ -134,13 +278,11 @@
             updateClock();
             clockInterval = setInterval(updateClock, 1000);
             
-            // Start study session
             studyStartTime = new Date();
             isStudying = true;
-            document.getElementById('focusLevel').textContent = 'Focused';
-            document.getElementById('focusLevel').parentElement.className = 'bg-green-50 p-3 rounded-lg border border-green-200';
+            document.getElementById('focusLevel').textContent = targetTime ? `${Math.floor(targetTime/60)} min Goal` : 'Focused';
+            document.getElementById('focusLevel').parentElement.className = 'bg-green-50 dark:bg-green-900/50 p-3 rounded-lg border border-green-200 dark:border-green-800';
             
-            // Change quote and tip
             const randomQuote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
             const randomTip = studyTips[Math.floor(Math.random() * studyTips.length)];
             document.getElementById('quote').textContent = `"${randomQuote}"`;
@@ -151,7 +293,7 @@
             isStudying = false;
             isOnBreak = true;
             document.getElementById('focusLevel').textContent = 'Break';
-            document.getElementById('focusLevel').parentElement.className = 'bg-orange-50 p-3 rounded-lg border border-orange-200';
+            document.getElementById('focusLevel').parentElement.className = 'bg-orange-50 dark:bg-orange-900/50 p-3 rounded-lg border border-orange-200 dark:border-orange-800';
             document.getElementById('breakBtn').textContent = '📚 Resume Study';
             document.getElementById('breakBtn').onclick = resumeStudy;
         }
@@ -160,8 +302,8 @@
             isStudying = true;
             isOnBreak = false;
             studyStartTime = new Date() - (parseInt(document.getElementById('studyTime').textContent.split(':')[0]) * 60000 + parseInt(document.getElementById('studyTime').textContent.split(':')[1]) * 1000);
-            document.getElementById('focusLevel').textContent = 'Focused';
-            document.getElementById('focusLevel').parentElement.className = 'bg-green-50 p-3 rounded-lg border border-green-200';
+            document.getElementById('focusLevel').textContent = targetTime ? `${Math.floor(targetTime/60)} min Goal` : 'Focused';
+            document.getElementById('focusLevel').parentElement.className = 'bg-green-50 dark:bg-green-900/50 p-3 rounded-lg border border-green-200 dark:border-green-800';
             document.getElementById('breakBtn').textContent = '☕ Break Time';
             document.getElementById('breakBtn').onclick = startBreak;
         }
@@ -174,12 +316,13 @@
             studyStartTime = null;
             isStudying = false;
             isOnBreak = false;
+            targetTime = null;
 
             document.getElementById('clock').textContent = '--:--:--';
             document.getElementById('date').textContent = 'Loading date...';
             document.getElementById('studyTime').textContent = '0:00';
             document.getElementById('focusLevel').textContent = 'Ready';
-            document.getElementById('focusLevel').parentElement.className = 'bg-blue-50 p-3 rounded-lg border border-blue-200';
+            document.getElementById('focusLevel').parentElement.className = 'bg-blue-50 dark:bg-blue-900/50 p-3 rounded-lg border border-blue-200 dark:border-blue-800';
             
             document.getElementById('startBtn').disabled = false;
             document.getElementById('startBtn').classList.remove('opacity-50', 'cursor-not-allowed');
@@ -188,7 +331,6 @@
             document.getElementById('breakBtn').textContent = '☕ Break Time';
             document.getElementById('breakBtn').onclick = startBreak;
 
-            // Reset to initial quote and tip
             document.getElementById('quote').textContent = '"Success is the sum of small efforts repeated day in and day out."';
             document.getElementById('studyTip').textContent = 'Take breaks every 25-30 minutes to maintain focus!';
         }

@@ -46,41 +46,115 @@
         .bg-dark-gradient {
             background: radial-gradient(ellipse at center, #1a2332 0%, #0f1419 100%);
         }
+
+        .game-stats {
+            background: linear-gradient(45deg, #1a2332, #0f1419);
+            border: 1px solid #00ff88;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+        }
+
+        .level-up {
+            animation: levelUp 0.5s ease-in-out;
+        }
+
+        @keyframes levelUp {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .main-container {
+            width: 500px;
+            min-height: 700px;
+        }
+
+        .game-stats-container {
+            height: 180px;
+        }
+
+        .clock-container {
+            height: 250px;
+        }
+
+        .button-container {
+            height: 120px;
+        }
     </style>
 </head>
 <body class="bg-dark-gradient min-h-screen flex items-center justify-center p-4">
-    <div class="relative">
+    <div class="relative main-container w-1/2 h-1/2">
         <!-- Outer glow container -->
         <div class="absolute inset-0 bg-gradient-to-br from-green-400/20 to-emerald-500/20 rounded-3xl blur-xl"></div>
         
         <!-- Main clock container -->
         <div class="relative bg-black/90 backdrop-blur-sm rounded-3xl p-12 border-2 border-green-400 pulse-glow">
+            <!-- Game Stats -->
+            <div class="game-stats rounded-xl p-6 mb-8 game-stats-container">
+                <div class="text-center mb-4">
+                    <h2 class="text-green-400 text-2xl font-bold mb-2">Game Time</h2>
+                    <div id="gameTime" class="clock-font text-4xl font-bold gradient-text">
+                        00:00:00
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="text-center">
+                        <div class="text-green-400 text-sm mb-1">Today's Play</div>
+                        <div id="todayPlay" class="text-white text-xl font-bold">0h 0m</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-green-400 text-sm mb-1">Total Play</div>
+                        <div id="totalPlay" class="text-white text-xl font-bold">0h 0m</div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Inner clock display -->
-            <div class="bg-black/80 rounded-2xl p-8 border border-gray-700/50">
-                <div id="clock" class="clock-font text-8xl font-bold text-center gradient-text tracking-wider">
+            <div class="bg-black/80 rounded-2xl p-8 border border-gray-700/50 clock-container">
+                <div id="clock" class="clock-font text-8xl font-bold text-center gradient-text tracking-wider min-h-[8rem] flex items-center justify-center">
                     --:--:--
                 </div>
                 
                 <!-- AM/PM indicator -->
-                <div id="ampm" class="text-center mt-4 text-green-400 text-xl font-semibold tracking-widest opacity-80">
+                <div id="ampm" class="text-center mt-4 text-green-400 text-xl font-semibold tracking-widest opacity-80 min-h-[2rem]">
                     --
                 </div>
             </div>
             
-            <!-- Start button -->
-            <div class="text-center mt-8">
+            <!-- Control buttons -->
+            <div class="text-center mt-8 space-y-4 button-container">
                 <button 
                     onclick="startClock()" 
                     id="startBtn" 
-                    class="px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-black font-bold rounded-xl shadow-lg hover:from-green-400 hover:to-emerald-500 transition-all duration-300 transform hover:scale-105 hover:shadow-green-400/50 hover:shadow-2xl">
-                    Activate Clock
+                    class="w-[280px] px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-black font-bold rounded-xl shadow-lg hover:from-green-400 hover:to-emerald-500 transition-all duration-300 transform hover:scale-105 hover:shadow-green-400/50 hover:shadow-2xl">
+                    Start Gaming
                 </button>
+                <div class="flex gap-4 justify-center">
+                    <button 
+                        onclick="pauseGame()" 
+                        id="pauseBtn" 
+                        class="w-[135px] px-6 py-2 bg-gray-700 text-white font-bold rounded-xl shadow-lg hover:bg-gray-600 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                        disabled>
+                        Pause
+                    </button>
+                    <button 
+                        onclick="resetGame()" 
+                        id="resetBtn" 
+                        class="w-[135px] px-6 py-2 bg-red-600 text-white font-bold rounded-xl shadow-lg hover:bg-red-500 transition-all duration-300 transform hover:scale-105">
+                        Reset
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
         let clockInterval = null;
+        let gameStartTime = null;
+        let isPlaying = false;
+        let isPaused = false;
+        let totalGameTime = 0;
+        let todayGameTime = 0;
+        let lastPauseTime = null;
 
         function updateClock() {
             const date = new Date();
@@ -99,22 +173,103 @@
             
             document.getElementById('clock').textContent = `${hour}:${minute}:${second}`;
             document.getElementById('ampm').textContent = ampm;
+
+            // Update game time if playing
+            if (isPlaying && !isPaused) {
+                updateGameTime();
+            }
+        }
+
+        function updateGameTime() {
+            const now = new Date();
+            const elapsed = Math.floor((now - gameStartTime) / 1000) + totalGameTime;
+            const hours = Math.floor(elapsed / 3600);
+            const minutes = Math.floor((elapsed % 3600) / 60);
+            const seconds = elapsed % 60;
+
+            // Format time
+            const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById('gameTime').textContent = formattedTime;
+
+            // Update today's play time
+            todayGameTime = elapsed;
+            updatePlayTimeDisplay();
+        }
+
+        function updatePlayTimeDisplay() {
+            const todayHours = Math.floor(todayGameTime / 3600);
+            const todayMinutes = Math.floor((todayGameTime % 3600) / 60);
+            document.getElementById('todayPlay').textContent = `${todayHours}h ${todayMinutes}m`;
+
+            const totalHours = Math.floor(totalGameTime / 3600);
+            const totalMinutes = Math.floor((totalGameTime % 3600) / 60);
+            document.getElementById('totalPlay').textContent = `${totalHours}h ${totalMinutes}m`;
         }
 
         function startClock() {
-            // Update button state
-            const btn = document.getElementById('startBtn');
-            btn.disabled = true;
-            btn.classList.add('opacity-50', 'cursor-not-allowed');
-            btn.textContent = 'Clock Active';
+            if (!isPlaying) {
+                // Start new session
+                gameStartTime = new Date();
+                isPlaying = true;
+                isPaused = false;
+            } else if (isPaused) {
+                // Resume from pause
+                const pauseDuration = new Date() - lastPauseTime;
+                gameStartTime = new Date(gameStartTime.getTime() + pauseDuration);
+                isPaused = false;
+            }
+
+            // Update button states
+            document.getElementById('startBtn').textContent = 'Gaming Active';
+            document.getElementById('startBtn').disabled = true;
+            document.getElementById('pauseBtn').disabled = false;
             
             // Start the clock
-            updateClock(); // Show immediately
+            updateClock();
             clockInterval = setInterval(updateClock, 1000);
         }
 
-        // Don't auto-start - wait for user click
-        // Remove auto-start functionality
+        function pauseGame() {
+            if (isPlaying && !isPaused) {
+                isPaused = true;
+                lastPauseTime = new Date();
+                document.getElementById('startBtn').textContent = 'Resume Gaming';
+                document.getElementById('startBtn').disabled = false;
+                document.getElementById('pauseBtn').textContent = 'Paused';
+            }
+        }
+
+        function resetGame() {
+            if (clockInterval) {
+                clearInterval(clockInterval);
+            }
+            
+            // Save total game time
+            if (isPlaying && !isPaused) {
+                totalGameTime += Math.floor((new Date() - gameStartTime) / 1000);
+            }
+            
+            // Reset all states
+            clockInterval = null;
+            gameStartTime = null;
+            isPlaying = false;
+            isPaused = false;
+            todayGameTime = 0;
+            
+            // Reset displays
+            document.getElementById('gameTime').textContent = '00:00:00';
+            updatePlayTimeDisplay();
+            
+            // Reset buttons
+            document.getElementById('startBtn').textContent = 'Start Gaming';
+            document.getElementById('startBtn').disabled = false;
+            document.getElementById('pauseBtn').textContent = 'Pause';
+            document.getElementById('pauseBtn').disabled = true;
+        }
+
+        // Initialize display
+        updateClock();
+        updatePlayTimeDisplay();
     </script>
 </body>
 </html>
