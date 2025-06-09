@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glowing Digital Clock</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+        
+        .clock-font {
+            font-family: 'Orbitron', monospace;
+        }
+        
+        .glow-green {
+            box-shadow: 0 0 20px #00ff88, 0 0 40px #00ff88, 0 0 60px #00ff88;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(45deg, #3b82f6, #06b6d4, #10b981, #22c55e);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 3s ease-in-out infinite;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .pulse-glow {
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulseGlow {
+            0%, 100% { 
+                box-shadow: 0 0 20px #00ff88, 0 0 40px #00ff88, 0 0 60px #00ff88;
+            }
+            50% { 
+                box-shadow: 0 0 30px #00ff88, 0 0 60px #00ff88, 0 0 90px #00ff88;
+            }
+        }
+        
+        .bg-dark-gradient {
+            background: radial-gradient(ellipse at center, #1a2332 0%, #0f1419 100%);
+        }
+    </style>
+</head>
+<body class="bg-dark-gradient min-h-screen flex items-center justify-center p-4">
+    <div class="relative">
+        <!-- Outer glow container -->
+        <div class="absolute inset-0 bg-gradient-to-br from-green-400/20 to-emerald-500/20 rounded-3xl blur-xl"></div>
+        
+        <!-- Main clock container -->
+        <div class="relative bg-black/90 backdrop-blur-sm rounded-3xl p-12 border-2 border-green-400 pulse-glow">
+            <!-- Inner clock display -->
+            <div class="bg-black/80 rounded-2xl p-8 border border-gray-700/50">
+                <div id="clock" class="clock-font text-8xl font-bold text-center gradient-text tracking-wider">
+                    --:--:--
+                </div>
+                
+                <!-- AM/PM indicator -->
+                <div id="ampm" class="text-center mt-4 text-green-400 text-xl font-semibold tracking-widest opacity-80">
+                    --
+                </div>
+            </div>
+            
+            <!-- Start button -->
+            <div class="text-center mt-8">
+                <button 
+                    onclick="startClock()" 
+                    id="startBtn" 
+                    class="px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-black font-bold rounded-xl shadow-lg hover:from-green-400 hover:to-emerald-500 transition-all duration-300 transform hover:scale-105 hover:shadow-green-400/50 hover:shadow-2xl">
+                    Activate Clock
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let clockInterval = null;
+
+        function updateClock() {
+            const date = new Date();
+            let hour = date.getHours();
+            let minute = date.getMinutes();
+            let second = date.getSeconds();
+            const ampm = hour >= 12 ? 'PM' : 'AM';
+            
+            // Convert to 12-hour format
+            hour = hour % 12;
+            hour = hour ? hour : 12; // 0 should be 12
+            
+            // Format to two digits
+            minute = minute < 10 ? '0' + minute : minute;
+            second = second < 10 ? '0' + second : second;
+            
+            document.getElementById('clock').textContent = `${hour}:${minute}:${second}`;
+            document.getElementById('ampm').textContent = ampm;
+        }
+
+        function startClock() {
+            // Update button state
+            const btn = document.getElementById('startBtn');
+            btn.disabled = true;
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+            btn.textContent = 'Clock Active';
+            
+            // Start the clock
+            updateClock(); // Show immediately
+            clockInterval = setInterval(updateClock, 1000);
+        }
+
+        // Don't auto-start - wait for user click
+        // Remove auto-start functionality
+    </script>
+</body>
+</html>

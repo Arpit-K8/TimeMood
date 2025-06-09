@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vintage Heritage Clock</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:wght@400;700;900&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Crimson Text', serif;
+            background: linear-gradient(135deg, #2c1810, #3d2817, #4a3426, #2c1810);
+            background-size: 400% 400%;
+            animation: vintageShimmer 8s ease-in-out infinite;
+        }
+        
+        @keyframes vintageShimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .vintage-title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            background: linear-gradient(45deg, #d4af37, #ffd700, #b8860b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .clock-face {
+            font-family: 'Cinzel', serif;
+            font-weight: 600;
+            background: radial-gradient(circle, #1a1a1a 0%, #0d0d0d 100%);
+            border: 8px solid #8b4513;
+            box-shadow: 
+                inset 0 0 50px rgba(139, 69, 19, 0.3),
+                0 0 30px rgba(139, 69, 19, 0.5),
+                inset 0 0 20px rgba(0, 0, 0, 0.8);
+            position: relative;
+        }
+        
+        .clock-face::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            right: -8px;
+            bottom: -8px;
+            background: linear-gradient(45deg, #8b4513, #cd853f, #daa520, #8b4513);
+            border-radius: inherit;
+            z-index: -1;
+        }
+        
+        .vintage-container {
+            background: linear-gradient(145deg, #3e2723, #2e1a16);
+            border: 6px solid #8b4513;
+            border-radius: 20px;
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.6),
+                inset 0 0 30px rgba(139, 69, 19, 0.2),
+                0 0 0 2px #cd853f;
+            position: relative;
+        }
+        
+        .vintage-container::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, #8b4513, #cd853f, #daa520);
+            border-radius: 25px;
+            z-index: -1;
+            opacity: 0.7;
+        }
+        
+        .ornate-corner {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: radial-gradient(circle, #daa520, #8b4513);
+            border-radius: 50%;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .corner-tl { top: -15px; left: -15px; }
+        .corner-tr { top: -15px; right: -15px; }
+        .corner-bl { bottom: -15px; left: -15px; }
+        .corner-br { bottom: -15px; right: -15px; }
+        
+        .vintage-button {
+            font-family: 'Cinzel', serif;
+            background: linear-gradient(145deg, #8b4513, #cd853f);
+            border: 3px solid #daa520;
+            box-shadow: 
+                0 8px 15px rgba(0, 0, 0, 0.3),
+                inset 0 0 20px rgba(218, 165, 32, 0.2);
+            transition: all 0.3s ease;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+        }
+        
+        .vintage-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 12px 25px rgba(0, 0, 0, 0.4),
+                inset 0 0 30px rgba(218, 165, 32, 0.3);
+        }
+        
+        .vintage-button:active {
+            transform: translateY(1px);
+        }
+        
+        .roman-numerals {
+            position: absolute;
+            font-family: 'Cinzel', serif;
+            font-size: 14px;
+            color: #daa520;
+            font-weight: 600;
+        }
+        
+        .num-xii { top: 10px; left: 50%; transform: translateX(-50%); }
+        .num-iii { top: 50%; right: 10px; transform: translateY(-50%); }
+        .num-vi { bottom: 10px; left: 50%; transform: translateX(-50%); }
+        .num-ix { top: 50%; left: 10px; transform: translateY(-50%); }
+        
+        .vintage-decoration {
+            color: #cd853f;
+            opacity: 0.6;
+            animation: gentleGlow 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes gentleGlow {
+            0% { opacity: 0.6; transform: scale(1); }
+            100% { opacity: 0.9; transform: scale(1.05); }
+        }
+        
+        .old-paper-texture {
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(218, 165, 32, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 69, 19, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(205, 133, 63, 0.1) 0%, transparent 50%);
+        }
+        
+        .antique-frame {
+            border: 4px solid #8b4513;
+            background: linear-gradient(45deg, #8b4513, #cd853f);
+            padding: 2px;
+            border-radius: 15px;
+        }
+        
+        .clock-glow {
+            text-shadow: 
+                0 0 10px rgba(218, 165, 32, 0.5),
+                0 0 20px rgba(218, 165, 32, 0.3),
+                0 0 30px rgba(218, 165, 32, 0.1);
+        }
+        
+        .pendulum {
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 30px;
+            background: linear-gradient(to bottom, #8b4513, #cd853f);
+            animation: pendulumSwing 2s ease-in-out infinite alternate;
+            border-radius: 1px;
+        }
+        
+        .pendulum::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: -6px;
+            width: 14px;
+            height: 14px;
+            background: radial-gradient(circle, #daa520, #8b4513);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(218, 165, 32, 0.5);
+        }
+        
+        @keyframes pendulumSwing {
+            0% { transform: translateX(-50%) rotate(-15deg); }
+            100% { transform: translateX(-50%) rotate(15deg); }
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen text-amber-100 p-4 old-paper-texture relative">
+    <!-- Vintage Background Decorations -->
+    <div class="absolute top-10 left-10 vintage-decoration text-6xl">❦</div>
+    <div class="absolute top-20 right-20 vintage-decoration text-4xl">✠</div>
+    <div class="absolute bottom-20 left-20 vintage-decoration text-5xl">⚜</div>
+    <div class="absolute bottom-10 right-10 vintage-decoration text-6xl">❦</div>
+    
+    <!-- Main Vintage Clock Container -->
+    <div class="vintage-container p-12 w-full max-w-lg text-center relative">
+        <!-- Ornate Corner Decorations -->
+        <div class="ornate-corner corner-tl"></div>
+        <div class="ornate-corner corner-tr"></div>
+        <div class="ornate-corner corner-bl"></div>
+        <div class="ornate-corner corner-br"></div>
+        
+        <!-- Vintage Decorative Elements -->
+        <div class="absolute top-4 left-1/2 transform -translate-x-1/2 text-amber-400 text-3xl">⚜</div>
+        
+        <!-- Elegant Title -->
+        <h1 class="vintage-title text-5xl font-bold mb-2 tracking-wider">
+            HERITAGE
+        </h1>
+        <div class="text-amber-300 text-lg mb-8 font-serif italic">
+            ~ Timepiece Collection ~
+        </div>
+        
+        <!-- Vintage Clock Face -->
+        <div class="clock-face rounded-full p-8 mb-8 relative mx-auto w-72 h-72 flex items-center justify-center">
+            <!-- Roman Numerals -->
+            <div class="roman-numerals num-xii">XII</div>
+            <div class="roman-numerals num-iii">III</div>
+            <div class="roman-numerals num-vi">VI</div>
+            <div class="roman-numerals num-ix">IX</div>
+            
+            <!-- Digital Time Display -->
+            <div id="clock" class="text-6xl text-amber-300 clock-glow font-bold">
+                --:--:--
+            </div>
+            
+            <!-- Pendulum -->
+            <div class="pendulum"></div>
+        </div>
+        
+        <!-- Vintage Details -->
+        <div class="antique-frame rounded-lg p-4 mb-6 bg-black bg-opacity-30">
+            <div class="text-amber-300 text-sm mb-2">EST. 1847</div>
+            <div class="text-amber-200 text-xs italic">
+                "Tempus Fugit - Time Flies"
+            </div>
+        </div>
+        
+        <!-- Vintage Start Button -->
+        <button onclick="startClock()" id="startBtn" class="vintage-button px-10 py-4 text-amber-100 text-xl font-bold rounded-lg uppercase tracking-wider">
+            ⚜ Commence Timekeeping ⚜
+        </button>
+        
+        <!-- Vintage Manufacturer Badge -->
+        <div class="mt-6 text-amber-400 text-xs italic opacity-70">
+            Crafted by Master Clockmakers
+        </div>
+    </div>
+    
+    <!-- Vintage Footer Decoration -->
+    <div class="mt-8 text-amber-300 text-center">
+        <div class="text-2xl mb-2">⚜ ❦ ⚜</div>
+        <div class="text-sm italic opacity-70">A Legacy of Precision Since 1847</div>
+    </div>
+
+    <script>
+        let clockInterval = null;
+
+        function updateClock() {
+            const date = new Date();
+            let hour = date.getHours();
+            let minute = date.getMinutes();
+            let second = date.getSeconds();
+
+            // Format to two digits
+            hour = hour < 10 ? '0' + hour : hour;
+            minute = minute < 10 ? '0' + minute : minute;
+            second = second < 10 ? '0' + second : second;
+
+            const clockElement = document.getElementById('clock');
+            clockElement.textContent = `${hour}:${minute}:${second}`;
+            
+            // Add vintage glow effect on update
+            clockElement.style.textShadow = `
+                0 0 15px rgba(218, 165, 32, 0.8),
+                0 0 30px rgba(218, 165, 32, 0.5),
+                0 0 45px rgba(218, 165, 32, 0.3)
+            `;
+            
+            setTimeout(() => {
+                clockElement.style.textShadow = `
+                    0 0 10px rgba(218, 165, 32, 0.5),
+                    0 0 20px rgba(218, 165, 32, 0.3),
+                    0 0 30px rgba(218, 165, 32, 0.1)
+                `;
+            }, 200);
+        }
+
+        function startClock() {
+            const button = document.getElementById('startBtn');
+            button.disabled = true;
+            button.classList.add('opacity-60', 'cursor-not-allowed');
+            button.innerHTML = '⚜ Timepiece Active ⚜';
+            
+            // Vintage activation effect
+            const clockFace = document.querySelector('.clock-face');
+            clockFace.style.boxShadow = `
+                inset 0 0 50px rgba(139, 69, 19, 0.5),
+                0 0 50px rgba(139, 69, 19, 0.7),
+                inset 0 0 20px rgba(0, 0, 0, 0.8)
+            `;
+            
+            updateClock();
+            clockInterval = setInterval(updateClock, 1000);
+            
+            // Create vintage sparkle effect
+            createVintageSparkles();
+        }
+        
+        function createVintageSparkles() {
+            const sparkles = ['⚜', '❦', '✠', '❋', '✤'];
+            const container = document.body;
+            
+            for (let i = 0; i < 8; i++) {
+                setTimeout(() => {
+                    const sparkle = document.createElement('div');
+                    sparkle.textContent = sparkles[Math.floor(Math.random() * sparkles.length)];
+                    sparkle.style.position = 'absolute';
+                    sparkle.style.fontSize = '2rem';
+                    sparkle.style.color = '#daa520';
+                    sparkle.style.left = Math.random() * window.innerWidth + 'px';
+                    sparkle.style.top = Math.random() * window.innerHeight + 'px';
+                    sparkle.style.pointerEvents = 'none';
+                    sparkle.style.zIndex = '1000';
+                    sparkle.style.opacity = '0';
+                    sparkle.style.animation = 'vintageSparkle 3s ease-out forwards';
+                    
+                    container.appendChild(sparkle);
+                    
+                    setTimeout(() => {
+                        if (sparkle.parentNode) {
+                            sparkle.parentNode.removeChild(sparkle);
+                        }
+                    }, 3000);
+                }, i * 300);
+            }
+        }
+        
+        // Add vintage sparkle animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes vintageSparkle {
+                0% {
+                    opacity: 0;
+                    transform: scale(0) rotate(0deg);
+                }
+                50% {
+                    opacity: 1;
+                    transform: scale(1.2) rotate(180deg);
+                }
+                100% {
+                    opacity: 0;
+                    transform: scale(0) rotate(360deg);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Add keyboard shortcut
+        document.addEventListener('keydown', function(event) {
+            if (event.code === 'Enter' && !clockInterval) {
+                startClock();
+            }
+        });
+    </script>
+</body>
+</html>

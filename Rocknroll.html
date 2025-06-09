@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤘 ROCK N' ROLL TIME 🤘</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=Creepster&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Metal+Mania&family=Creepster&display=swap');
+        
+        body {
+            font-family: 'Metal Mania', cursive;
+            overflow: hidden;
+        }
+        
+        #clock {
+            font-family: 'Orbitron', monospace;
+            font-weight: 900;
+            text-shadow: 0 0 20px #ff0080, 0 0 40px #ff0080, 0 0 60px #ff0080;
+        }
+        
+        .rock-title {
+            font-family: 'Creepster', cursive;
+            text-shadow: 0 0 30px #ff6b00, 0 0 60px #ff6b00;
+            animation: rockPulse 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes rockPulse {
+            0% { transform: scale(1) rotate(-1deg); }
+            100% { transform: scale(1.05) rotate(1deg); }
+        }
+        
+        .lightning-bg {
+            background: linear-gradient(45deg, #000000, #1a0033, #330066, #000000);
+            background-size: 400% 400%;
+            animation: gradientShift 3s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .neon-border {
+            border: 3px solid #ff0080;
+            box-shadow: 
+                0 0 20px #ff0080,
+                inset 0 0 20px rgba(255, 0, 128, 0.1),
+                0 0 40px #ff6b00;
+            animation: neonFlicker 1.5s ease-in-out infinite alternate;
+        }
+        
+        @keyframes neonFlicker {
+            0% { 
+                box-shadow: 
+                    0 0 20px #ff0080,
+                    inset 0 0 20px rgba(255, 0, 128, 0.1),
+                    0 0 40px #ff6b00;
+            }
+            100% { 
+                box-shadow: 
+                    0 0 30px #ff0080,
+                    inset 0 0 30px rgba(255, 0, 128, 0.2),
+                    0 0 60px #ff6b00;
+            }
+        }
+        
+        .speaker {
+            animation: speakerBounce 0.5s ease-in-out infinite alternate;
+        }
+        
+        @keyframes speakerBounce {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+        
+        .floating-notes {
+            position: absolute;
+            animation: floatUp 4s linear infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .rock-button {
+            background: linear-gradient(45deg, #ff0080, #ff6b00, #ff0080);
+            background-size: 200% 200%;
+            animation: buttonGlow 2s ease infinite;
+            transition: all 0.3s ease;
+        }
+        
+        .rock-button:hover {
+            transform: scale(1.1) rotate(2deg);
+            box-shadow: 0 0 30px #ff0080, 0 0 60px #ff6b00;
+        }
+        
+        @keyframes buttonGlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .skull-shadow {
+            text-shadow: 2px 2px 0px #ff0080, 4px 4px 0px #000;
+        }
+        
+        .stage-lights {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(180deg, rgba(255, 107, 0, 0.3) 0%, transparent 100%);
+            animation: stageLights 3s ease-in-out infinite;
+        }
+        
+        @keyframes stageLights {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.7; }
+        }
+    </style>
+</head>
+<body class="lightning-bg flex flex-col items-center justify-center min-h-screen text-white relative">
+    <!-- Stage Lights Effect -->
+    <div class="stage-lights"></div>
+    
+    <!-- Floating Musical Notes -->
+    <div class="floating-notes text-4xl" style="left: 10%; animation-delay: 0s;">🎵</div>
+    <div class="floating-notes text-3xl" style="left: 20%; animation-delay: 1s;">🎶</div>
+    <div class="floating-notes text-5xl" style="left: 80%; animation-delay: 2s;">🎸</div>
+    <div class="floating-notes text-4xl" style="left: 70%; animation-delay: 3s;">🤘</div>
+    <div class="floating-notes text-3xl" style="left: 30%; animation-delay: 1.5s;">🎵</div>
+    <div class="floating-notes text-4xl" style="left: 90%; animation-delay: 2.5s;">🎶</div>
+
+    <div class="neon-border bg-black bg-opacity-80 p-12 rounded-2xl shadow-2xl w-full max-w-lg text-center relative backdrop-blur-sm">
+        <!-- Speakers in corners -->
+        <div class="speaker absolute top-4 left-4 text-6xl">🔊</div>
+        <div class="speaker absolute top-4 right-4 text-6xl" style="animation-delay: 0.25s;">🔊</div>
+        
+        <!-- Lightning and Guitar Icons -->
+        <div class="absolute top-6 left-1/2 transform -translate-x-1/2">
+            <span class="text-6xl animate-bounce">⚡</span>
+        </div>
+        
+        <h1 class="rock-title text-6xl font-extrabold mb-8 text-orange-400 tracking-widest uppercase skull-shadow mt-12">
+            🤘 ROCK N' ROLL 🤘<br>
+            <span class="text-pink-500">⚡ TIME ⚡</span>
+        </h1>
+        
+        <div class="mb-6 text-center">
+            <div class="text-2xl text-yellow-400 mb-2 animate-pulse">🎸 TURN UP THE VOLUME 🎸</div>
+        </div>
+        
+        <div id="clock" class="text-8xl text-lime-300 bg-gradient-to-r from-purple-900 to-black px-6 py-6 rounded-2xl shadow-inner mb-8 border-4 border-lime-400 transform rotate-1">
+            --:--:--
+        </div>
+        
+        <div class="flex justify-center space-x-4 mb-6">
+            <span class="text-4xl animate-spin">💀</span>
+            <span class="text-4xl animate-bounce">🎸</span>
+            <span class="text-4xl animate-pulse">🔥</span>
+            <span class="text-4xl animate-bounce" style="animation-delay: 0.5s;">🎸</span>
+            <span class="text-4xl animate-spin" style="animation-direction: reverse;">💀</span>
+        </div>
+        
+        <button onclick="startClock()" id="startBtn" class="rock-button px-12 py-6 text-white text-2xl font-bold rounded-full shadow-2xl hover:shadow-pink-500/50 transition-all transform focus:outline-none focus:ring-4 focus:ring-pink-500 uppercase tracking-wider">
+            🔥 CRANK IT UP! 🔥
+        </button>
+        
+        <div class="mt-6 text-orange-400 text-xl animate-pulse">
+            ⚡ LET THE RHYTHM CONTROL YOUR TIME ⚡
+        </div>
+    </div>
+
+    <!-- Background Decorative Elements -->
+    <div class="absolute bottom-10 left-10 text-8xl opacity-20 animate-pulse">🎸</div>
+    <div class="absolute top-20 right-20 text-6xl opacity-20 animate-bounce">💀</div>
+    <div class="absolute bottom-20 right-20 text-7xl opacity-20 animate-spin" style="animation-duration: 8s;">⚡</div>
+    <div class="absolute top-40 left-20 text-5xl opacity-20 animate-pulse" style="animation-delay: 1s;">🔥</div>
+
+    <script>
+        let clockInterval = null;
+        
+        function updateClock() {
+            const date = new Date();
+            let hour = date.getHours();
+            let minute = date.getMinutes();
+            let second = date.getSeconds();
+
+            hour = hour < 10 ? '0' + hour : hour;
+            minute = minute < 10 ? '0' + minute : minute;
+            second = second < 10 ? '0' + second : second;
+
+            const clockElement = document.getElementById('clock');
+            clockElement.textContent = `${hour}:${minute}:${second}`;
+            
+            // Add extra flash effect every second
+            clockElement.style.textShadow = `
+                0 0 20px #ff0080, 
+                0 0 40px #ff0080, 
+                0 0 60px #ff0080,
+                0 0 80px #ff6b00
+            `;
+            
+            setTimeout(() => {
+                clockElement.style.textShadow = `
+                    0 0 20px #ff0080, 
+                    0 0 40px #ff0080, 
+                    0 0 60px #ff0080
+                `;
+            }, 100);
+        }
+
+        function startClock() {
+            const button = document.getElementById('startBtn');
+            button.disabled = true;
+            button.classList.add('opacity-70', 'cursor-not-allowed');
+            button.innerHTML = '🎸 ROCKING THE TIME! 🎸';
+            
+            // Add screen shake effect
+            document.body.style.animation = 'shake 0.5s ease-in-out';
+            
+            updateClock();
+            clockInterval = setInterval(updateClock, 1000);
+            
+            // Create explosion of emojis
+            createRockExplosion();
+        }
+        
+        function createRockExplosion() {
+            const emojis = ['🤘', '⚡', '🔥', '🎸', '💀', '🎵', '🎶'];
+            const container = document.body;
+            
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const emoji = document.createElement('div');
+                    emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    emoji.style.position = 'absolute';
+                    emoji.style.fontSize = '3rem';
+                    emoji.style.left = Math.random() * window.innerWidth + 'px';
+                    emoji.style.top = window.innerHeight + 'px';
+                    emoji.style.pointerEvents = 'none';
+                    emoji.style.zIndex = '1000';
+                    emoji.style.animation = 'floatUp 3s linear forwards';
+                    
+                    container.appendChild(emoji);
+                    
+                    setTimeout(() => {
+                        if (emoji.parentNode) {
+                            emoji.parentNode.removeChild(emoji);
+                        }
+                    }, 3000);
+                }, i * 200);
+            }
+        }
+        
+        // Add keyboard shortcut for extra rock vibes
+        document.addEventListener('keydown', function(event) {
+            if (event.code === 'Space' && !clockInterval) {
+                startClock();
+            }
+        });
+        
+        // CSS for shake animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+                20%, 40%, 60%, 80% { transform: translateX(2px); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
