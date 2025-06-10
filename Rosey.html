@@ -213,6 +213,39 @@
         <button onclick="startClock()" id="startBtn" class="px-8 py-4 romantic-button rounded-2xl transition-all duration-300 relative">
             ♡ Show Our Time ♡
         </button>
+
+        <div class="mt-8 text-center">
+            <p class="romantic-subtitle mb-4">Enjoy the moment with music ♫</p>
+            <div class="flex items-center justify-center gap-3">
+                <!-- Previous Button -->
+                <button onclick="playPreviousSong()" id="prevBtn" class="relative overflow-hidden px-4 py-2 rounded-xl bg-gradient-to-r from-pink-400 to-rose-500 text-white font-['Dancing_Script'] text-base font-semibold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 hover:from-rose-500 hover:to-pink-400 opacity-0 scale-0 transform transition-all duration-300">
+                    <span class="inline-block">◀</span>
+                </button>
+
+                <!-- Main Play Button -->
+                <div class="relative group">
+                    <button onclick="toggleMusic()" id="musicBtn" class="relative overflow-hidden px-6 py-3 rounded-2xl bg-gradient-to-r from-pink-500 to-rose-600 text-white font-['Dancing_Script'] text-lg font-semibold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 hover:from-rose-600 hover:to-pink-500">
+                        <span class="inline-block mr-2">♪</span> With Music
+                    </button>
+                    <!-- Tooltip -->
+                    <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-white/90 backdrop-blur-sm rounded-lg shadow-lg text-sm text-rose-600 font-['Playfair_Display'] opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap">
+                        <div class="relative">
+                            <span id="currentSongTitle">Stephen Sanchez - Until I Found You | Piano Cover by Pianella Piano</span>
+                            <div class="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-white/90 rotate-45"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Next Button -->
+                <button onclick="playNextSong()" id="nextBtn" class="relative overflow-hidden px-4 py-2 rounded-xl bg-gradient-to-r from-pink-400 to-rose-500 text-white font-['Dancing_Script'] text-base font-semibold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 hover:from-rose-500 hover:to-pink-400 opacity-0 scale-0 transform transition-all duration-300">
+                    <span class="inline-block">▶</span>
+                </button>
+            </div>
+            <audio id="backgroundMusic" loop>
+                <source src="Music.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        </div>
         
         <!-- <p class="mt-6 text-sm romantic-subtitle opacity-60">Time stops when I'm with you</p> -->
     </div>
@@ -282,6 +315,78 @@
                 setTimeout(createFloatingHeart, i * 1000);
             }
         }, 1000);
+
+        // Music functionality
+        let isPlaying = false;
+        const musicBtn = document.getElementById('musicBtn');
+        const backgroundMusic = document.getElementById('backgroundMusic');
+        const currentSongTitle = document.getElementById('currentSongTitle');
+
+        // Playlist configuration
+        const playlist = [
+            {
+                title: "Stephen Sanchez - Until I Found You | Piano Cover by Pianella Piano",
+                favorite: "(one of my favorite song)",
+                file: "MusicFile/Music.mp3"
+            },
+            {
+                title: "Taylor Swift - Lover | Piano Cover by John Rod",
+                favorite: "",
+                file: "MusicFile/Music2.mp3"
+            },
+            {
+                title: "Ed Sheeran - Perfect | Piano Cover by Pianella Piano",
+                favorite: "",
+                file: "MusicFile/Music3.mp3"
+            }
+        ];
+        let currentSongIndex = 0;
+
+        function updateSongInfo() {
+            const song = playlist[currentSongIndex];
+            currentSongTitle.innerHTML = `${song.title}${song.favorite ? '<br>' + song.favorite : ''}`;
+            backgroundMusic.src = song.file;
+            if (isPlaying) {
+                backgroundMusic.play();
+            }
+        }
+
+        function playNextSong() {
+            currentSongIndex = (currentSongIndex + 1) % playlist.length;
+            updateSongInfo();
+        }
+
+        function playPreviousSong() {
+            currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
+            updateSongInfo();
+        }
+
+        function toggleMusic() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            if (isPlaying) {
+                backgroundMusic.pause();
+                musicBtn.innerHTML = '<span class="inline-block mr-2">♪</span> play ';
+                musicBtn.classList.remove('from-rose-600', 'to-pink-500');
+                musicBtn.classList.add('from-pink-500', 'to-rose-600');
+                // Hide navigation buttons
+                prevBtn.classList.add('opacity-0', 'scale-0');
+                nextBtn.classList.add('opacity-0', 'scale-0');
+            } else {
+                backgroundMusic.play();
+                musicBtn.innerHTML = '<span class="inline-block mr-2">♪</span> Pause';
+                musicBtn.classList.remove('from-pink-500', 'to-rose-600');
+                musicBtn.classList.add('from-rose-600', 'to-pink-500');
+                // Show navigation buttons
+                prevBtn.classList.remove('opacity-0', 'scale-0');
+                nextBtn.classList.remove('opacity-0', 'scale-0');
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // Initialize the first song
+        updateSongInfo();
     </script>
 </body>
 </html>
