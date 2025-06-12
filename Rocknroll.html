@@ -135,9 +135,52 @@
             0%, 100% { opacity: 0.3; }
             50% { opacity: 0.7; }
         }
+        
+        /* Add styles for mute button */
+        .mute-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 3px solid #ff0080;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            display: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            box-shadow: 0 0 15px rgba(255, 0, 128, 0.5);
+        }
+        
+        .mute-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 25px #ff0080;
+            border-color: #ff6b00;
+        }
+        
+        .mute-button.active {
+            background: rgba(255, 0, 128, 0.3);
+            border-color: #ff6b00;
+        }
     </style>
 </head>
 <body class="lightning-bg flex flex-col items-center justify-center min-h-screen text-white relative">
+    <!-- Add audio element -->
+    <audio id="backgroundMusic" loop>
+        <source src="MusicFile\Music_rock.mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- Add mute button -->
+    <button id="muteButton" onclick="toggleMute()" class="fixed top-5 right-5 w-12 h-12 bg-black/80 border-3 border-pink-500 text-white rounded-full cursor-pointer z-50 transition-all duration-300 ease-in-out flex items-center justify-center text-2xl shadow-[0_0_15px_rgba(255,0,128,0.5)] hover:scale-110 hover:shadow-[0_0_25px_#ff0080] hover:border-orange-500 active:bg-pink-500/30 active:border-orange-500 hidden">
+        🔊
+    </button>
+    
     <!-- Stage Lights Effect -->
     <div class="stage-lights"></div>
     
@@ -151,7 +194,7 @@
 
     <div class="neon-border bg-black bg-opacity-80 p-12 rounded-2xl shadow-2xl w-full max-w-lg text-center relative backdrop-blur-sm">
         <!-- Speakers in corners -->
-        <div class="speaker absolute top-4 left-4 text-6xl">🔊</div>
+        <div class="speaker absolute top-4 left-4 text-6xl rounded-full">🔊</div>
         <div class="speaker absolute top-4 right-4 text-6xl" style="animation-delay: 0.25s;">🔊</div>
         
         <!-- Lightning and Guitar Icons -->
@@ -197,6 +240,24 @@
 
     <script>
         let clockInterval = null;
+        let isMuted = false;
+        
+        function toggleMute() {
+            const audio = document.getElementById('backgroundMusic');
+            const muteButton = document.getElementById('muteButton');
+            
+            if (isMuted) {
+                audio.volume = 0.5;
+                muteButton.textContent = '🔊';
+                muteButton.classList.remove('bg-pink-500/30', 'border-orange-500');
+            } else {
+                audio.volume = 0;
+                muteButton.textContent = '🔇';
+                muteButton.classList.add('bg-pink-500/30', 'border-orange-500');
+            }
+            
+            isMuted = !isMuted;
+        }
         
         function updateClock() {
             const date = new Date();
@@ -230,9 +291,19 @@
 
         function startClock() {
             const button = document.getElementById('startBtn');
+            const muteButton = document.getElementById('muteButton');
+            const audio = document.getElementById('backgroundMusic');
+            
             button.disabled = true;
             button.classList.add('opacity-70', 'cursor-not-allowed');
             button.innerHTML = '🎸 ROCKING THE TIME! 🎸';
+            
+            // Show mute button and start music
+            muteButton.style.display = 'block';
+            audio.volume = 0.5;
+            audio.play().catch(error => {
+                console.log("Audio playback failed:", error);
+            });
             
             // Add screen shake effect
             document.body.style.animation = 'shake 0.5s ease-in-out';
