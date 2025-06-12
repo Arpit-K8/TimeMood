@@ -6,6 +6,8 @@
     <title>CLOCK-e-verse | Study Mode</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Add Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body {
             transition: all 0.3s ease;
@@ -78,6 +80,50 @@
         .dark-mode .text-secondary {
             color: #e5e7eb;
         }
+        
+        /* Environment section styles */
+        .env-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .env-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .env-card.active {
+            border-color: #4f46e5;
+            box-shadow: 0 0 15px rgba(79, 70, 229, 0.3);
+        }
+        
+        .dark-mode .env-card.active {
+            border-color: #818cf8;
+            box-shadow: 0 0 15px rgba(129, 140, 248, 0.3);
+        }
+
+        /* Add styles for sound indicator */
+        .sound-indicator {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #4f46e5;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .sound-indicator.active {
+            opacity: 1;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-4">
@@ -86,10 +132,10 @@
         <div class="flex items-center justify-between mb-6">
             <div class="flex items-center">
                 <h1 class="text-3xl font-bold text-primary">Study Time</h1>
-                <span class="text-4xl ml-3">📖</span>
+                <i class="fas fa-book-open text-3xl ml-3 text-indigo-600 dark:text-indigo-400"></i>
             </div>
             <button onclick="toggleDarkMode()" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                🌙
+                <i class="fas fa-moon text-xl"></i>
             </button>
         </div>
         
@@ -142,15 +188,15 @@
         <!-- Control buttons -->
         <div class="space-y-3">
             <button onclick="startClock()" id="startBtn" class="w-full px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg shadow-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 font-semibold">
-                🚀 Start Study Session
+                <i class="fas fa-rocket mr-2"></i>Start Study Session
             </button>
             
             <div class="flex gap-2">
                 <button onclick="startBreak()" id="breakBtn" class="flex-1 px-4 py-2 bg-orange-500 text-white rounded-lg shadow hover:bg-orange-600 transition disabled:opacity-50 text-sm" disabled>
-                    ☕ Break Time
+                    <i class="fas fa-coffee mr-1"></i>Break Time
                 </button>
                 <button onclick="resetSession()" id="resetBtn" class="flex-1 px-4 py-2 bg-gray-500 text-white rounded-lg shadow hover:bg-gray-600 transition text-sm">
-                    🔄 Reset
+                    <i class="fas fa-redo mr-1"></i>Reset
                 </button>
             </div>
         </div>
@@ -158,19 +204,60 @@
         <!-- Study tip -->
         <div class="mt-6 p-3 bg-yellow-50 dark:bg-yellow-900/50 rounded-lg border border-yellow-200 dark:border-yellow-800">
             <div class="text-yellow-800 dark:text-yellow-200 text-sm">
-                💡 <strong>Study Tip:</strong> <span id="studyTip">Take breaks every 25-30 minutes to maintain focus!</span>
+                <i class="fas fa-lightbulb mr-1"></i><strong>Study Tip:</strong> <span id="studyTip">Take breaks every 25-30 minutes to maintain focus!</span>
+            </div>
+        </div>
+
+        <!-- Environment Section -->
+        <div class="mt-8">
+            <h3 class="text-lg font-semibold text-primary mb-3">Study Environment</h3>
+            <div class="grid grid-cols-4 gap-2">
+                <div onclick="playEnvironment('rain')" class="env-card p-2 rounded-lg bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900 dark:to-blue-800 border border-blue-200 dark:border-blue-700 relative">
+                    <div class="sound-indicator"></div>
+                    <i class="fas fa-cloud-rain text-xl text-blue-600 dark:text-blue-300"></i>
+                    <div class="text-xs font-medium text-blue-700 dark:text-blue-200 mt-1">Rain</div>
+                </div>
+                <div onclick="playEnvironment('wind')" class="env-card p-2 rounded-lg bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 border border-gray-200 dark:border-gray-700 relative">
+                    <div class="sound-indicator"></div>
+                    <i class="fas fa-wind text-xl text-gray-600 dark:text-gray-300"></i>
+                    <div class="text-xs font-medium text-gray-700 dark:text-gray-200 mt-1">Wind</div>
+                </div>
+                <div onclick="playEnvironment('night')" class="env-card p-2 rounded-lg bg-gradient-to-br from-indigo-100 to-indigo-200 dark:from-indigo-900 dark:to-indigo-800 border border-indigo-200 dark:border-indigo-700 relative">
+                    <div class="sound-indicator"></div>
+                    <i class="fas fa-moon text-xl text-indigo-600 dark:text-indigo-300"></i>
+                    <div class="text-xs font-medium text-indigo-700 dark:text-indigo-200 mt-1">Night</div>
+                </div>
+                <div onclick="playEnvironment('fire')" class="env-card p-2 rounded-lg bg-gradient-to-br from-orange-100 to-orange-200 dark:from-orange-900 dark:to-orange-800 border border-orange-200 dark:border-orange-700 relative">
+                    <div class="sound-indicator"></div>
+                    <i class="fas fa-fire text-xl text-orange-600 dark:text-orange-300"></i>
+                    <div class="text-xs font-medium text-orange-700 dark:text-orange-200 mt-1">Fire</div>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Add audio elements -->
+    <audio id="rainSound" loop>
+        <source src="MusicFile\Rain.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="windSound" loop>
+        <source src="MusicFile\Wind.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="nightSound" loop>
+        <source src="MusicFile\Night.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="fireSound" loop>
+        <source src="MusicFile\Fire.mp3" type="audio/mpeg">
+    </audio>
+
     <!-- Celebration Modal -->
     <div id="celebrationModal" class="fixed inset-0 bg-black/50 flex items-center justify-center hidden">
         <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl text-center max-w-sm mx-4 celebration">
-            <div class="text-6xl mb-4">🎉</div>
+            <i class="fas fa-trophy text-6xl text-yellow-500 mb-4"></i>
             <h2 class="text-2xl font-bold text-primary mb-2">Congratulations!</h2>
             <p class="text-secondary mb-4">You've completed your study goal! Take a well-deserved break.</p>
             <button onclick="closeCelebration()" class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
-                Awesome!
+                <i class="fas fa-check mr-1"></i>Awesome!
             </button>
         </div>
     </div>
@@ -182,6 +269,7 @@
         let isOnBreak = false;
         let targetTime = null;
         let isDarkMode = false;
+        let currentEnvironment = null;
 
         const motivationalQuotes = [
             "Success is the sum of small efforts repeated day in and day out.",
@@ -211,8 +299,8 @@
             document.querySelectorAll('.card').forEach(card => card.classList.toggle('dark-mode'));
             
             // Update the moon/sun icon
-            const darkModeButton = document.querySelector('button[onclick="toggleDarkMode()"]');
-            darkModeButton.innerHTML = isDarkMode ? '☀️' : '🌙';
+            const darkModeButton = document.querySelector('button[onclick="toggleDarkMode()"] i');
+            darkModeButton.className = isDarkMode ? 'fas fa-sun text-xl' : 'fas fa-moon text-xl';
         }
 
         function setTimer(minutes) {
@@ -294,7 +382,7 @@
             isOnBreak = true;
             document.getElementById('focusLevel').textContent = 'Break';
             document.getElementById('focusLevel').parentElement.className = 'bg-orange-50 dark:bg-orange-900/50 p-3 rounded-lg border border-orange-200 dark:border-orange-800';
-            document.getElementById('breakBtn').textContent = '📚 Resume Study';
+            document.getElementById('breakBtn').innerHTML = '<i class="fas fa-book mr-1"></i>Resume Study';
             document.getElementById('breakBtn').onclick = resumeStudy;
         }
 
@@ -304,7 +392,7 @@
             studyStartTime = new Date() - (parseInt(document.getElementById('studyTime').textContent.split(':')[0]) * 60000 + parseInt(document.getElementById('studyTime').textContent.split(':')[1]) * 1000);
             document.getElementById('focusLevel').textContent = targetTime ? `${Math.floor(targetTime/60)} min Goal` : 'Focused';
             document.getElementById('focusLevel').parentElement.className = 'bg-green-50 dark:bg-green-900/50 p-3 rounded-lg border border-green-200 dark:border-green-800';
-            document.getElementById('breakBtn').textContent = '☕ Break Time';
+            document.getElementById('breakBtn').innerHTML = '<i class="fas fa-coffee mr-1"></i>Break Time';
             document.getElementById('breakBtn').onclick = startBreak;
         }
 
@@ -333,7 +421,71 @@
 
             document.getElementById('quote').textContent = '"Success is the sum of small efforts repeated day in and day out."';
             document.getElementById('studyTip').textContent = 'Take breaks every 25-30 minutes to maintain focus!';
+
+            // Stop all environment sounds
+            const sounds = ['rain', 'wind', 'night', 'fire'].map(env => document.getElementById(`${env}Sound`));
+            sounds.forEach(sound => {
+                sound.pause();
+                sound.currentTime = 0;
+            });
+            document.querySelectorAll('.env-card').forEach(card => card.classList.remove('active'));
+            currentEnvironment = null;
         }
+
+        // Environment control functions
+        function playEnvironment(env) {
+            const envCards = document.querySelectorAll('.env-card');
+            const sounds = {
+                rain: document.getElementById('rainSound'),
+                wind: document.getElementById('windSound'),
+                night: document.getElementById('nightSound'),
+                fire: document.getElementById('fireSound')
+            };
+
+            // If clicking the same environment, toggle it off
+            if (currentEnvironment === env) {
+                sounds[env].pause();
+                sounds[env].currentTime = 0;
+                event.currentTarget.classList.remove('active');
+                event.currentTarget.querySelector('.sound-indicator').classList.remove('active');
+                currentEnvironment = null;
+                return;
+            }
+
+            // Stop all sounds and remove active states
+            Object.values(sounds).forEach(sound => {
+                sound.pause();
+                sound.currentTime = 0;
+            });
+            envCards.forEach(card => {
+                card.classList.remove('active');
+                card.querySelector('.sound-indicator').classList.remove('active');
+            });
+
+            // Play selected sound and add active states
+            sounds[env].volume = 0.5;
+            sounds[env].play().catch(error => console.log("Audio playback failed:", error));
+            event.currentTarget.classList.add('active');
+            event.currentTarget.querySelector('.sound-indicator').classList.add('active');
+            currentEnvironment = env;
+        }
+
+        // Update resetSession function to also stop sounds
+        const originalResetSession = resetSession;
+        resetSession = function() {
+            originalResetSession();
+            // Stop all environment sounds
+            const sounds = ['rain', 'wind', 'night', 'fire'].map(env => document.getElementById(`${env}Sound`));
+            sounds.forEach(sound => {
+                sound.pause();
+                sound.currentTime = 0;
+            });
+            document.querySelectorAll('.env-card').forEach(card => {
+                card.classList.remove('active');
+                card.querySelector('.sound-indicator').classList.remove('active');
+            });
+            currentEnvironment = null;
+        };
 
         // Initialize with a random quote and tip on load
         window.addEventListener('load', () => {
