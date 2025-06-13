@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLOCK-e-verse | Enchanted Ocean</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        /* Custom CSS for the Ocean Digital Clock */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #05144b;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            color: #ffffff;
+        }
+
+        .glass-morphism {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            border-radius: 2rem;
+        }
+
+        .ocean-text-gradient {
+            background: linear-gradient(135deg, #87CEEB);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+       .time-glow {
+            text-shadow: 0 0 15px rgba(79, 172, 254, 0.7),
+                         0 0 30px rgba(79, 172, 254, 0.4),
+                         0 0 45px rgba(79, 172, 254, 0.2);
+        }
+
+        .ocean-pulse {
+            animation: oceanPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes oceanPulse {
+            0%, 100% { transform: scale(1); filter: hue-rotate(0deg); }
+            50% { transform: scale(1.1); filter: hue-rotate(15deg); }
+        }
+
+        .clock-breathe {
+            animation: breathe 5s ease-in-out infinite alternate;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        /* Music control styles - made more visible */
+        .music-control {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .music-control:hover {
+            background: rgba(0, 0, 0, 0.7);
+            transform: scale(1.1);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .music-control i {
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        /* Tooltip for music control */
+        .tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .music-control:hover .tooltip {
+            opacity: 1;
+        }
+
+        /* Video background */
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.7;
+        }
+
+        @media (max-width: 768px) {
+            .glass-morphism {
+                padding: 2rem;
+            }
+            .text-6xl {
+                font-size: 3.5rem;
+            }
+            .text-2xl {
+                font-size: 1.5rem;
+            }
+            .text-lg {
+                font-size: 1rem;
+            }
+            .text-8xl {
+                font-size: 5rem;
+            }
+            .music-control {
+                bottom: 1rem;
+                right: 1rem;
+                width: 50px;
+                height: 50px;
+            }
+        }
+    </style>
+</head>
+<body class="selection:bg-blue-400 selection:text-white">
+    <!-- Video Background - Always muted -->
+    <video autoplay muted loop class="video-background" id="backgroundVideo">
+        <source src="MusicFile/ocean_vid.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
+
+    <!-- Main Clock Container -->
+    <div class="glass-morphism rounded-3xl p-8 md:p-12 text-center transition-all duration-500 hover:scale-105 hover:-translate-y-4 hover:shadow-2xl hover:shadow-blue-500/30 cursor-pointer group relative clock-breathe z-10">
+        <!-- Ocean Icon with pulse effect -->
+        <div class="text-7xl md:text-8xl mb-6 group-hover:animate-pulse ocean-pulse">🌊</div>
+
+        <!-- Time Display with glowing effect -->
+        <div class="ocean-text-gradient text-5xl md:text-7xl font-extrabold mb-4 tracking-wider" id="time">
+            00:00:00
+        </div>
+
+        <!-- Date Display with shimmering effect -->
+        <div class="ocean-text-gradient text-xl md:text-2xl font-semibold mb-6 " id="date">
+            Loading Date...
+        </div>
+
+        <!-- Timezone Information -->
+        <div class="text-gray-200 text-base md:text-lg mb-8 opacity-80" id="timezone">
+            Loading Timezone...
+        </div>
+
+        <!-- Decorative Wave Line-->
+        <div class="h-1 w-24 md:w-32 mx-auto rounded-full bg-gradient-to-r from-blue-400 via-purple-500 to-blue-600 animate-pulse"></div>
+
+        <!-- Time Period Indicator -->
+        <div class="mt-6 inline-flex items-center px-4 py-2 md:px-6 md:py-3 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-400/30">
+            <span class="text-blue-300 font-medium text-sm md:text-base" id="period">Loading Period...</span>
+        </div>
+    </div>
+
+    <!-- Music Control - Now more visible -->
+    <div class="music-control" id="musicControl">
+        <i class="fas fa-volume-up" id="volumeIcon"></i>
+        <span class="tooltip">Toggle Sound</span>
+    </div>
+
+    <!-- Audio Element (hidden) - Replace with your preferred ocean sounds -->
+    <audio id="oceanAudio" loop>
+        <source src="MusicFile/Water_Ocean.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        // Ensure video is always muted
+        document.addEventListener('DOMContentLoaded', function() {
+            const video = document.getElementById('backgroundVideo');
+            video.muted = true; // Programmatically mute the video
+            
+            // Some browsers might try to unmute, so we'll add an event listener to keep it muted
+            video.addEventListener('volumechange', function() {
+                if (!this.muted) {
+                    this.muted = true;
+                }
+            });
+        });
+
+        // Clock functionality
+        function updateClock() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+
+            const options = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            };
+            const dateString = now.toLocaleDateString('en-US', options);
+
+            const hour = now.getHours();
+            let period;
+            if (hour >= 5 && hour < 12) {
+                period = "Good Morning";
+            } else if (hour >= 12 && hour < 17) {
+                period = "Good Afternoon";
+            } else if (hour >= 17 && hour < 21) {
+                period = "Good Evening";
+            } else {
+                period = "Good Night";
+            }
+
+            document.getElementById('time').textContent = `${hours}:${minutes}:${seconds}`;
+            document.getElementById('date').textContent = dateString;
+            document.getElementById('period').textContent = period;
+            document.getElementById('timezone').textContent = 'Local Time - ' + Intl.DateTimeFormat().resolvedOptions().timeZone;
+        }
+
+        // Ripple effect on click
+        document.querySelector('.glass-morphism').addEventListener('click', function(e) {
+            const ripple = document.createElement('div');
+            ripple.className = 'ripple absolute';
+            ripple.style.left = `${e.clientX - this.getBoundingClientRect().left}px`;
+            ripple.style.top = `${e.clientY - this.getBoundingClientRect().top}px`;
+            this.appendChild(ripple);
+
+            setTimeout(() => {
+                ripple.remove();
+            }, 2000);
+        });
+
+        // Music control functionality
+        const audio = document.getElementById('oceanAudio');
+        const musicControl = document.getElementById('musicControl');
+        const volumeIcon = document.getElementById('volumeIcon');
+        let isMuted = false;
+
+        // Try to autoplay (may not work due to browser restrictions)
+        audio.volume = 0.3; // Set to 30% volume by default
+        const playPromise = audio.play();
+
+        if (playPromise !== undefined) {
+            playPromise.catch(error => {
+                // Autoplay was prevented - show muted state
+                isMuted = true;
+                volumeIcon.classList.replace('fa-volume-up', 'fa-volume-mute');
+            });
+        }
+
+        musicControl.addEventListener('click', function() {
+            isMuted = !isMuted;
+            
+            if (isMuted) {
+                audio.pause();
+                volumeIcon.classList.replace('fa-volume-up', 'fa-volume-mute');
+            } else {
+                audio.play();
+                volumeIcon.classList.replace('fa-volume-mute', 'fa-volume-up');
+            }
+        });
+
+        // Initialize clock
+        updateClock();
+        setInterval(updateClock, 1000);
+    </script>
+</body>
+</html>
