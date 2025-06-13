@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLOCK-e-verse | Zen Digital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f1419 0%, #1a2332 25%, #0d1b2a 50%, #1a2332 75%, #0f1419 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 20s ease infinite;
+            min-height: 100vh;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .glass-morphism {
+            background: rgba(16, 185, 129, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(16, 185, 129, 0.1);
+            box-shadow: 0 8px 32px rgba(16, 185, 129, 0.1);
+        }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, #10b981, #34d399, #6ee7b7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .neo-btn {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(52, 211, 153, 0.1));
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .neo-btn:hover {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(52, 211, 153, 0.2));
+            box-shadow: 0 6px 25px rgba(16, 185, 129, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .clock-digit {
+            font-family: 'Inter', monospace;
+            text-shadow: 0 0 20px rgba(16, 185, 129, 0.5), 0 0 40px rgba(16, 185, 129, 0.3);
+            transition: all 0.5s ease;
+        }
+        
+        .clock-digit:hover {
+            text-shadow: 0 0 30px rgba(16, 185, 129, 0.8), 0 0 60px rgba(16, 185, 129, 0.5);
+            transform: scale(1.05);
+        }
+        
+        .zen-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(16, 185, 129, 0.3);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .breathing {
+            animation: breathe 4s ease-in-out infinite;
+        }
+        
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+        
+        .ripple {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ripple::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(16, 185, 129, 0.1);
+            transform: translate(-50%, -50%);
+            animation: rippleEffect 3s infinite;
+        }
+        
+        @keyframes rippleEffect {
+            0% {
+                width: 0;
+                height: 0;
+                opacity: 1;
+            }
+            100% {
+                width: 300px;
+                height: 300px;
+                opacity: 0;
+            }
+        }
+        
+        .date-fade {
+            animation: dateFade 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes dateFade {
+            0% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+        
+        .zen-glow {
+            animation: zenGlow 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes zenGlow {
+            0% { 
+                box-shadow: 0 0 20px rgba(16, 185, 129, 0.2), 
+                           inset 0 0 20px rgba(16, 185, 129, 0.1); 
+            }
+            100% { 
+                box-shadow: 0 0 40px rgba(16, 185, 129, 0.4), 
+                           inset 0 0 30px rgba(16, 185, 129, 0.2); 
+            }
+        }
+    </style>
+</head>
+<body class="overflow-hidden">
+    <!-- Floating Zen Particles -->
+    <div id="particles-container" class="fixed inset-0 pointer-events-none z-0"></div>
+    
+    <!-- Main Clock Container -->
+    <div class="min-h-screen flex items-center justify-center p-8 relative z-10">
+        <div class="glass-morphism rounded-3xl p-12 text-center transition-all duration-500 hover:scale-105 hover:-translate-y-4 hover:shadow-2xl hover:shadow-emerald-500/20 cursor-pointer group ripple zen-glow max-w-2xl w-full">
+            <!-- Zen Icon -->
+            <div class="text-6xl mb-8 breathing">
+                <i class="fas fa-spa text-emerald-400"></i>
+            </div>
+            
+            <!-- Main Time Display -->
+            <div class="mb-8">
+                <div id="time" class="text-8xl md:text-9xl font-bold text-gradient clock-digit mb-4">
+                    00:00:00
+                </div>
+                <div id="period" class="text-2xl text-emerald-300 font-medium opacity-80">
+                    AM
+                </div>
+            </div>
+            
+            <!-- Date Display -->
+            <div class="mb-8 date-fade">
+                <div id="date" class="text-xl text-gray-300 mb-2">
+                    Monday, January 1, 2024
+                </div>
+                <div id="timezone" class="text-sm text-gray-400 opacity-70">
+                    Your Local Time
+                </div>
+            </div>
+            
+            <!-- Zen Quote -->
+            <div class="mb-8">
+                <p id="zen-quote" class="text-gray-300 text-lg leading-relaxed italic opacity-80">
+                    "The present moment is the only time over which we have dominion."
+                </p>
+            </div>
+            
+            <!-- Time Format Toggle -->
+            <div class="flex justify-center space-x-4">
+                <button id="format-toggle" class="neo-btn inline-flex items-center px-6 py-3 rounded-full text-white font-semibold transition-all duration-300 hover:bg-emerald-500/20">
+                    <i class="fas fa-clock mr-2"></i>
+                    24 Hour Format
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let is24Hour = false;
+        const zenQuotes = [
+            "The present moment is the only time over which we have dominion.",
+            "Peace comes from within. Do not seek it without.",
+            "In the end, just three things matter: How well we have lived, How well we have loved, How well we have learned to let go.",
+            "The quieter you become, the more you are able to hear.",
+            "Be where you are; otherwise you will miss your life.",
+            "Wherever you are, be there totally.",
+            "The mind is everything. What you think you become.",
+            "Time is an illusion. The only reality is now."
+        ];
+        
+        let currentQuoteIndex = 0;
+        
+        function updateClock() {
+            const now = new Date();
+            let hours = now.getHours();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+            
+            const timeElement = document.getElementById('time');
+            const periodElement = document.getElementById('period');
+            
+            if (is24Hour) {
+                const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                timeElement.textContent = timeString;
+                periodElement.textContent = '';
+            } else {
+                const period = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12;
+                hours = hours ? hours : 12;
+                
+                const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                timeElement.textContent = timeString;
+                periodElement.textContent = period;
+            }
+            
+            // Update date
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            };
+            const dateString = now.toLocaleDateString('en-US', options);
+            document.getElementById('date').textContent = dateString;
+            
+            // Update timezone
+            const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            document.getElementById('timezone').textContent = timezone.replace('_', ' ');
+        }
+        
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'zen-particle';
+            particle.style.left = Math.random() * window.innerWidth + 'px';
+            particle.style.animationDelay = Math.random() * 15 + 's';
+            particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+            
+            document.getElementById('particles-container').appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 25000);
+        }
+        
+        function changeZenQuote() {
+            const quoteElement = document.getElementById('zen-quote');
+            quoteElement.style.opacity = '0';
+            
+            setTimeout(() => {
+                currentQuoteIndex = (currentQuoteIndex + 1) % zenQuotes.length;
+                quoteElement.textContent = zenQuotes[currentQuoteIndex];
+                quoteElement.style.opacity = '0.8';
+            }, 500);
+        }
+        
+        // Initialize clock
+        updateClock();
+        setInterval(updateClock, 1000);
+        
+        // Create particles periodically
+        setInterval(createParticle, 2000);
+        
+        // Change quote every 10 seconds
+        setInterval(changeZenQuote, 10000);
+        
+        // Format toggle functionality
+        document.getElementById('format-toggle').addEventListener('click', function() {
+            is24Hour = !is24Hour;
+            this.innerHTML = is24Hour 
+                ? '<i class="fas fa-clock mr-2"></i>12 Hour Format'
+                : '<i class="fas fa-clock mr-2"></i>24 Hour Format';
+            updateClock();
+        });
+        
+        // Initial particles
+        for (let i = 0; i < 5; i++) {
+            setTimeout(createParticle, i * 1000);
+        }
+    </script>
+</body>
+</html>

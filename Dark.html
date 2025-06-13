@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLOCK-e-verse | Dark Mode</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 50%, #0f0f0f 100%);
+            min-height: 100vh;
+        }
+        .glass-morphism {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #60a5fa, #a78bfa, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .neo-btn {
+            background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+            box-shadow: 
+                8px 8px 16px rgba(0, 0, 0, 0.3),
+                -8px -8px 16px rgba(255, 255, 255, 0.03);
+        }
+        .neo-btn:hover {
+            box-shadow: 
+                4px 4px 8px rgba(0, 0, 0, 0.4),
+                -4px -4px 8px rgba(255, 255, 255, 0.05);
+        }
+        .clock-glow {
+            text-shadow: 0 0 20px rgba(96, 165, 250, 0.5);
+        }
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .pulse-ring {
+            animation: pulse-ring 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+        }
+        @keyframes pulse-ring {
+            0% {
+                transform: scale(0.8);
+                opacity: 1;
+            }
+            80%, 100% {
+                transform: scale(1.2);
+                opacity: 0;
+            }
+        }
+        .digit-flip {
+            transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        .date-slide {
+            animation: slideIn 1s ease-out;
+        }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .particle {
+            position: absolute;
+            background: radial-gradient(circle, rgba(96, 165, 250, 0.8) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particleFloat 8s linear infinite;
+        }
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-10vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        /* New animation for single rotation */
+        .rotate-once {
+            animation: rotateOnce 0.8s ease-out;
+        }
+        @keyframes rotateOnce {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen relative overflow-hidden">
+    <!-- Floating Particles -->
+    <div id="particles"></div>
+    
+    <!-- Main Clock Container -->
+    <div class="glass-morphism rounded-3xl p-12 text-center transition-all duration-500 hover:scale-105 hover:-translate-y-4 hover:shadow-2xl hover:shadow-blue-500/20 cursor-pointer group floating relative">
+        
+        <!-- Font Awesome Moon Icon with Glow -->
+        <div id="moonIcon" class="text-8xl mb-8 transition-all duration-1000 relative flex items-center justify-center">
+            <i class="fa-solid fa-moon text-blue-400"></i>
+            <div class="absolute inset-0 flex items-center justify-center opacity-20 blur-lg">
+                <i class="fa-solid fa-moon text-blue-400"></i>
+            </div>
+        </div>
+        
+        <!-- Digital Clock Display -->
+        <div class="mb-8">
+            <div id="time" class="text-7xl font-bold mb-4 text-gradient clock-glow digit-flip tracking-wider">
+                00:00:00
+            </div>
+            <div id="ampm" class="text-2xl text-blue-300 font-semibold opacity-80">
+                AM
+            </div>
+        </div>
+        
+        <!-- Date Display -->
+        <div id="date" class="text-xl text-gray-300 mb-8 date-slide opacity-90">
+            Loading...
+        </div>
+        
+        <!-- Timezone Display -->
+        <div id="timezone" class="text-sm text-gray-400 mb-6 opacity-70">
+            Local Time
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="flex gap-4 justify-center">
+            <button id="formatBtn" class="neo-btn inline-flex items-center px-6 py-3 rounded-full text-white font-semibold transition-all duration-300 hover:bg-gray-500/20 text-sm">
+                <i class="fa-solid fa-clock mr-2"></i>12H Format
+            </button>
+            <button id="themeBtn" class="neo-btn inline-flex items-center px-6 py-3 rounded-full text-white font-semibold transition-all duration-300 hover:bg-gray-500/20 text-sm">
+                <i class="fa-solid fa-moon mr-2"></i>Dark Mode
+            </button>
+        </div>
+        
+        <!-- Status Indicator -->
+        <div class="flex items-center justify-center mt-6 gap-2">
+            <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+            <span class="text-xs text-gray-400">Live Time</span>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let is24Hour = false;
+            let isUltraDark = false;
+            const moonIcon = document.getElementById('moonIcon');
+
+            function updateClock() {
+                const now = new Date();
+                const timeElement = document.getElementById('time');
+                const ampmElement = document.getElementById('ampm');
+                const dateElement = document.getElementById('date');
+                const timezoneElement = document.getElementById('timezone');
+                
+                let hours = now.getHours();
+                let minutes = now.getMinutes();
+                let seconds = now.getSeconds();
+                let ampm = '';
+                
+                if (!is24Hour) {
+                    ampm = hours >= 12 ? 'PM' : 'AM';
+                    hours = hours % 12;
+                    hours = hours ? hours : 12;
+                }
+                
+                const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (timeElement.textContent !== timeString) {
+                    timeElement.style.transform = 'rotateX(90deg)';
+                    setTimeout(() => {
+                        timeElement.textContent = timeString;
+                        timeElement.style.transform = 'rotateX(0deg)';
+                    }, 150);
+                }
+                
+                ampmElement.textContent = ampm;
+                ampmElement.style.display = is24Hour ? 'none' : 'block';
+                
+                const options = { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                };
+                dateElement.textContent = now.toLocaleDateString('en-US', options);
+                
+                const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                timezoneElement.textContent = timezone.replace('_', ' ');
+            }
+
+            function createParticles() {
+                const particlesContainer = document.getElementById('particles');
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.width = Math.random() * 4 + 2 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 2 + 's';
+                particlesContainer.appendChild(particle);
+                
+                setTimeout(() => {
+                    particle.remove();
+                }, 8000);
+            }
+
+            function triggerMoonRotation() {
+                // Remove any existing animation class
+                moonIcon.classList.remove('rotate-once');
+                
+                // Trigger reflow to restart animation
+                void moonIcon.offsetWidth;
+                
+                // Add the animation class
+                moonIcon.classList.add('rotate-once');
+                
+                // Remove the class after animation completes
+                setTimeout(() => {
+                    moonIcon.classList.remove('rotate-once');
+                }, 800);
+            }
+
+            document.getElementById('formatBtn').addEventListener('click', function() {
+                is24Hour = !is24Hour;
+                this.innerHTML = `<i class="fa-solid fa-clock mr-2"></i>${is24Hour ? '24H Format' : '12H Format'}`;
+                updateClock();
+                triggerMoonRotation();
+            });
+
+            document.getElementById('themeBtn').addEventListener('click', function() {
+                isUltraDark = !isUltraDark;
+                if (isUltraDark) {
+                    document.body.style.background = 'linear-gradient(135deg, #000000 0%, #0a0a0a 50%, #000000 100%)';
+                    this.innerHTML = '<i class="fa-solid fa-sun mr-2"></i>Bright Mode';
+                } else {
+                    document.body.style.background = 'linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 50%, #0f0f0f 100%)';
+                    this.innerHTML = '<i class="fa-solid fa-moon mr-2"></i>Dark Mode';
+                }
+                triggerMoonRotation();
+            });
+
+            // Initialize
+            updateClock();
+            setInterval(updateClock, 1000);
+            setInterval(createParticles, 500);
+
+            // Initial particle burst
+            for (let i = 0; i < 5; i++) {
+                setTimeout(createParticles, i * 100);
+            }
+        });
+    </script>
+</body>
+</html>

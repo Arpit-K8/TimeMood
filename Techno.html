@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLOCK-e-verse | Techno Watch</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'orbitron': ['Orbitron', 'monospace'],
+                    },
+                    animation: {
+                        'grid-move': 'grid-move 20s linear infinite',
+                        'pulse-glow': 'pulse-glow 3s ease-in-out infinite alternate',
+                        'title-glow': 'title-glow 2s ease-in-out infinite alternate',
+                        'border-rotate': 'border-rotate 3s linear infinite',
+                        'time-pulse': 'time-pulse 1s ease-in-out infinite',
+                        'dot-pulse': 'dot-pulse 1s ease-in-out infinite',
+                        'flash-effect': 'flash-effect 0.7s ease-out forwards',
+                    },
+                    backgroundImage: {
+                        'techno-gradient': 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%)',
+                        'title-gradient': 'linear-gradient(45deg, #00ffff, #ff00ff, #ffff00)',
+                    },
+                    boxShadow: {
+                        'neon-cyan': '0 0 30px rgba(0, 255, 255, 0.3), inset 0 0 30px rgba(0, 255, 255, 0.1)',
+                        'neon-cyan-strong': '0 0 60px rgba(0, 255, 255, 0.5), inset 0 0 60px rgba(0, 255, 255, 0.2)',
+                    },
+                    dropShadow: {
+                        'neon-cyan': '0 0 10px #00ffff',
+                        'neon-magenta': '0 0 20px #ff00ff',
+                        'neon-red': '0 0 20px #ff0000',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes grid-move {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+        
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 30px rgba(0, 255, 255, 0.3), inset 0 0 30px rgba(0, 255, 255, 0.1); }
+            100% { box-shadow: 0 0 60px rgba(0, 255, 255, 0.5), inset 0 0 60px rgba(0, 255, 255, 0.2); }
+        }
+        
+        @keyframes title-glow {
+            0% { filter: drop-shadow(0 0 10px #00ffff); }
+            100% { filter: drop-shadow(0 0 20px #ff00ff); }
+        }
+        
+        @keyframes time-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes dot-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.5); }
+        }
+
+        @keyframes flash-effect {
+            0% { opacity: 0; background: radial-gradient(circle, rgba(255, 87, 51, 0.8) 0%, rgba(255, 87, 51, 0) 70%); }
+            50% { opacity: 1; }
+            100% { opacity: 0; background: radial-gradient(circle, rgba(255, 87, 51, 0.8) 0%, rgba(255, 87, 51, 0) 70%); }
+        }
+        
+        .grid-bg {
+            background-image: linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: grid-move 20s linear infinite;
+        }
+        
+        .title-gradient {
+            background: linear-gradient(45deg, #00ffff, #ff00ff, #ffff00);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .rotating-border::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #00ffff, #ff00ff, #ffff00, #00ffff);
+            border-radius: 20px;
+            z-index: -1;
+        }
+
+        #flashOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 5; /* Changed from 9999 to 5 to be behind the content */
+        }
+
+        #flashOverlay.flash {
+            animation: flash-effect 0.7s ease-out forwards;
+        }
+
+    </style>
+</head>
+<body class="font-orbitron bg-techno-gradient min-h-screen flex items-center justify-center overflow-hidden relative">
+    <div class="absolute inset-0 grid-bg z-0"></div>
+    <div id="flashOverlay"></div>
+    
+    <div class="relative z-10 bg-black/80 backdrop-blur-xl border-2 border-cyan-400/30 rounded-3xl p-10 animate-pulse-glow min-w-[540px] text-center ">
+        <h1 class="text-4xl font-black title-gradient animate-title-glow mb-8">
+            🤖 TECHNO CLOCK
+        </h1>
+        
+        <div class="bg-black/90 border-2 border-cyan-400 rounded-2xl p-8 my-8 relative overflow-hidden rotating-border">
+            <div class="text-5xl font-bold text-cyan-400 drop-shadow-neon-cyan animate-time-pulse mb-5" id="currentTime">
+                00:00:00
+            </div>
+            
+            <div class="text-xl text-fuchsia-400 drop-shadow-neon-magenta mb-3" id="currentDate">
+                Loading...
+            </div>
+            
+            <div class="flex justify-center gap-5 mt-6">
+                <div class="w-3 h-3 rounded-full bg-gray-700 shadow-lg transition-all duration-300" id="clockDot"></div>
+                <div class="w-3 h-3 rounded-full bg-gray-700 shadow-lg transition-all duration-300" id="systemDot"></div>
+            </div>
+        </div>
+
+        <div class="bg-black/90 border-2 border-fuchsia-400/50 rounded-2xl p-8 my-8 relative">
+            <h2 class="text-2xl font-bold text-fuchsia-400 drop-shadow-neon-magenta mb-4">TIMER</h2>
+            <div class="text-4xl font-bold text-fuchsia-400 drop-shadow-neon-magenta mb-5 transition-all duration-300" id="timerDisplay">
+                00:00:00
+            </div>
+            <div class="flex justify-center gap-2 mb-4">
+                <input type="number" id="hoursInput" class="w-16 bg-gray-800 text-cyan-400 border border-cyan-400/50 rounded p-2 text-center" placeholder="HH" min="0">
+                <input type="number" id="minutesInput" class="w-16 bg-gray-800 text-cyan-400 border border-cyan-400/50 rounded p-2 text-center" placeholder="MM" min="0" max="59">
+                <input type="number" id="secondsInput" class="w-16 bg-gray-800 text-cyan-400 border border-cyan-400/50 rounded p-2 text-center" placeholder="SS" min="0" max="59">
+            </div>
+            <div class="flex justify-center gap-4">
+                <button id="startTimer" class="bg-cyan-500/80 hover:bg-cyan-400 text-black font-bold py-2 px-4 rounded-lg transition-all duration-300 shadow-neon-cyan">Start</button>
+                <button id="pauseTimer" class="bg-fuchsia-500/80 hover:bg-fuchsia-400 text-black font-bold py-2 px-4 rounded-lg transition-all duration-300 shadow-[0_0_15px_rgba(255,0,255,0.4)]">Pause</button>
+                <button id="resetTimer" class="bg-yellow-500/80 hover:bg-yellow-400 text-black font-bold py-2 px-4 rounded-lg transition-all duration-300 shadow-[0_0_15px_rgba(255,255,0,0.4)]">Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class TechnoClock {
+            constructor() {
+                this.clockInterval = null;
+                this.timerInterval = null;
+                this.timerSeconds = 0;
+                
+                this.initializeElements();
+                this.startClock();
+                this.playSystemSound();
+                this.addTimerEventListeners();
+            }
+            
+            initializeElements() {
+                this.currentTimeEl = document.getElementById('currentTime');
+                this.currentDateEl = document.getElementById('currentDate');
+                this.clockDot = document.getElementById('clockDot');
+                this.systemDot = document.getElementById('systemDot');
+                this.flashOverlayEl = document.getElementById('flashOverlay');
+
+                // Timer elements
+                this.timerDisplayEl = document.getElementById('timerDisplay');
+                this.hoursInputEl = document.getElementById('hoursInput');
+                this.minutesInputEl = document.getElementById('minutesInput');
+                this.secondsInputEl = document.getElementById('secondsInput');
+                this.startTimerBtn = document.getElementById('startTimer');
+                this.pauseTimerBtn = document.getElementById('pauseTimer');
+                this.resetTimerBtn = document.getElementById('resetTimer');
+            }
+            
+            startClock() {
+                this.updateClock();
+                this.clockInterval = setInterval(() => this.updateClock(), 1000);
+                this.clockDot.classList.add('bg-cyan-400', 'shadow-cyan-400', 'shadow-lg', 'animate-dot-pulse');
+                this.clockDot.classList.remove('bg-gray-700');
+            }
+            
+            updateClock() {
+                const now = new Date();
+                const timeString = now.toLocaleTimeString('en-US', { 
+                    hour12: false,
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+                const dateString = now.toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                
+                this.currentTimeEl.textContent = timeString;
+                this.currentDateEl.textContent = dateString;
+            }
+            
+            addTimerEventListeners() {
+                this.startTimerBtn.addEventListener('click', () => this.startTimer());
+                this.pauseTimerBtn.addEventListener('click', () => this.pauseTimer());
+                this.resetTimerBtn.addEventListener('click', () => this.resetTimer());
+                this.flashOverlayEl.addEventListener('animationend', () => {
+                    this.flashOverlayEl.classList.remove('flash');
+                });
+            }
+
+            startTimer() {
+                if(this.timerInterval) return; // Prevent starting if already running
+
+                const hours = parseInt(this.hoursInputEl.value) || 0;
+                const minutes = parseInt(this.minutesInputEl.value) || 0;
+                const seconds = parseInt(this.secondsInputEl.value) || 0;
+                
+                if(this.timerSeconds === 0) {
+                     this.timerSeconds = (hours * 3600) + (minutes * 60) + seconds;
+                }
+
+                if (this.timerSeconds > 0) {
+                    this.timerInterval = setInterval(() => this.updateTimer(), 1000);
+                    // Reset color on start
+                    this.timerDisplayEl.classList.remove('text-red-500', 'drop-shadow-neon-red');
+                    this.timerDisplayEl.classList.add('text-fuchsia-400', 'drop-shadow-neon-magenta');
+                }
+            }
+
+            pauseTimer() {
+                clearInterval(this.timerInterval);
+                this.timerInterval = null;
+            }
+
+            resetTimer() {
+                clearInterval(this.timerInterval);
+                this.timerInterval = null;
+                this.timerSeconds = 0;
+                this.updateTimerDisplay();
+                this.hoursInputEl.value = '';
+                this.minutesInputEl.value = '';
+                this.secondsInputEl.value = '';
+                // Reset color on reset
+                this.timerDisplayEl.classList.remove('text-red-500', 'drop-shadow-neon-red');
+                this.timerDisplayEl.classList.add('text-fuchsia-400', 'drop-shadow-neon-magenta');
+            }
+
+            updateTimer() {
+                if (this.timerSeconds > 0) {
+                    this.timerSeconds--;
+                    this.updateTimerDisplay();
+
+                    if (this.timerSeconds <= 10) {
+                        this.timerDisplayEl.classList.add('text-red-500', 'drop-shadow-neon-red');
+                        this.timerDisplayEl.classList.remove('text-fuchsia-400', 'drop-shadow-neon-magenta');
+                    }
+                } else {
+                    this.pauseTimer();
+                    this.triggerCompletionEffects();
+                }
+            }
+
+            updateTimerDisplay() {
+                const hours = Math.floor(this.timerSeconds / 3600);
+                const minutes = Math.floor((this.timerSeconds % 3600) / 60);
+                const seconds = this.timerSeconds % 60;
+                this.timerDisplayEl.textContent = 
+                    `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            }
+
+            triggerCompletionEffects() {
+                this.flashOverlayEl.classList.add('flash');
+                this.playSound(1200, 0.4, 'sawtooth');
+            }
+            
+            playSystemSound() {
+                this.systemDot.classList.add('bg-cyan-400', 'shadow-cyan-400', 'shadow-lg', 'animate-dot-pulse');
+                this.systemDot.classList.remove('bg-gray-700');
+                this.playSound(600, 0.1, 'sine');
+                setTimeout(() => this.playSound(800, 0.1, 'sine'), 100);
+            }
+            
+            playSound(frequency, duration, type = 'sine') {
+                try {
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.frequency.value = frequency;
+                    oscillator.type = type;
+                    
+                    gainNode.gain.setValueAtTime(0.2, audioContext.currentTime); // Slightly louder for notification
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+                    
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + duration);
+                } catch (e) {
+                    console.log('Audio not supported');
+                }
+            }
+        }
+        
+        // Initialize the techno clock when the page loads
+        window.addEventListener('load', () => {
+            new TechnoClock();
+        });
+    </script>
+</body>
+</html>
