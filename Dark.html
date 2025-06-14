@@ -165,6 +165,7 @@
             let is24Hour = false;
             let isUltraDark = false;
             const moonIcon = document.getElementById('moonIcon');
+            const themeBtn = document.getElementById('themeBtn');
 
             function updateClock() {
                 const now = new Date();
@@ -178,6 +179,27 @@
                 let seconds = now.getSeconds();
                 let ampm = '';
                 
+                // Set logo based on time
+                if (hours >= 18 || hours < 6) {
+                    // Night: show moon
+                    moonIcon.innerHTML = `
+                        <i class="fa-solid fa-moon text-blue-400"></i>
+                        <div class="absolute inset-0 flex items-center justify-center opacity-20 blur-lg">
+                            <i class="fa-solid fa-moon text-blue-400"></i>
+                        </div>
+                    `;
+                    themeBtn.innerHTML = `<i class="fa-solid fa-moon mr-2"></i>${isUltraDark ? 'Bright Mode' : 'Dark Mode'}`;
+                } else {
+                    // Day: show sun
+                    moonIcon.innerHTML = `
+                        <i class="fa-solid fa-sun text-blue-400"></i>
+                        <div class="absolute inset-0 flex items-center justify-center opacity-20 blur-lg">
+                            <i class="fa-solid fa-sun text-blue-400"></i>
+                        </div>
+                    `;
+                    themeBtn.innerHTML = `<i class="fa-solid fa-sun mr-2"></i>${isUltraDark ? 'Bright Mode' : 'Dark Mode'}`;
+                }
+
                 if (!is24Hour) {
                     ampm = hours >= 12 ? 'PM' : 'AM';
                     hours = hours % 12;
@@ -225,16 +247,9 @@
             }
 
             function triggerMoonRotation() {
-                // Remove any existing animation class
                 moonIcon.classList.remove('rotate-once');
-                
-                // Trigger reflow to restart animation
                 void moonIcon.offsetWidth;
-                
-                // Add the animation class
                 moonIcon.classList.add('rotate-once');
-                
-                // Remove the class after animation completes
                 setTimeout(() => {
                     moonIcon.classList.remove('rotate-once');
                 }, 800);
@@ -247,15 +262,14 @@
                 triggerMoonRotation();
             });
 
-            document.getElementById('themeBtn').addEventListener('click', function() {
+            themeBtn.addEventListener('click', function() {
                 isUltraDark = !isUltraDark;
                 if (isUltraDark) {
                     document.body.style.background = 'linear-gradient(135deg, #000000 0%, #0a0a0a 50%, #000000 100%)';
-                    this.innerHTML = '<i class="fa-solid fa-sun mr-2"></i>Bright Mode';
                 } else {
                     document.body.style.background = 'linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 50%, #0f0f0f 100%)';
-                    this.innerHTML = '<i class="fa-solid fa-moon mr-2"></i>Dark Mode';
                 }
+                updateClock(); // To update the icon and text
                 triggerMoonRotation();
             });
 
