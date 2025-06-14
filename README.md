@@ -1,29 +1,98 @@
-# Clock-e-verse
+# CLOCK-e-verse
 
-This project contains a collection of HTML files related to various clock and time-based applications. The main entry point, Index.html, features a modern and interactive interface with animations and a mood selection system.
+A collection of **mood-based digital clocks and timers**—each with its own unique style, theme, and interactive features. Explore time in a way that matches your vibe, from playful to vintage, from zen to rock!
 
-## Files
+---
 
-- **Index.html**: Main entry point for the application, featuring a dynamic and interactive clock interface with mood selection.
-- **Jolly.html**: A jolly-themed clock interface.
-- **Study.html**: A study timer or clock interface.
-- **Logic.html**: A logic-based clock or timer application.
-- **clock.html**: A vintage clock interface.
-- **Rosey.html**: A rosey-themed clock interface.
-- **Rocknroll.html**: A rock and roll themed clock interface.
-- **Std2.html**: A standard clock interface (version 2).
-- **CLOCK4.0.html**: An advanced clock interface (version 4.0).
+## 🌟 Available Modes
 
-## Features
+- **Index.html**  
+  The main entry point. A modern, animated hub to explore all clock moods.
 
-- **Interactive UI**: The main page includes animations, a scroll progress bar, and floating particles.
-- **Mood Selection**: Users can choose different clock interfaces based on their mood.
-- **Responsive Design**: The application is designed to be responsive and user-friendly.
+- **Jolly.html**  
+  A playful, confetti-filled clock with a "Show Current Time" button.
 
-## Usage
+- **Std2.html**  
+  Standard digital clock with date, week, day-of-year, and 12/24h toggle.
 
-To use any of the clock interfaces, simply open the desired HTML file in a web browser. The main page (Index.html) provides a central hub for accessing various clock interfaces.
+- **Study.html**  
+  Study timer with motivational quotes, preset/custom timers, break mode, and ambient environment sounds (rain, wind, night, fire).
 
-## Contributing
+- **Logic.html**  
+  Interactive demo and code explanations for star/particle logic and effects.
 
-Feel free to contribute to this project by submitting pull requests or opening issues.
+- **clock.html**  
+  Vintage/heritage clock with Roman numerals, pendulum animation, and sparkle effects.
+
+- **Rosey.html**  
+  Romantic clock with floating hearts, music playlist, and animated buttons.
+
+- **Rocknroll.html**  
+  Rock-n-roll themed clock with neon effects, emoji explosions, music, and a mute button.
+
+- **CLOCK4.0.html**  
+  Gamer mode: game stats, playtime tracking, pause/reset, and level-up effects.
+
+- **Techno.html**  
+  Futuristic neon digital clock and timer with sound effects and animated borders.
+
+- **Zen.html**  
+  Minimalist zen clock with ambient particles, rotating spa icon, quotes, and 12/24h toggle.
+
+- **Ocean.html**  
+  Ocean-inspired clock with animated background video, glowing time, and toggleable ocean sounds.
+
+- **Dark.html**  
+  Sleek dark mode clock with auto-switching sun/moon icons, animated particles, and theme toggle.
+
+---
+
+## ✨ Features
+
+- **Mood Selection:**  
+  Choose from a variety of themed clocks to match your mood or activity.
+
+- **Interactive UI:**  
+  Animations, floating particles, confetti, music controls, and more.
+
+- **Timers & Stats:**  
+  Study and game modes include timers, stats, and celebration effects.
+
+- **Ambient Sounds:**  
+  Study, Zen, Ocean, and Rock modes feature ambient or background music/sounds.
+
+- **Responsive Design:**  
+  All interfaces are mobile-friendly and adapt to different screen sizes.
+
+- **Accessibility:**  
+  Most controls are keyboard accessible; some modes offer keyboard shortcuts.
+
+---
+
+## 🚀 Usage
+
+Open any HTML file in your browser to experience that mode.  
+Start with **Index.html** to explore and navigate all available moods.
+
+---
+
+## 🎵 Music & Media
+
+Some modes (Rosey, Rocknroll, Ocean, Study) require audio files in the `MusicFile` folder.  
+Add your own `.mp3` files or use the provided filenames for best experience.
+
+---
+
+## 🤝 Contributing
+
+Pull requests and suggestions are welcome!  
+Feel free to open issues for bugs or feature requests.
+
+---
+
+## 📝 Credits
+
+Created by **Arpit**.  
+See [Index.html](Index.html) for more about the project and author.
+
+---
