@@ -4,7 +4,7 @@ A collection of **mood-based digital clocks and timers**—each with its own uni
 
 ---
 
-## 🌟 Available Modes
+## Available Modes
 
 - **Index.html**  
   The main entry point. A modern, animated hub to explore all clock moods.
@@ -47,7 +47,7 @@ A collection of **mood-based digital clocks and timers**—each with its own uni
 
 ---
 
-## ✨ Features
+## Features
 
 - **Mood Selection:**  
   Choose from a variety of themed clocks to match your mood or activity.
@@ -69,30 +69,29 @@ A collection of **mood-based digital clocks and timers**—each with its own uni
 
 ---
 
-## 🚀 Usage
+## Usage
 
 Open any HTML file in your browser to experience that mode.  
 Start with **Index.html** to explore and navigate all available moods.
 
 ---
 
-## 🎵 Music & Media
+## Music & Media
 
 Some modes (Rosey, Rocknroll, Ocean, Study) require audio files in the `MusicFile` folder.  
 Add your own `.mp3` files or use the provided filenames for best experience.
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Pull requests and suggestions are welcome!  
 Feel free to open issues for bugs or feature requests.
 
 ---
 
-## 📝 Credits
-
-Created by **Arpit**.  
+## About
+ 
 See [Index.html](Index.html) for more about the project and author.
 
 ---
