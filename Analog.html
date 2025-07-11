@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classic Analog Clock</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Space+Mono:400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5; /* Light grey background */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden; /* Prevent scrollbars */
+        }
+
+        .clock-container {
+            background-color: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 6px 6px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .clock-face {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background-color: #e0e0e0;
+            border: 8px solid #333;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2), 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .center-dot {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 16px;
+            height: 16px;
+            background-color: #333;
+            border-radius: 50%;
+            z-index: 10;
+        }
+
+        .hand {
+            position: absolute;
+            bottom: 50%; /* Anchor at the bottom center of the clock face */
+            left: 50%;
+            transform-origin: bottom center; /* Rotate around its base */
+            background-color: #333;
+            border-radius: 2px;
+            transform: translateX(-50%) rotate(0deg); /* Initial position, centered and pointing up */
+            transition: transform 0.05s linear; /* Smooth transition for hands */
+            z-index: 5;
+        }
+
+        .hour-hand {
+            width: 8px;
+            height: 80px;
+            background-color: #4a4a4a;
+            z-index: 7;
+        }
+
+        .minute-hand {
+            width: 6px;
+            height: 110px;
+            background-color: #4a4a4a;
+            z-index: 8;
+        }
+
+        .second-hand {
+            width: 2px;
+            height: 120px;
+            background-color: #ef4444; /* Red for second hand */
+            border-radius: 1px;
+            z-index: 9;
+        }
+
+        /* Clock markings (optional, for visual appeal) */
+        .mark {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform-origin: 0 150px; /* Rotate around the center of the clock face */
+            height: 100%;
+            width: 1px;
+            background-color: rgba(51, 51, 51, 0.3);
+        }
+
+        .mark.hour {
+            width: 3px;
+            height: 15px;
+            background-color: #333;
+            top: 5px;
+            transform-origin: top center;
+        }
+
+        .mark.minute {
+            width: 1px;
+            height: 8px;
+            background-color: rgba(51, 51, 51, 0.5);
+            top: 5px;
+            transform-origin: top center;
+        }
+
+        .digital-display {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.5rem;
+            color: #333;
+            background-color: #f8f8f8;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .control-button {
+            background-color: #4f46e5;
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .control-button:hover {
+            background-color: #6366f1;
+            transform: translateY(-2px);
+        }
+
+        .control-button:active {
+            transform: translateY(0);
+        }
+
+        .control-button:disabled {
+            background-color: #9ca3af;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100">
+        <div class="clock-container">
+            <h1 class="text-3xl font-bold text-gray-800 mb-1">Classic Analog Clock</h1>
+            <p class="text-gray-600 mb-4">A timeless way to tell time</p>
+
+            <div class="clock-face flex items-center justify-center mx-auto" id="clockFace">
+                <div class="center-dot"></div>
+                <!-- Clock Hands -->
+                <div class="hand hour-hand" id="hourHand"></div>
+                <div class="hand minute-hand" id="minuteHand"></div>
+                <div class="hand second-hand" id="secondHand"></div>
+            </div>
+            <div id="digitalClock" class="digital-display mt-6">
+                --:--:--
+            </div>
+            <button onclick="startClock()" id="startBtn" class="control-button">
+                START CLOCK
+            </button>
+        </div>
+        <script>
+            let clockInterval = null;
+            const hourHand = document.getElementById('hourHand');
+            const minuteHand = document.getElementById('minuteHand');
+            const secondHand = document.getElementById('secondHand');
+            function updateClock() {
+                const date = new Date();
+                let hours = date.getHours();
+                const minutes = date.getMinutes();
+                const seconds = date.getSeconds();
+                const milliseconds = date.getMilliseconds();
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                let displayHours = hours % 12;
+                displayHours = displayHours ? displayHours : 12;
+                const formattedHours = displayHours < 10 ? '0' + displayHours : displayHours;
+                const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+                const formattedSeconds = seconds < 10 ? '0' + seconds : seconds;
+                document.getElementById('digitalClock').textContent =
+                    `${formattedHours}:${formattedMinutes}:${formattedSeconds} ${ampm}`;
+                const secondDegrees = ((seconds + milliseconds / 1000) / 60) * 360;
+                secondHand.style.transform = `translateX(-50%) rotate(${secondDegrees}deg)`;
+                const minuteDegrees = ((minutes + seconds / 60) / 60) * 360;
+                minuteHand.style.transform = `translateX(-50%) rotate(${minuteDegrees}deg)`;
+                const hourDegrees = ((hours % 12 + minutes / 60 + seconds / 3600) / 12) * 360;
+                hourHand.style.transform = `translateX(-50%) rotate(${hourDegrees}deg)`;
+            }
+            function startClock() {
+                const btn = document.getElementById('startBtn');
+                btn.disabled = true;
+                btn.textContent = 'CLOCK ACTIVE';
+                btn.style.opacity = '0.7';
+                btn.style.cursor = 'not-allowed';
+                updateClock();
+                clockInterval = setInterval(updateClock, 10);
+            }
+            window.onload = function() {
+                updateClock();
+            };
+        </script>
+    </body>
+</html>
