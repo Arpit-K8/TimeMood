@@ -2,12 +2,28 @@
 
 A collection of **mood-based digital clocks and timers**—each with its own unique style, theme, and interactive features. Explore time in a way that matches your vibe, from playful to vintage, from zen to rock!
 
+Born from a **"Study Game Challenge" between friends**, this project evolved from simple focus timers into a full universe of themed time experiences.
+
+**Live Demo:** [https://arpit-k8.github.io/TimeMood/Index.html](https://arpit-k8.github.io/TimeMood/Index.html)
+
 ---
 
 ## Available Modes
 
 - **Index.html**  
-  The main entry point. A modern, animated hub to explore all clock moods.
+  The main entry point. A premium mood hub to explore all clock experiences.
+
+- **Analog.html**  
+  Classic analog clock with smooth hand movement and a timeless watch-face style.
+
+- **clock.html**  
+  Vintage/heritage clock with Roman numerals, pendulum animation, and sparkle effects.
+
+- **Cosmic.html**  
+  Galaxy-inspired clock experience with cosmic visuals and orbital design elements.
+
+- **Dark.html**  
+  Sleek dark mode clock with auto-switching sun/moon icons, animated particles, and theme toggle.
 
 - **Jolly.html**  
   A playful, confetti-filled clock with a "Show Current Time" button.
@@ -17,18 +33,6 @@ A collection of **mood-based digital clocks and timers**—each with its own uni
 
 - **Study.html**  
   Study timer with motivational quotes, preset/custom timers, break mode, and ambient environment sounds (rain, wind, night, fire).
-
-- **Logic.html**  
-  Interactive demo and code explanations for star/particle logic and effects.
-
-- **clock.html**  
-  Vintage/heritage clock with Roman numerals, pendulum animation, and sparkle effects.
-
-- **Rosey.html**  
-  Romantic clock with floating hearts, music playlist, and animated buttons.
-
-- **Rocknroll.html**  
-  Rock-n-roll themed clock with neon effects, emoji explosions, music, and a mute button.
 
 - **CLOCK4.0.html**  
   Gamer mode: game stats, playtime tracking, pause/reset, and level-up effects.
@@ -42,8 +46,20 @@ A collection of **mood-based digital clocks and timers**—each with its own uni
 - **Ocean.html**  
   Ocean-inspired clock with animated background video, glowing time, and toggleable ocean sounds.
 
-- **Dark.html**  
-  Sleek dark mode clock with auto-switching sun/moon icons, animated particles, and theme toggle.
+- **Rosey.html**  
+  Romantic clock with floating hearts, music playlist, and animated buttons.
+
+- **Rocknroll.html**  
+  Rock-n-roll themed clock with neon effects, emoji explosions, music, and a mute button.
+
+- **NoirLuxe.html**  
+  Signature editorial clock theme with premium dark styling, live local time, and study-focused session controls.
+
+- **PulseGrid.html**  
+  Signature data-panel inspired mission-console clock with live time, countdown controls, and session log.
+
+- **Logic.html**  
+  Interactive demo and code explanations for star/particle logic and effects.
 
 ---
 
@@ -53,10 +69,10 @@ A collection of **mood-based digital clocks and timers**—each with its own uni
   Choose from a variety of themed clocks to match your mood or activity.
 
 - **Interactive UI:**  
-  Animations, floating particles, confetti, music controls, and more.
+  Animations, floating particles, confetti, music controls, and premium themed layouts.
 
 - **Timers & Stats:**  
-  Study and game modes include timers, stats, and celebration effects.
+  Study, game, and signature modes include timers, stats, and focus/session tracking.
 
 - **Ambient Sounds:**  
   Study, Zen, Ocean, and Rock modes feature ambient or background music/sounds.
@@ -73,6 +89,8 @@ A collection of **mood-based digital clocks and timers**—each with its own uni
 
 Open any HTML file in your browser to experience that mode.  
 Start with **Index.html** to explore and navigate all available moods.
+
+For the newest signature modes, open **NoirLuxe.html** and **PulseGrid.html**.
 
 ---
 

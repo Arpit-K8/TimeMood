@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>CLOCK-e-verse | Noir Luxe</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+	<style>
+		:root {
+			--bg: #0a0b0d;
+			--bg-soft: #121417;
+			--surface: #171b20;
+			--surface-2: #1d2229;
+			--line: #2d353f;
+			--text: #edf0f4;
+			--muted: #9aa6b4;
+			--gold: #d2b178;
+			--gold-soft: #8e7854;
+			--ok: #3cb890;
+			--warn: #f1bc62;
+			--danger: #d87979;
+		}
+
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			margin: 0;
+			min-height: 100vh;
+			color: var(--text);
+			font-family: "Manrope", sans-serif;
+			background:
+				radial-gradient(circle at 15% 12%, rgba(210, 177, 120, 0.12), transparent 30%),
+				radial-gradient(circle at 84% 8%, rgba(255, 255, 255, 0.06), transparent 28%),
+				var(--bg);
+		}
+
+		.container {
+			width: min(1100px, 92vw);
+			margin-inline: auto;
+		}
+
+		.topbar {
+			position: sticky;
+			top: 0;
+			z-index: 40;
+			backdrop-filter: blur(8px);
+			background: rgba(9, 10, 12, 0.88);
+			border-bottom: 1px solid rgba(210, 177, 120, 0.18);
+		}
+
+		.topbar-inner {
+			min-height: 70px;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 1rem;
+		}
+
+		.brand {
+			display: flex;
+			align-items: center;
+			gap: 0.75rem;
+		}
+
+		.brand-badge {
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+			display: grid;
+			place-items: center;
+			color: var(--gold);
+			border: 1px solid rgba(210, 177, 120, 0.38);
+			background: rgba(210, 177, 120, 0.08);
+		}
+
+		.brand h1 {
+			margin: 0;
+			font-family: "Playfair Display", serif;
+			font-size: clamp(1.1rem, 0.9rem + 0.8vw, 1.55rem);
+			letter-spacing: 0.02em;
+			color: #f4ead9;
+		}
+
+		.brand p {
+			margin: 0;
+			color: var(--muted);
+			font-size: 0.76rem;
+		}
+
+		.back-link {
+			border: 1px solid var(--line);
+			color: var(--text);
+			text-decoration: none;
+			border-radius: 999px;
+			padding: 0.5rem 0.9rem;
+			font-size: 0.85rem;
+			transition: border-color 0.2s ease, color 0.2s ease;
+		}
+
+		.back-link:hover {
+			border-color: var(--gold-soft);
+			color: #fff2d7;
+		}
+
+		.hero {
+			padding: 2rem 0 1rem;
+		}
+
+		.hero-grid {
+			display: grid;
+			grid-template-columns: 1.1fr 0.9fr;
+			gap: 1rem;
+		}
+
+		.card {
+			border: 1px solid var(--line);
+			background: linear-gradient(175deg, rgba(23, 27, 32, 0.95), rgba(17, 20, 24, 0.94));
+			border-radius: 22px;
+			padding: 1rem;
+			box-shadow: 0 18px 28px rgba(0, 0, 0, 0.35);
+		}
+
+		.eyebrow {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.45rem;
+			text-transform: uppercase;
+			letter-spacing: 0.1em;
+			font-size: 0.7rem;
+			color: var(--gold);
+			border: 1px solid rgba(210, 177, 120, 0.38);
+			border-radius: 999px;
+			padding: 0.33rem 0.65rem;
+			background: rgba(210, 177, 120, 0.1);
+		}
+
+		.title {
+			margin: 0.85rem 0 0.7rem;
+			font-family: "Playfair Display", serif;
+			line-height: 1.1;
+			font-size: clamp(1.8rem, 1.2rem + 2.4vw, 3rem);
+			color: #f6eee0;
+		}
+
+		.hero-copy {
+			margin: 0;
+			color: var(--muted);
+			max-width: 58ch;
+		}
+
+		.meta-row {
+			margin-top: 1rem;
+			display: flex;
+			gap: 0.55rem;
+			flex-wrap: wrap;
+		}
+
+		.meta-pill {
+			border: 1px solid var(--line);
+			border-radius: 999px;
+			padding: 0.36rem 0.68rem;
+			font-size: 0.75rem;
+			color: var(--muted);
+			background: var(--surface-2);
+		}
+
+		.clock-panel {
+			border: 1px solid rgba(210, 177, 120, 0.28);
+			background: radial-gradient(circle at 50% 12%, rgba(210, 177, 120, 0.16), rgba(22, 26, 31, 0.95) 45%);
+			border-radius: 20px;
+			padding: 0.95rem;
+		}
+
+		.clock-label {
+			margin: 0;
+			color: #cab492;
+			font-size: 0.74rem;
+			text-transform: uppercase;
+			letter-spacing: 0.11em;
+		}
+
+		.clock-time {
+			margin: 0.65rem 0 0.4rem;
+			font-family: "Playfair Display", serif;
+			font-size: clamp(2.1rem, 1.6rem + 2.2vw, 3.6rem);
+			letter-spacing: 0.06em;
+			color: #fff2da;
+			text-shadow: 0 0 22px rgba(210, 177, 120, 0.2);
+		}
+
+		.clock-date {
+			margin: 0;
+			color: var(--muted);
+			font-size: 0.88rem;
+		}
+
+		.sections {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 1rem;
+			padding: 0.35rem 0 2.2rem;
+		}
+
+		.section-title {
+			margin: 0 0 0.7rem;
+			font-family: "Playfair Display", serif;
+			color: #f1e6d2;
+			font-size: 1.28rem;
+		}
+
+		.focus-inputs {
+			display: grid;
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			gap: 0.6rem;
+			margin-bottom: 0.72rem;
+		}
+
+		.input-wrap {
+			border: 1px solid var(--line);
+			border-radius: 12px;
+			padding: 0.4rem 0.48rem;
+			background: var(--surface-2);
+		}
+
+		.input-wrap label {
+			display: block;
+			font-size: 0.7rem;
+			color: var(--muted);
+			margin-bottom: 0.18rem;
+		}
+
+		.input-wrap input {
+			width: 100%;
+			border: 0;
+			outline: 0;
+			background: transparent;
+			color: var(--text);
+			font: inherit;
+			font-size: 1rem;
+			font-weight: 700;
+		}
+
+		.timer-readout {
+			border: 1px solid rgba(210, 177, 120, 0.22);
+			border-radius: 14px;
+			padding: 0.72rem;
+			background: #11161b;
+			margin-bottom: 0.7rem;
+		}
+
+		.timer-readout p {
+			margin: 0;
+		}
+
+		.timer-title {
+			color: var(--muted);
+			font-size: 0.74rem;
+			text-transform: uppercase;
+			letter-spacing: 0.08em;
+		}
+
+		.timer-value {
+			margin-top: 0.25rem;
+			font-family: "Playfair Display", serif;
+			color: #f5e8d0;
+			letter-spacing: 0.1em;
+			font-size: clamp(1.8rem, 1.3rem + 1.8vw, 2.6rem);
+		}
+
+		.button-row {
+			display: grid;
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			gap: 0.55rem;
+		}
+
+		.btn {
+			border: 1px solid transparent;
+			border-radius: 999px;
+			padding: 0.52rem 0.7rem;
+			font: inherit;
+			font-size: 0.82rem;
+			font-weight: 700;
+			cursor: pointer;
+			transition: transform 0.2s ease, opacity 0.2s ease;
+		}
+
+		.btn:active {
+			transform: translateY(1px);
+		}
+
+		.btn-start {
+			background: rgba(60, 184, 144, 0.2);
+			border-color: rgba(60, 184, 144, 0.44);
+			color: #7de5be;
+		}
+
+		.btn-pause {
+			background: rgba(241, 188, 98, 0.15);
+			border-color: rgba(241, 188, 98, 0.44);
+			color: #f7cf8f;
+		}
+
+		.btn-reset {
+			background: rgba(216, 121, 121, 0.16);
+			border-color: rgba(216, 121, 121, 0.44);
+			color: #e8a3a3;
+		}
+
+		.btn:disabled {
+			opacity: 0.46;
+			cursor: not-allowed;
+		}
+
+		.quote-box {
+			border: 1px solid rgba(210, 177, 120, 0.22);
+			border-radius: 14px;
+			padding: 0.85rem;
+			background: #11161b;
+			margin-bottom: 0.75rem;
+			min-height: 94px;
+		}
+
+		.quote-text {
+			margin: 0;
+			color: #d8c9b2;
+			font-size: 0.96rem;
+			line-height: 1.5;
+		}
+
+		.quote-author {
+			margin: 0.55rem 0 0;
+			color: var(--muted);
+			font-size: 0.8rem;
+		}
+
+		.study-metrics {
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 0.6rem;
+		}
+
+		.metric {
+			border: 1px solid var(--line);
+			border-radius: 12px;
+			background: var(--surface-2);
+			padding: 0.58rem;
+		}
+
+		.metric p {
+			margin: 0;
+		}
+
+		.metric-label {
+			color: var(--muted);
+			font-size: 0.72rem;
+			text-transform: uppercase;
+			letter-spacing: 0.06em;
+		}
+
+		.metric-value {
+			margin-top: 0.25rem;
+			color: #f4e8d4;
+			font-family: "Playfair Display", serif;
+			font-size: 1.2rem;
+		}
+
+		.status {
+			margin-top: 0.7rem;
+			border-radius: 10px;
+			border: 1px dashed rgba(210, 177, 120, 0.35);
+			padding: 0.5rem 0.6rem;
+			font-size: 0.82rem;
+			color: var(--muted);
+			background: rgba(210, 177, 120, 0.06);
+		}
+
+		@media (max-width: 980px) {
+			.hero-grid,
+			.sections {
+				grid-template-columns: 1fr;
+			}
+		}
+
+		@media (max-width: 620px) {
+			.focus-inputs {
+				grid-template-columns: 1fr;
+			}
+
+			.button-row,
+			.study-metrics {
+				grid-template-columns: 1fr;
+			}
+		}
+	</style>
+</head>
+<body>
+	<header class="topbar">
+		<div class="container topbar-inner">
+			<div class="brand">
+				<div class="brand-badge"><i class="fa-regular fa-gem"></i></div>
+				<div>
+					<h1>Noir Luxe</h1>
+					<p>Editorial clock theme for premium focus sessions</p>
+				</div>
+			</div>
+			<a class="back-link" href="Index.html"><i class="fa-solid fa-arrow-left"></i> Back to moods</a>
+		</div>
+	</header>
+
+	<main>
+		<section class="hero">
+			<div class="container hero-grid">
+				<article class="card">
+					<span class="eyebrow"><i class="fa-solid fa-gem"></i> Signature Mood</span>
+					<h2 class="title">Noir Luxe Clock Atelier</h2>
+					<p class="hero-copy">A black-tie, time-first interface built for deep study. Keep your eyes on one elegant clock, run focused sessions, and move through your schedule with calm precision.</p>
+					<div class="meta-row">
+						<span class="meta-pill">Study First</span>
+						<span class="meta-pill">Noir Palette</span>
+						<span class="meta-pill">Cinematic Minimal</span>
+					</div>
+				</article>
+
+				<aside class="card clock-panel">
+					<p class="clock-label">Live Local Time</p>
+					<p class="clock-time" id="mainClock">00:00:00</p>
+					<p class="clock-date" id="mainDate">Loading date...</p>
+				</aside>
+			</div>
+		</section>
+
+		<section class="container sections">
+			<article class="card">
+				<h3 class="section-title">Focus Session Timer</h3>
+
+				<div class="focus-inputs">
+					<div class="input-wrap">
+						<label for="hoursInput">Hours</label>
+						<input id="hoursInput" type="number" min="0" max="12" value="0">
+					</div>
+					<div class="input-wrap">
+						<label for="minutesInput">Minutes</label>
+						<input id="minutesInput" type="number" min="0" max="59" value="45">
+					</div>
+					<div class="input-wrap">
+						<label for="secondsInput">Seconds</label>
+						<input id="secondsInput" type="number" min="0" max="59" value="0">
+					</div>
+				</div>
+
+				<div class="timer-readout">
+					<p class="timer-title">Countdown</p>
+					<p class="timer-value" id="timerValue">00:45:00</p>
+				</div>
+
+				<div class="button-row">
+					<button class="btn btn-start" id="startBtn">Start</button>
+					<button class="btn btn-pause" id="pauseBtn" disabled>Pause</button>
+					<button class="btn btn-reset" id="resetBtn">Reset</button>
+				</div>
+
+				<p class="status" id="timerStatus">Ready for a focused session.</p>
+			</article>
+
+			<article class="card">
+				<h3 class="section-title">Study Atmosphere</h3>
+				<div class="quote-box">
+					<p class="quote-text" id="quoteText">"Consistency is a luxury built one focused hour at a time."</p>
+					<p class="quote-author" id="quoteAuthor">Noir Luxe Notes</p>
+				</div>
+
+				<div class="study-metrics">
+					<div class="metric">
+						<p class="metric-label">Sessions today</p>
+						<p class="metric-value" id="sessionCount">0</p>
+					</div>
+					<div class="metric">
+						<p class="metric-label">Focused minutes</p>
+						<p class="metric-value" id="focusedMinutes">0</p>
+					</div>
+				</div>
+
+				<p class="status" id="clockStatus">Local clock is live and synced.</p>
+			</article>
+		</section>
+	</main>
+
+	<script>
+		const mainClock = document.getElementById("mainClock");
+		const mainDate = document.getElementById("mainDate");
+		const clockStatus = document.getElementById("clockStatus");
+		const quoteText = document.getElementById("quoteText");
+		const quoteAuthor = document.getElementById("quoteAuthor");
+
+		const hoursInput = document.getElementById("hoursInput");
+		const minutesInput = document.getElementById("minutesInput");
+		const secondsInput = document.getElementById("secondsInput");
+
+		const timerValue = document.getElementById("timerValue");
+		const timerStatus = document.getElementById("timerStatus");
+		const startBtn = document.getElementById("startBtn");
+		const pauseBtn = document.getElementById("pauseBtn");
+		const resetBtn = document.getElementById("resetBtn");
+
+		const sessionCountEl = document.getElementById("sessionCount");
+		const focusedMinutesEl = document.getElementById("focusedMinutes");
+
+		const quotes = [
+			{ text: "Consistency is a luxury built one focused hour at a time.", author: "Noir Luxe Notes" },
+			{ text: "Study like an artisan. Precision first, speed second.", author: "Noir Atelier" },
+			{ text: "Quiet discipline turns ordinary days into elegant outcomes.", author: "Focus Ledger" },
+			{ text: "The premium version of you is made in uninterrupted sessions.", author: "Clock-e-verse" }
+		];
+
+		let timerSeconds = 45 * 60;
+		let timerInterval = null;
+		let running = false;
+		let sessionsToday = 0;
+		let focusedMinutes = 0;
+
+		function pad(v) {
+			return String(v).padStart(2, "0");
+		}
+
+		function formatTime(total) {
+			const h = Math.floor(total / 3600);
+			const m = Math.floor((total % 3600) / 60);
+			const s = total % 60;
+			return `${pad(h)}:${pad(m)}:${pad(s)}`;
+		}
+
+		function syncClock() {
+			const now = new Date();
+			mainClock.textContent = now.toLocaleTimeString("en-GB", { hour12: false });
+			mainDate.textContent = now.toLocaleDateString("en-US", {
+				weekday: "long",
+				year: "numeric",
+				month: "long",
+				day: "numeric"
+			});
+			clockStatus.textContent = `Local clock synced: ${now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}`;
+		}
+
+		function recalcFromInputs() {
+			const h = Math.max(0, parseInt(hoursInput.value || "0", 10));
+			const m = Math.max(0, Math.min(59, parseInt(minutesInput.value || "0", 10)));
+			const s = Math.max(0, Math.min(59, parseInt(secondsInput.value || "0", 10)));
+			timerSeconds = h * 3600 + m * 60 + s;
+			timerValue.textContent = formatTime(timerSeconds);
+		}
+
+		function rotateQuote() {
+			let idx = 0;
+			setInterval(() => {
+				idx = (idx + 1) % quotes.length;
+				quoteText.textContent = `"${quotes[idx].text}"`;
+				quoteAuthor.textContent = quotes[idx].author;
+			}, 4500);
+		}
+
+		function setRunningState(active) {
+			running = active;
+			startBtn.disabled = active;
+			pauseBtn.disabled = !active;
+			hoursInput.disabled = active;
+			minutesInput.disabled = active;
+			secondsInput.disabled = active;
+		}
+
+		function finishSession() {
+			clearInterval(timerInterval);
+			timerInterval = null;
+			setRunningState(false);
+			sessionsToday += 1;
+			sessionCountEl.textContent = String(sessionsToday);
+			timerStatus.textContent = "Session complete. Elegant work.";
+		}
+
+		function startTimer() {
+			if (running) return;
+			if (timerSeconds <= 0) recalcFromInputs();
+			if (timerSeconds <= 0) {
+				timerStatus.textContent = "Set a valid session duration first.";
+				return;
+			}
+
+			setRunningState(true);
+			timerStatus.textContent = "Focus session running...";
+
+			timerInterval = setInterval(() => {
+				timerSeconds -= 1;
+				timerValue.textContent = formatTime(timerSeconds);
+
+				if (timerSeconds % 60 === 0) {
+					focusedMinutes += 1;
+					focusedMinutesEl.textContent = String(focusedMinutes);
+				}
+
+				if (timerSeconds <= 0) {
+					timerValue.textContent = "00:00:00";
+					finishSession();
+				}
+			}, 1000);
+		}
+
+		function pauseTimer() {
+			if (!running) return;
+			clearInterval(timerInterval);
+			timerInterval = null;
+			setRunningState(false);
+			timerStatus.textContent = "Session paused. Resume when ready.";
+		}
+
+		function resetTimer() {
+			clearInterval(timerInterval);
+			timerInterval = null;
+			setRunningState(false);
+			recalcFromInputs();
+			timerStatus.textContent = "Session reset.";
+		}
+
+		[hoursInput, minutesInput, secondsInput].forEach((input) => {
+			input.addEventListener("input", recalcFromInputs);
+		});
+
+		startBtn.addEventListener("click", startTimer);
+		pauseBtn.addEventListener("click", pauseTimer);
+		resetBtn.addEventListener("click", resetTimer);
+
+		syncClock();
+		recalcFromInputs();
+		rotateQuote();
+		setInterval(syncClock, 1000);
+	</script>
+</body>
+</html>
