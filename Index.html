@@ -4,532 +4,969 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CLOCK-e-verse | Time Reimagined</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        'orbitron': ['Orbitron', 'monospace'],
-                    },
-                    animation: {
-                        'spin-slow': 'spin 8s linear infinite',
-                        'spin-3d': 'spin3d 10s linear infinite',
-                        'pulse-ring': 'pulseRing 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite',
-                        'float': 'float 6s ease-in-out infinite',
-                        'gradient': 'gradient 4s ease infinite',
-                        'twinkle': 'twinkle 3s ease-in-out infinite',
-                        'typing': 'typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite',
-                        'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-                        'shimmer': 'shimmer 2s linear infinite',
-                    },
-                    keyframes: {
-                        spin3d: {
-                            '0%': { transform: 'rotateY(0deg) rotateX(0deg)' },
-                            '25%': { transform: 'rotateY(90deg) rotateX(15deg)' },
-                            '50%': { transform: 'rotateY(180deg) rotateX(0deg)' },
-                            '75%': { transform: 'rotateY(270deg) rotateX(-15deg)' },
-                            '100%': { transform: 'rotateY(360deg) rotateX(0deg)' },
-                        },
-                        pulseRing: {
-                            '0%': { transform: 'scale(0.8)', opacity: '1' },
-                            '100%': { transform: 'scale(2.5)', opacity: '0' },
-                        },
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
-                            '50%': { transform: 'translateY(-20px) rotate(180deg)' },
-                        },
-                        gradient: {
-                            '0%, 100%': { backgroundPosition: '0% 50%' },
-                            '50%': { backgroundPosition: '100% 50%' },
-                        },
-                        twinkle: {
-                            '0%, 100%': { opacity: '0.3', transform: 'scale(1)' },
-                            '50%': { opacity: '1', transform: 'scale(1.2)' },
-                        },
-                        fadeInUp: {
-                            '0%': { opacity: '0', transform: 'translateY(30px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
-                        },
-                        shimmer: {
-                            '0%': { backgroundPosition: '-200% 0' },
-                            '100%': { backgroundPosition: '200% 0' },
-                        },
-                    },
-                    backgroundImage: {
-                        'cosmic-gradient': 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #0a0a0a 100%)',
-                        'glass-gradient': 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)',
-                        'shimmer-gradient': 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
-                    },
-                    backdropBlur: {
-                        'xl': '20px',
-                    },
-                }
-            }
-        }
-    </script>
     <style>
-        @keyframes spin3d {
-            0% { transform: rotateY(0deg) rotateX(0deg); }
-            25% { transform: rotateY(90deg) rotateX(15deg); }
-            50% { transform: rotateY(180deg) rotateX(0deg); }
-            75% { transform: rotateY(270deg) rotateX(-15deg); }
-            100% { transform: rotateY(360deg) rotateX(0deg); }
+        :root {
+            --bg: #0b0f13;
+            --bg-soft: #10161d;
+            --surface: #141b22;
+            --surface-2: #182029;
+            --text: #e6edf3;
+            --muted: #98a6b3;
+            --line: #2b3540;
+            --brand: #49a4b8;
+            --brand-2: #66c2d6;
+            --brand-3: #8ea1ad;
+            --ok: #3db389;
+            --shadow: 0 14px 30px rgba(0, 0, 0, 0.34);
+            --radius: 18px;
+            --radius-lg: 28px;
+            --radius-sm: 12px;
+            --container: min(1180px, 92vw);
         }
-        .animate-spin-3d { animation: spin3d 10s linear infinite; }
-        .text-gradient { 
-            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c);
-            background-size: 400% 400%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: gradient 4s ease infinite;
+
+        * {
+            box-sizing: border-box;
         }
-        .glass-morphism {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+
+        html {
+            scroll-behavior: smooth;
         }
-        .neo-btn {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.2));
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: "Space Grotesk", system-ui, sans-serif;
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .container {
+            width: var(--container);
+            margin-inline: auto;
+        }
+
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 4px;
+            background: var(--brand);
+            z-index: 80;
+            transition: width 0.1s linear;
+        }
+
+        .site-nav {
+            position: sticky;
+            top: 0;
+            z-index: 70;
+            backdrop-filter: blur(12px);
+            background: rgba(13, 18, 24, 0.92);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .site-nav .bar {
+            min-height: 76px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+        }
+
+        .brand-badge {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--surface-2);
+            color: white;
+            display: grid;
+            place-items: center;
+            border: 1px solid var(--line);
+            box-shadow: none;
+            font-size: 1rem;
+        }
+
+        .brand-name {
+            font-family: "Sora", sans-serif;
+            font-size: clamp(1rem, 0.7rem + 1vw, 1.5rem);
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        .brand-sub {
+            font-size: 0.77rem;
+            color: var(--muted);
+            margin-top: -2px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 0.6rem;
+        }
+
+        .nav-link {
+            padding: 0.5rem 0.8rem;
+            border: 1px solid transparent;
+            border-radius: 999px;
+            font-size: 0.92rem;
+            color: var(--muted);
+            transition: all 0.25s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--text);
+            border-color: var(--line);
+            background: var(--surface);
+        }
+
+        .hero {
+            padding: clamp(2rem, 3vw, 4rem) 0 1.5rem;
+        }
+
+        .hero-shell {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            padding: clamp(1.2rem, 3vw, 2.2rem);
             position: relative;
             overflow: hidden;
         }
-        .neo-btn::before {
-            content: '';
+
+        .hero-shell::after {
+            content: "";
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
+            right: -80px;
+            top: -80px;
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(73, 164, 184, 0.2), transparent 68%);
+            pointer-events: none;
         }
-        .neo-btn:hover::before {
-            left: 100%;
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 1.3rem;
+            align-items: center;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            font-size: 0.8rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--brand);
+            background: rgba(73, 164, 184, 0.12);
+            border: 1px solid rgba(73, 164, 184, 0.3);
+            border-radius: 999px;
+            padding: 0.4rem 0.7rem;
+            font-weight: 600;
+        }
+
+        .hero h1 {
+            font-family: "Sora", sans-serif;
+            font-size: clamp(2rem, 1.2rem + 3.2vw, 4rem);
+            line-height: 1.06;
+            margin: 0.85rem 0 0.6rem;
+            letter-spacing: -0.02em;
+        }
+
+        .gradient-text {
+            color: var(--brand-2);
+        }
+
+        .hero-copy {
+            color: var(--muted);
+            max-width: 62ch;
+            margin: 0;
+            font-size: clamp(0.96rem, 0.92rem + 0.35vw, 1.1rem);
+        }
+
+        .hero-cta {
+            margin-top: 1.3rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+
+        .btn {
+            border: 0;
+            border-radius: 999px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 0.78rem 1.2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            cursor: pointer;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+        }
+
+        .btn-primary {
+            background: var(--brand);
+            color: white;
+            box-shadow: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            background: var(--brand-2);
+        }
+
+        .btn-ghost {
+            background: var(--surface-2);
+            border: 1px solid var(--line);
+            color: var(--text);
+        }
+
+        .btn-ghost:hover {
+            transform: translateY(-2px);
+            background: #1d2730;
+        }
+
+        .stat-row {
+            margin-top: 1.1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.55rem;
+        }
+
+        .stat-pill {
+            border-radius: 999px;
+            padding: 0.42rem 0.8rem;
+            font-size: 0.8rem;
+            background: var(--surface-2);
+            border: 1px solid var(--line);
+            color: var(--muted);
+        }
+
+        .live-card {
+            background: linear-gradient(160deg, #1f252b 0%, #25323b 45%, #2f4150 100%);
+            color: #e8f0f5;
+            border-radius: 20px;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 14px 28px rgba(19, 29, 34, 0.32);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .live-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.18), transparent 40%);
+            pointer-events: none;
+        }
+
+        .live-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.78rem;
+            color: rgba(232, 240, 245, 0.78);
+            margin-bottom: 0.8rem;
+        }
+
+        .pulse {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: #4ae38f;
+            box-shadow: 0 0 0 0 rgba(74, 227, 143, 0.5);
+            animation: pulse 1.6s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(74, 227, 143, 0.6); }
+            70% { box-shadow: 0 0 0 12px rgba(74, 227, 143, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(74, 227, 143, 0); }
+        }
+
+        .live-time {
+            font-family: "Sora", sans-serif;
+            font-size: clamp(2rem, 1.4rem + 2vw, 2.8rem);
+            letter-spacing: 0.04em;
+            margin: 0.35rem 0;
+        }
+
+        .live-date {
+            color: rgba(232, 240, 245, 0.72);
+            margin: 0;
+            font-size: 0.92rem;
+        }
+
+        .live-tagline {
+            margin-top: 0.9rem;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 0.65rem 0.75rem;
+            min-height: 60px;
+            font-size: 0.86rem;
+            color: rgba(232, 240, 245, 0.9);
+        }
+
+        .section {
+            padding: 2.7rem 0;
+        }
+
+        .section-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-family: "Sora", sans-serif;
+            font-size: clamp(1.55rem, 1.2rem + 1.5vw, 2.3rem);
+            letter-spacing: -0.01em;
+            margin: 0;
+        }
+
+        .section-text {
+            margin: 0.5rem 0 0;
+            color: var(--muted);
+            max-width: 62ch;
+        }
+
+        .utility-bar {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 15px;
+            padding: 0.75rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.65rem;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .search-wrap {
+            position: relative;
+            flex: 1 1 260px;
+        }
+
+        .search-wrap i {
+            position: absolute;
+            left: 0.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #7a858f;
+            font-size: 0.87rem;
+        }
+
+        .search-input {
+            width: 100%;
+            border-radius: 12px;
+            border: 1px solid var(--line);
+            background: var(--surface-2);
+            padding: 0.6rem 0.8rem 0.6rem 2rem;
+            font: inherit;
+            color: var(--text);
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: rgba(31, 122, 140, 0.6);
+            box-shadow: 0 0 0 3px rgba(31, 122, 140, 0.14);
+        }
+
+        .count-badge {
+            border: 1px solid var(--line);
+            background: var(--surface-2);
+            color: var(--muted);
+            border-radius: 10px;
+            padding: 0.45rem 0.65rem;
+            font-size: 0.84rem;
+            white-space: nowrap;
+        }
+
+        .mood-grid {
+            margin-top: 0.95rem;
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 0.9rem;
+        }
+
+        .mood-card {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 1rem;
+            display: grid;
+            gap: 0.7rem;
+            min-height: 100%;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mood-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(73, 164, 184, 0.08);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .mood-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(73, 164, 184, 0.5);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.35);
+        }
+
+        .mood-card:hover::before {
+            opacity: 1;
+        }
+
+        .mood-top,
+        .mood-body,
+        .mood-actions {
+            position: relative;
+            z-index: 1;
+        }
+
+        .mood-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .mood-icon {
+            width: 36px;
+            height: 36px;
+            display: grid;
+            place-items: center;
+            border-radius: 10px;
+            color: white;
+            font-size: 0.93rem;
+            background: #21303b;
+            border: 1px solid var(--line);
+        }
+
+        .mood-pill {
+            font-size: 0.72rem;
+            border-radius: 999px;
+            padding: 0.2rem 0.55rem;
+            border: 1px solid var(--line);
+            color: var(--muted);
+            background: #1f2932;
+        }
+
+        .mood-title {
+            margin: 0;
+            font-family: "Sora", sans-serif;
+            font-size: 1.08rem;
+        }
+
+        .mood-desc {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .mood-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            border-radius: 999px;
+            background: var(--brand);
+            color: #0b0f13;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.45rem 0.7rem;
+            font-size: 0.82rem;
+            font-weight: 600;
+            width: fit-content;
+            transition: transform 0.25s ease, background 0.25s ease;
+        }
+
+        .mood-link:hover {
+            background: var(--brand-2);
+            transform: translateX(2px);
+        }
+
+        .mood-card.signature-luxe {
+            background: linear-gradient(165deg, #161f28 0%, #1a2732 100%);
+            border: 1px solid #3a4b5c;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+        }
+
+        .mood-card.signature-luxe .mood-title {
+            color: #f1f5f8;
+            font-size: 1.2rem;
+        }
+
+        .mood-card.signature-luxe .mood-desc,
+        .mood-card.signature-luxe .mood-pill {
+            color: #b7c5d1;
+        }
+
+        .mood-card.signature-luxe .mood-pill {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.16);
+        }
+
+        .mood-card.signature-luxe .mood-icon {
+            background: #273a47;
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .mood-card.signature-luxe .mood-link {
+            background: #d4e3ed;
+            color: #12202a;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+        }
+
+        .mood-card.signature-luxe .mood-link:hover {
+            background: #f4f8fb;
+        }
+
+        .mood-card.signature-split {
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            overflow: hidden;
+        }
+
+        .mood-card.signature-split .mood-body {
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            background: #121920;
+            padding: 0.75rem;
+        }
+
+        .signature-metrics {
+            margin-top: 0.6rem;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.5rem;
+        }
+
+        .signature-metric {
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #0f141a;
+            padding: 0.45rem;
+            font-size: 0.72rem;
+            color: #9fb0bd;
+        }
+
+        .signature-metric strong {
+            display: block;
+            color: #d3dee6;
+            font-size: 0.88rem;
+            font-family: "Sora", sans-serif;
+        }
+
+        .about-wrap {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 0.9rem;
+        }
+
+        .panel {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 1rem;
+        }
+
+        .about-copy p {
+            margin: 0 0 0.9rem;
+            color: var(--muted);
+        }
+
+        .highlight {
+            color: var(--brand);
+            font-weight: 700;
+        }
+
+        .feature-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: grid;
+            gap: 0.55rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: start;
+            gap: 0.55rem;
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+
+        .feature-item i {
+            margin-top: 0.2rem;
+            color: var(--ok);
+        }
+
+        .footer {
+            border-top: 1px solid var(--line);
+            margin-top: 2rem;
+            padding: 1.3rem 0 2rem;
+            color: var(--muted);
+            font-size: 0.88rem;
+        }
+
+        .footer-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.85rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(16px);
+            transition: opacity 0.56s ease, transform 0.56s ease;
+        }
+
+        .reveal.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 1080px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .mood-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+
+            .about-wrap {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 820px) {
+            .nav-links {
+                gap: 0.4rem;
+            }
+
+            .nav-link {
+                font-size: 0.84rem;
+                padding: 0.45rem 0.65rem;
+            }
+
+            .mood-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .section {
+                padding: 2rem 0;
+            }
+
+            .signature-metrics {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .site-nav .bar {
+                padding: 0.75rem 0;
+            }
+
+            .brand-sub {
+                display: none;
+            }
+
+            .mood-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-cta {
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .footer-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
         }
     </style>
 </head>
-<body class="bg-cosmic-gradient text-white overflow-x-hidden font-['Inter']">
-    <!-- Animated Background Stars -->
-    <div class="fixed inset-0 pointer-events-none z-0">
-        <div id="stars" class="w-full h-full"></div>
-    </div>
-    
-    <!-- Scroll Progress Bar -->
-    <div id="scroll-progress" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 z-50 origin-left scale-x-0 transition-transform duration-100"></div>
+<body>
+    <div id="scrollProgress" class="scroll-progress"></div>
 
-    <!-- Floating Particles -->
-    <div id="particles" class="fixed inset-0 pointer-events-none z-10"></div>
-
-    <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-40 glass-morphism border-b border-white/10">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center space-x-4">
-                <div class="text-5xl animate-spin-slow filter drop-shadow-lg">🕛</div>
-                <a href="#home" class="text-2xl font-bold text-gradient font-orbitron tracking-wider">
-                    CLOCK-e-verse
-                </a>
-            </div>
-            <div class="hidden md:flex space-x-8">
-                <a href="#home" class="hover:text-blue-400 transition-all duration-300 transform hover:scale-110">Home</a>
-                <a href="#moods" class="hover:text-purple-400 transition-all duration-300 transform hover:scale-110">Moods</a>
-                <a href="#about" class="hover:text-pink-400 transition-all duration-300 transform hover:scale-110">About</a>
-                <a href="Logic.html" class="hover:text-pink-400 transition-all duration-300 transform hover:scale-110">Logic</a>
-
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <main id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
-        <!-- Floating Icons -->
-        <div class="absolute top-1/4 left-1/4 text-4xl opacity-10 animate-float">⏰</div>
-        <div class="absolute top-1/3 right-1/4 text-4xl opacity-10 animate-float" style="animation-delay: 1s;">⏱️</div>
-        <div class="absolute bottom-1/3 left-1/5 text-4xl opacity-10 animate-float" style="animation-delay: 2s;">⌚</div>
-        <div class="absolute bottom-1/4 right-1/5 text-4xl opacity-10 animate-float" style="animation-delay: 3s;">🕐</div>
-
-        <div class="text-center space-y-8 px-6 max-w-6xl mx-auto">
-            <!-- Pulse Ring Effect -->
-            <div class="relative inline-block">
-                <div class="absolute inset-0 rounded-full border-2 border-indigo-500/30 animate-pulse-ring"></div>
-                <div class="absolute inset-0 rounded-full border-2 border-purple-500/30 animate-pulse-ring" style="animation-delay: 0.5s;"></div>
-                <h1 class="text-6xl md:text-9xl font-black text-gradient font-orbitron relative z-10 tracking-wider">
-                    WELCOME
-                </h1>
-            </div>
-            
-            <div class="space-y-6">
-                <h2 class="text-3xl md:text-5xl font-light text-gray-200">
-                    to the <span class="font-bold text-gradient">CLOCK-e-verse</span>
-                </h2>
-                <div class="h-20">
-                    <p id="typewriter" class="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto border-r-2 border-white/70 animate-pulse min-h-[2rem]"></p>
+    <header class="site-nav" id="home">
+        <div class="container bar">
+            <div class="brand">
+                <div class="brand-badge"><i class="fa-regular fa-clock"></i></div>
+                <div>
+                    <div class="brand-name">CLOCK-e-verse</div>
+                    <div class="brand-sub">Time, tuned to your mood</div>
                 </div>
             </div>
-
-            <div class="pt-8">
-                <a href="#moods" class="neo-btn inline-flex items-center px-10 py-4 rounded-full text-lg font-semibold text-white transition-all duration-500 hover:scale-105 hover:-translate-y-2 hover:shadow-2xl hover:shadow-indigo-500/25">
-                    <span>Explore Time Moods</span>
-                    <span class="ml-3 text-2xl animate-spin-slow">⏰</span>
-                </a>
-            </div>
+            <nav class="nav-links">
+                <a href="#home" class="nav-link">Home</a>
+                <a href="#moods" class="nav-link">Moods</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="Logic.html" class="nav-link">Logic</a>
+            </nav>
         </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container hero-shell reveal">
+                <div class="hero-grid">
+                    <div>
+                        <span class="eyebrow"><i class="fa-solid fa-wand-magic-sparkles"></i> Design Refresh 2026</span>
+                        <h1>Build better hours with a <span class="gradient-text">mood-first clock universe</span></h1>
+                        <p class="hero-copy" id="heroType">Explore focused, playful, cinematic, and immersive timer experiences. Pick a vibe and let your interface match your energy.</p>
+                        <div class="hero-cta">
+                            <a href="#moods" class="btn btn-primary"><i class="fa-solid fa-compass"></i>Explore Moods</a>
+                            <a href="#about" class="btn btn-ghost"><i class="fa-regular fa-circle-question"></i>About Project</a>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-pill">16 themed experiences</span>
+                            <span class="stat-pill">Responsive layouts</span>
+                            <span class="stat-pill">Ambient audio support</span>
+                        </div>
+                    </div>
+                    <aside class="live-card">
+                        <div class="live-header">
+                            <span>Live local time</span>
+                            <span class="pulse" aria-hidden="true"></span>
+                        </div>
+                        <div class="live-time" id="liveClock">00:00:00</div>
+                        <p class="live-date" id="liveDate">Loading date...</p>
+                        <div class="live-tagline" id="liveLine">Calibrating your next productive session...</div>
+                    </aside>
+                </div>
+            </div>
+        </section>
+
+        <section id="moods" class="section">
+            <div class="container">
+                <div class="section-head reveal">
+                    <div>
+                        <h2 class="section-title">Choose Your Interface Vibe</h2>
+                        <p class="section-text">Browse all clock modes by style and use-case. Use search to jump directly to the mood you want.</p>
+                    </div>
+                </div>
+
+                <div class="utility-bar reveal">
+                    <label class="search-wrap" for="moodSearch">
+                        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                        <input id="moodSearch" class="search-input" type="search" placeholder="Search moods: ocean, study, dark, vintage..." autocomplete="off">
+                    </label>
+                    <div id="resultCount" class="count-badge">Showing 16 moods</div>
+                </div>
+
+                <div id="moodGrid" class="mood-grid"></div>
+            </div>
+        </section>
+
+        <section id="about" class="section">
+            <div class="container about-wrap">
+                <article class="panel about-copy reveal">
+                    <h2 class="section-title">About CLOCK-e-verse</h2>
+                    <p>CLOCK-e-verse turns plain time displays into interactive experiences. Every mode has a distinct personality, from calm and minimal to high-energy and playful.</p>
+                    <p>Born from a "Study Game Challenge" between friends, this project transformed the simple act of time tracking into an engaging, mood-based experience. What started as setting timers for focused study sessions has evolved into a full universe of themed time experiences.</p>
+                    <p>Built with passion by <span class="highlight">Arpit</span>. Keep exploring, keep building.</p>
+                    <a class="btn btn-primary" href="https://www.linkedin.com/in/arpit-kumar-k9989/" target="_blank" rel="noreferrer"><i class="fa-brands fa-linkedin"></i>Connect on LinkedIn</a>
+                </article>
+
+                <aside class="panel reveal">
+                    <h3 class="section-title" style="font-size:1.25rem;">Project Highlights</h3>
+                    <ul class="feature-list">
+                        <li class="feature-item"><i class="fa-solid fa-check"></i><span>Mood-based UI and interaction patterns</span></li>
+                        <li class="feature-item"><i class="fa-solid fa-check"></i><span>Digital, analog, and themed clock variants</span></li>
+                        <li class="feature-item"><i class="fa-solid fa-check"></i><span>Study and game-oriented timer workflows</span></li>
+                        <li class="feature-item"><i class="fa-solid fa-check"></i><span>Soundscapes in selected modes</span></li>
+                        <li class="feature-item"><i class="fa-solid fa-check"></i><span>Keyboard-friendly and responsive by default</span></li>
+                    </ul>
+                </aside>
+            </div>
+        </section>
     </main>
 
-    <!-- Mood Selection Section -->
-    <section id="moods" class="py-20 px-6 relative z-20">
-        <div class="container mx-auto max-w-7xl">
-            <div class="text-center mb-20 opacity-0 translate-y-8 transition-all duration-1000" id="moods-title">
-                <h2 class="text-5xl md:text-7xl font-bold text-gradient font-orbitron mb-4">
-                    Choose Your Vibe
-                </h2>
-                <p class="text-xl text-gray-300 max-w-2xl mx-auto">
-                    Transform your productivity with mood-based time experiences
-                </p>
-                <p class="text-gray-400 max-w-2xl mx-auto">
-                    Make sure that your screen is fully sized if you are using a browser on a laptop.
-                </p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                <!-- Ocean Mood -->
-                <div class="mood-card glass-morphism rounded-3xl p-8 text-center transition-all duration-500 hover:scale-105 hover:-translate-y-4 hover:shadow-2xl hover:shadow-blue-500/20 cursor-pointer group">
-                    <div class="text-6xl mb-6 group-hover:animate-pulse">🌊</div>
-                    <h3 class="text-2xl font-bold mb-4 text-gradient">Ocean Mood</h3>
-                    <p class="text-gray-300 mb-6 leading-relaxed">Dive into tranquility with wave animations and soothing ocean sounds</p>
-                    <a href="Ocean.html" class="neo-btn inline-flex items-center px-6 py-3 rounded-full text-white font-semibold transition-all duration-300 hover:bg-blue-500/20">
-                        Dive In
-                    </a>
-                </div>
-
-                <!-- Standard-I -->
-                <div class="mood-card glass-morphism rounded-3xl p-8 text-center transition-all duration-500 hover:scale-105 hover:-translate-y-4 hover:shadow-2xl hover:shadow-blue-500/20 cursor-pointer group">
-                    <div class="text-6xl mb-6 group-hover:animate-pulse">⚡</div>
-                    <h3 class="text-2xl font-bold mb-4 text-gradient">Standard-I</h3>
-                    <p class="text-gray-300 mb-6 leading-relaxed">Clean, professional time management for focused productivity</p>
-                    <a href="Std2.html" class="neo-btn inline-flex items-center px-6 py-3 rounded-full text-white font-semibold transition-all duration-300 hover:bg-blue-500/20">
-                        Go Standard
-                    </a>
-                </div>
-                
-                <!-- Standard-II -->
-                <div class="mood-card glass-morphism rounded-3xl p-8 text-center transition-all duration-500 hover:scale-105 hover:-translate-y-4 hover:shadow-2xl hover:shadow-purple-500/20 cursor-pointer group">
-                    <div class="text-6xl mb-6 group-hover:animate-pulse">📖</div>
-                    <h3 class="text-2xl font-bold mb-4 text-gradient">Study Mood</h3>
-                    <p class="text-gray-300 mb-6 leading-relaxed">Effective study habits are key to mastering new knowledge and retention.</p>
-                    <a href="Study.html" class="neo-btn inline-flex items-center px-6 py-3 rounded-full text-white font-semibold transition-all duration-300 hover:bg-purple-500/20">
-                        Stay Focused
-                    </a>
-                </div>
-
-                <!-- Gamer Mood -->
-                <div class="mood-card glass-morphism rounded-3xl p-8 text-center transition-all duration-500 hover:scale-105 hover:-translate-y-4 hover:shadow-2xl hover:shadow-green-500/20 cursor-pointer group">
-                    <div class="text-6xl mb-6 group-hover:animate-bounce">🎮</div>
-                    <h3 class="text-2xl font-bold mb-4 text-gradient">Gamer Mood</h3>
-                    <p class="text-gray-300 mb-6 leading-relaxed">Level up your productivity with gaming-inspired time tracking</p>
-                    <a href="CLOCK4.0.html" class="neo-btn inline-flex items-center px-6 py-3 rounded-full text-white font-semibold transition-all duration-300 hover:bg-green-500/20">
-                        Game On
-                    </a>
-                </div>
-
-                <!-- Rosey Mood -->
-                <div class="mood-card glass-morphism rounded-3xl p-8 text-center transition-all duration-500 hover:scale-105 hover:-translate-y-4 hover:shadow-2xl hover:shadow-pink-500/20 cursor-pointer group">
-                    <div class="text-6xl mb-6 group-hover:animate-pulse">🌹</div>
-                    <h3 class="text-2xl font-bold mb-4 text-gradient">Rosey Mood</h3>
-                    <p class="text-gray-300 mb-6 leading-relaxed">Elegant and romantic time tracking with beautiful aesthetics</p>
-                    <a href="Rosey.html" class="neo-btn inline-flex items-center px-6 py-3 rounded-full text-white font-semibold transition-all duration-300 hover:bg-pink-500/20">
-                        Embrace Rose
-                    </a>
-                </div>
-
-                <!-- Rock-n-Roll -->
-                <div class="mood-card glass-morphism rounded-3xl p-8 text-center transition-all duration-500 hover:scale-105 hover:-translate-y-4 hover:shadow-2xl hover:shadow-red-500/20 cursor-pointer group">
-                    <div class="text-6xl mb-6 group-hover:animate-spin">🎸</div>
-                    <h3 class="text-2xl font-bold mb-4 text-gradient">Rock-n-Roll</h3>
-                    <p class="text-gray-300 mb-6 leading-relaxed">Rock your time management with high-energy vibes and motivation.</p>
-                    <a href="Rocknroll.html" class="neo-btn inline-flex items-center px-6 py-3 rounded-full text-white font-semibold transition-all duration-300 hover:bg-red-500/20">
-                        Rock Out
-                    </a>
-                </div>
-
-                <!-- Old Time -->
-                <div class="mood-card glass-morphism rounded-3xl p-8 text-center transition-all duration-500 hover:scale-105 hover:-translate-y-4 hover:shadow-2xl hover:shadow-amber-500/20 cursor-pointer group">
-                    <div class="text-6xl mb-6 group-hover:animate-spin-3d">🕰️</div>
-                    <h3 class="text-2xl font-bold mb-4 text-gradient">Old Time</h3>
-                    <p class="text-gray-300 mb-6 leading-relaxed">Classic vintage time experience with timeless charm</p>
-                    <a href="clock.html" class="neo-btn inline-flex items-center px-6 py-3 rounded-full text-white font-semibold transition-all duration-300 hover:bg-amber-500/20">
-                        Go Vintage
-                    </a>
-                </div>
-
-                <!-- Techno Mood -->
-                <div class="mood-card glass-morphism rounded-3xl p-8 text-center transition-all duration-500 hover:scale-105 hover:-translate-y-4 hover:shadow-2xl hover:shadow-cyan-500/20 cursor-pointer group">
-                    <div class="text-6xl mb-6 group-hover:animate-pulse">🤖</div>
-                    <h3 class="text-2xl font-bold mb-4 text-gradient">Techno Mood</h3>
-                    <p class="text-gray-300 mb-6 leading-relaxed">Experience the future with neon-glow interface and digital sound effects</p>
-                    <a href="Techno.html" class="neo-btn inline-flex items-center px-6 py-3 rounded-full text-white font-semibold transition-all duration-300 hover:bg-cyan-500/20">
-                        Go Digital
-                    </a>
-                </div>
-                
-                <!-- Zen Mood -->
-                <div class="mood-card glass-morphism rounded-3xl p-8 text-center transition-all duration-500 hover:scale-105 hover:-translate-y-4 hover:shadow-2xl hover:shadow-emerald-500/20 cursor-pointer group">
-                    <div class="text-6xl mb-6 group-hover:animate-pulse"><i class="fas fa-spa text-emerald-400"></i></div>
-                    <h3 class="text-2xl font-bold mb-4 text-gradient">Zen Mood</h3>
-                    <p class="text-gray-300 mb-6 leading-relaxed">Find your inner peace with minimalist design and ambient sounds for meditation</p>
-                    <a href="Zen.html" class="neo-btn inline-flex items-center px-6 py-3 rounded-full text-white font-semibold transition-all duration-300 hover:bg-emerald-500/20">
-                        Find Peace
-                    </a>
-                </div>
-
-                <!-- Jolly Mood -->
-                <div class="mood-card glass-morphism rounded-3xl p-8 text-center transition-all duration-500 hover:scale-105 hover:-translate-y-4 hover:shadow-2xl hover:shadow-yellow-500/20 cursor-pointer group">
-                    <div class="text-6xl mb-6 group-hover:animate-bounce">😊</div>
-                    <h3 class="text-2xl font-bold mb-4 text-gradient">Jolly Mood</h3>
-                    <p class="text-gray-300 mb-6 leading-relaxed">Brighten your day with cheerful time tracking that keeps you motivated</p>
-                    <a href="Jolly.html" class="neo-btn inline-flex items-center px-6 py-3 rounded-full text-white font-semibold transition-all duration-300 hover:bg-yellow-500/20">
-                        Enter Jolly Mode
-                    </a>
-                </div>
-                
-                <!-- Dark Mode Mood -->
-                <div class="mood-card glass-morphism rounded-3xl p-8 text-center transition-all duration-500 hover:scale-105 hover:-translate-y-4 hover:shadow-2xl hover:shadow-gray-500/20 cursor-pointer group">
-                    <div class="text-6xl mb-6 group-hover:animate-pulse">🌑</div>
-                    <h3 class="text-2xl font-bold mb-4 text-gradient">Dark Mode</h3>
-                    <p class="text-gray-300 mb-6 leading-relaxed">Sleek dark interface perfect for night owls and low-light environments</p>
-                    <a href="Dark.html" class="neo-btn inline-flex items-center px-6 py-3 rounded-full text-white font-semibold transition-all duration-300 hover:bg-gray-500/20">
-                        Go Dark
-                    </a>
-                </div>
-
-                
-                <!-- Analog Face Mood -->
-                <div class="mood-card glass-morphism rounded-3xl p-8 text-center transition-all duration-500 hover:scale-105 hover:-translate-y-4 hover:shadow-2xl hover:shadow-orange-500/20 cursor-pointer group">
-                    <div class="text-6xl mb-6 group-hover:animate-spin"><i class="fa-regular fa-clock text-orange-400"></i></div>
-                    <h3 class="text-2xl font-bold mb-4 text-gradient">Analog Face</h3>
-                    <p class="text-gray-300 mb-6 leading-relaxed">Classic analog clock with smooth hands and timeless design</p>
-                    <a href="Analog.html" class="neo-btn inline-flex items-center px-6 py-3 rounded-full text-white font-semibold transition-all duration-300 hover:bg-orange-500/20">
-                        Go Analog
-                    </a>
-                </div>
-                
-                <!-- Cosmic Clock Mood -->
-                <div class="mood-card glass-morphism rounded-3xl p-8 text-center transition-all duration-500 hover:scale-105 hover:-translate-y-4 hover:shadow-2xl hover:shadow-indigo-500/20 cursor-pointer group">
-                    <div class="text-6xl mb-6 group-hover:animate-spin-3d"><i class="fa-solid fa-meteor text-indigo-400"></i></div>
-                    <h3 class="text-2xl font-bold mb-4 text-gradient">Cosmic Clock</h3>
-                    <p class="text-gray-300 mb-6 leading-relaxed">Experience time in a cosmic way with stars and galactic visuals</p>
-                    <a href="Cosmic.html" class="neo-btn inline-flex items-center px-6 py-3 rounded-full text-white font-semibold transition-all duration-300 hover:bg-indigo-500/20">
-                        Enter Cosmos
-                    </a>
-                </div>
-                
-                <!-- Upcoming Time -->
-                <div class="mood-card glass-morphism rounded-3xl p-8 text-center transition-all duration-500 hover:scale-105 hover:-translate-y-4 hover:shadow-2xl hover:shadow-indigo-600/20 cursor-pointer group">
-                    <div class="text-6xl mb-6 group-hover:animate-spin-slow">🔃</div>
-                    <h3 class="text-2xl font-bold mb-4 text-gradient">Upcoming more..</h3>
-                    <p class="text-gray-300 mb-6 leading-relaxed">Stay tuned this is just the beginning! More timeless experiences are coming your way.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="py-20 px-6 relative z-20">
-        <div class="container mx-auto max-w-5xl">
-            <div class="glass-morphism rounded-3xl p-12 md:p-16 text-center opacity-0 translate-y-8 transition-all duration-1000" id="about-content">
-                <h2 class="text-5xl md:text-7xl font-bold text-gradient font-orbitron mb-12">
-                    About CLOCK-e-verse
-                </h2>
-                
-                <div class="space-y-8 text-lg md:text-xl text-gray-300 leading-relaxed max-w-4xl mx-auto">
-                    <p class="transform transition-all duration-700 hover:scale-105">
-                        At CLOCK-e-verse, we believe that time is more than just a sequence of moments; it's an art form. 
-                        We are dedicated to crafting exquisite digital timepieces that blend timeless design with modern functionality.
-                    </p>
-                    
-                    <p class="transform transition-all duration-700 hover:scale-105">
-                        Born from a "Study Game Challenge" between friends, this website transforms the simple act of time tracking 
-                        into an engaging, mood-based experience. What started as setting timers for focused study sessions 
-                        has evolved into a universe of themed time experiences.
-                    </p>
-                    
-                    <p class="transform transition-all duration-700 hover:scale-105">
-                        Created with passion by <span class="text-gradient font-bold">Arpit</span>, an aspiring developer, CLOCK-e-verse represents the journey from 
-                        curiosity to creation. Let's turn your time into something extraordinary!
-                    </p>
-                </div>
-                
-                <div class="mt-12">
-                    <button class="neo-btn px-10 py-4 rounded-full text-lg font-semibold text-white transition-all duration-500 hover:scale-110 hover:-translate-y-2 hover:shadow-2xl hover:shadow-indigo-500/25">
-                        <a href="https://www.linkedin.com/in/arpit-kumar-k9989/"><span class="flex items-center">
-                            Connect with me 
-                            <span class="ml-2 text-xl">🔗</span>
-                        </span></a>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="glass-morphism border-t border-white/10 py-12 px-6 text-center relative z-20">
-        <div class="container mx-auto">
-            <div class="flex justify-center items-center mb-4">
-                <!-- <span class="text-3xl animate-spin-slow mr-3">🕛</span> -->
-                <span class="text-2xl font-bold text-gradient font-orbitron">CLOCK-e-verse</span>
-            </div>
-            <p class="text-gray-400 mb-2">
-                &copy; 2025 CLOCK-e-verse. All rights reserved.
-            </p>
-            <p class="text-sm">
-                Designed with <span class="text-gradient font-semibold">Tailwind CSS</span>
-            </p>
+    <footer class="footer">
+        <div class="container footer-row">
+            <span>© <span id="year"></span> CLOCK-e-verse. All rights reserved.</span>
+            <span>Crafted for modern, mood-aware time experiences.</span>
         </div>
     </footer>
 
     <script>
-        // Create animated stars
-        function createStars() {
-            const starsContainer = document.getElementById('stars');
-            const numStars = 150;
-            
-            for (let i = 0; i < numStars; i++) {
-                const star = document.createElement('div');
-                star.className = 'absolute bg-white rounded-full animate-twinkle';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                const size = Math.random() * 3 + 1 + 'px';
-                star.style.width = size;
-                star.style.height = size;
-                star.style.animationDelay = Math.random() * 3 + 's';
-                starsContainer.appendChild(star);
-            }
+        const moodData = [
+            { name: "Ocean Mood", file: "Ocean.html", desc: "Wave visuals and ocean ambience for a calm session.", type: "Calm", icon: "fa-water" },
+            { name: "Standard-I", file: "Std2.html", desc: "Clean and practical digital clock with core stats.", type: "Utility", icon: "fa-stopwatch" },
+            { name: "Study Mood", file: "Study.html", desc: "Focused study timer with presets, quotes, and environment sounds.", type: "Focus", icon: "fa-book-open" },
+            { name: "Gamer Mood", file: "CLOCK4.0.html", desc: "Level-themed dashboard for game-time style tracking.", type: "Play", icon: "fa-gamepad" },
+            { name: "Rosey Mood", file: "Rosey.html", desc: "Soft romantic palette with music-ready interactions.", type: "Romantic", icon: "fa-heart" },
+            { name: "Rock-n-Roll", file: "Rocknroll.html", desc: "High-energy interface with neon intensity.", type: "Energy", icon: "fa-guitar" },
+            { name: "Old Time", file: "clock.html", desc: "Vintage aesthetic with classic timepiece styling.", type: "Classic", icon: "fa-landmark" },
+            { name: "Techno Mood", file: "Techno.html", desc: "Futuristic display with digital pulse visuals.", type: "Future", icon: "fa-microchip" },
+            { name: "Zen Mood", file: "Zen.html", desc: "Minimal and meditative presentation for deep calm.", type: "Calm", icon: "fa-spa" },
+            { name: "Jolly Mood", file: "Jolly.html", desc: "Cheerful and playful clock experience.", type: "Fun", icon: "fa-face-smile" },
+            { name: "Dark Mode", file: "Dark.html", desc: "Low-light friendly interface with sleek contrast.", type: "Night", icon: "fa-moon" },
+            { name: "Analog Face", file: "Analog.html", desc: "Classic analog clock mechanics and timeless style.", type: "Classic", icon: "fa-clock" },
+            { name: "Cosmic Clock", file: "Cosmic.html", desc: "Space-inspired visuals for a galactic time view.", type: "Cosmic", icon: "fa-meteor" },
+            { name: "Noir Luxe", file: "NoirLuxe.html", desc: "Editorial black-tie interface concept with restrained motion and premium contrast.", type: "Signature", icon: "fa-gem", variant: "luxe" },
+            { name: "Pulse Grid", file: "PulseGrid.html", desc: "Data-panel inspired concept that blends dashboard precision with cinematic minimalism.", type: "Signature", icon: "fa-wave-square", variant: "split" },
+            { name: "More Incoming", file: "#", desc: "New moods are in progress and will arrive soon.", type: "Soon", icon: "fa-arrows-rotate", disabled: true }
+        ];
+
+        const moodGrid = document.getElementById("moodGrid");
+        const moodSearch = document.getElementById("moodSearch");
+        const resultCount = document.getElementById("resultCount");
+        const scrollProgress = document.getElementById("scrollProgress");
+        const liveClock = document.getElementById("liveClock");
+        const liveDate = document.getElementById("liveDate");
+        const liveLine = document.getElementById("liveLine");
+        const yearEl = document.getElementById("year");
+
+        const liveLines = [
+            "Pick a mood that fits your current goal.",
+            "Small timing rituals can improve consistency.",
+            "Your interface can shape your focus quality.",
+            "Choose calm, energy, or precision on demand."
+        ];
+
+        function renderMoods(query = "") {
+            const q = query.trim().toLowerCase();
+            const filtered = moodData.filter((mood) => {
+                const hay = `${mood.name} ${mood.desc} ${mood.type}`.toLowerCase();
+                return hay.includes(q);
+            });
+
+            moodGrid.innerHTML = filtered.map((mood) => {
+                const action = mood.disabled
+                    ? "<span class=\"mood-link\" aria-disabled=\"true\" style=\"opacity:.55;pointer-events:none;\">Coming Soon</span>"
+                    : `<a class="mood-link" href="${mood.file}">Open <i class="fa-solid fa-arrow-right"></i></a>`;
+
+                const variantClass = mood.variant ? ` signature-${mood.variant}` : "";
+
+                const variantBody = mood.variant === "split"
+                    ? `
+                        <h3 class="mood-title">${mood.name}</h3>
+                        <p class="mood-desc">${mood.desc}</p>
+                        <div class="signature-metrics">
+                            <div class="signature-metric"><strong>Layout</strong> Grid Prime</div>
+                            <div class="signature-metric"><strong>Tone</strong> Premium Tech</div>
+                        </div>
+                    `
+                    : `
+                        <h3 class="mood-title">${mood.name}</h3>
+                        <p class="mood-desc">${mood.desc}</p>
+                    `;
+
+                return `
+                    <article class="mood-card reveal${variantClass}">
+                        <div class="mood-top">
+                            <div class="mood-icon"><i class="fa-solid ${mood.icon}"></i></div>
+                            <span class="mood-pill">${mood.type}</span>
+                        </div>
+                        <div class="mood-body">
+                            ${variantBody}
+                        </div>
+                        <div class="mood-actions">${action}</div>
+                    </article>
+                `;
+            }).join("");
+
+            resultCount.textContent = `Showing ${filtered.length} mood${filtered.length === 1 ? "" : "s"}`;
+            setupReveal();
         }
 
-        // Create floating particles
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            const numParticles = 25;
-            
-            for (let i = 0; i < numParticles; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'absolute bg-white/10 rounded-full pointer-events-none';
-                particle.style.left = Math.random() * 100 + '%';
-                const size = Math.random() * 6 + 2 + 'px';
-                particle.style.width = size;
-                particle.style.height = size;
-                particle.style.animation = `float ${Math.random() * 10 + 15}s infinite linear`;
-                particle.style.animationDelay = Math.random() * 20 + 's';
-                particlesContainer.appendChild(particle);
-            }
+        function updateClockUI() {
+            const now = new Date();
+            liveClock.textContent = now.toLocaleTimeString("en-GB", { hour12: false });
+            liveDate.textContent = now.toLocaleDateString("en-US", {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric"
+            });
         }
 
-        // Typewriter effect
-        function typeWriter() {
-            const texts = [
-                "Explore a universe of timekeeping experiences designed for every mood",
-                "Transform your productivity with themed timer experiences",
-                "Where every second counts and every moment tells a story"
-            ];
-            let currentText = 0;
-            let currentChar = 0;
-            const typewriterElement = document.getElementById('typewriter');
-            
-            function type() {
-                if (currentChar < texts[currentText].length) {
-                    typewriterElement.textContent += texts[currentText].charAt(currentChar);
-                    currentChar++;
-                    setTimeout(type, 50);
-                } else {
-                    setTimeout(() => {
-                        typewriterElement.textContent = '';
-                        currentChar = 0;
-                        currentText = (currentText + 1) % texts.length;
-                        setTimeout(type, 1000);
-                    }, 3000);
-                }
-            }
-            type();
-        }
-
-        // Scroll progress indicator
         function updateScrollProgress() {
-            const scrollProgress = document.getElementById('scroll-progress');
-            const scrollTop = window.pageYOffset;
-            const docHeight = document.body.offsetHeight - window.innerHeight;
-            const scrollPercent = scrollTop / docHeight;
-            scrollProgress.style.transform = `scaleX(${scrollPercent})`;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollTop = window.scrollY || window.pageYOffset;
+            const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+            scrollProgress.style.width = `${Math.min(100, Math.max(0, progress))}%`;
         }
 
-        // Intersection Observer for animations
-        function setupIntersectionObserver() {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, { threshold: 0.1 });
-
-            document.querySelectorAll('#moods-title, #about-content, .mood-card').forEach(el => {
+        function setupReveal() {
+            const revealEls = document.querySelectorAll(".reveal:not(.bound)");
+            revealEls.forEach((el) => {
+                el.classList.add("bound");
                 observer.observe(el);
             });
         }
 
-        // Smooth scrolling
-        function setupSmoothScrolling() {
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({ behavior: 'smooth' });
-                    }
-                });
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("is-visible");
+                }
             });
-        }
+        }, { threshold: 0.08 });
 
-        // Parallax effect for floating icons
-        function handleParallax() {
-            const scrolled = window.pageYOffset;
-            const parallaxElements = document.querySelectorAll('.animate-float');
-            parallaxElements.forEach((element, index) => {
-                const speed = 0.5 + (index * 0.1);
-                const yPos = -(scrolled * speed);
-                element.style.transform = `translateY(${yPos}px) rotate(${index * 45}deg)`;
-            });
-        }
-
-        // Initialize everything
-        document.addEventListener('DOMContentLoaded', function() {
-            createStars();
-            createParticles();
-            typeWriter();
-            setupIntersectionObserver();
-            setupSmoothScrolling();
-        });
-
-        // Event listeners
-        window.addEventListener('scroll', () => {
-            updateScrollProgress();
-            handleParallax();
-        });
-
-        // Add stagger animation to mood cards
-        setTimeout(() => {
-            document.querySelectorAll('.mood-card').forEach((card, index) => {
+        function rotateLiveLine() {
+            let idx = 0;
+            setInterval(() => {
+                idx = (idx + 1) % liveLines.length;
+                liveLine.style.opacity = "0";
                 setTimeout(() => {
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
-                }, index * 100);
-            });
-        }, 500);
+                    liveLine.textContent = liveLines[idx];
+                    liveLine.style.opacity = "1";
+                }, 180);
+            }, 3500);
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            yearEl.textContent = new Date().getFullYear();
+            renderMoods();
+            updateClockUI();
+            updateScrollProgress();
+            rotateLiveLine();
+
+            moodSearch.addEventListener("input", (e) => renderMoods(e.target.value));
+            window.addEventListener("scroll", updateScrollProgress, { passive: true });
+            setInterval(updateClockUI, 1000);
+        });
     </script>
 </body>
 </html>
