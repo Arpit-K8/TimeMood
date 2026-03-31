@@ -147,9 +147,31 @@
                 height: 50px;
             }
         }
+
+        .hub-back-link {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 110;
+            text-decoration: none;
+            color: #dbeafe;
+            background: rgba(3, 20, 62, 0.78);
+            border: 1px solid rgba(147, 197, 253, 0.55);
+            border-radius: 999px;
+            padding: 0.5rem 0.92rem;
+            font-size: 0.84rem;
+            font-weight: 700;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .hub-back-link:hover {
+            transform: translateY(-1px);
+            background: rgba(8, 30, 80, 0.88);
+        }
     </style>
 </head>
 <body class="selection:bg-blue-400 selection:text-white">
+    <a href="Index.html" class="hub-back-link" aria-label="Back to mood hub">&larr; Back to Hub</a>
     <!-- Video Background - Always muted -->
     <video autoplay muted loop class="video-background" id="backgroundVideo">
         <source src="MusicFile/ocean_vid.mp4" type="video/mp4">

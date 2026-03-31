@@ -5,8 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CLOCK-e-verse | Standard Mode</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .hub-back-link {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 50;
+            text-decoration: none;
+            color: #1e3a8a;
+            background: rgba(255, 255, 255, 0.94);
+            border: 1px solid rgba(59, 130, 246, 0.35);
+            border-radius: 999px;
+            padding: 0.5rem 0.9rem;
+            font-size: 0.84rem;
+            font-weight: 700;
+            box-shadow: 0 6px 16px rgba(30, 64, 175, 0.14);
+            transition: transform 0.2s ease;
+        }
+
+        .hub-back-link:hover {
+            transform: translateY(-1px);
+        }
+    </style>
 </head>
 <body class="bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col items-center justify-center min-h-screen p-4">
+    <a href="Index.html" class="hub-back-link" aria-label="Back to mood hub">&larr; Back to Hub</a>
     <div class="bg-white p-8 rounded-xl shadow-xl w-full max-w-lg text-center border border-gray-200">
         <h1 class="text-4xl font-bold mb-8 text-blue-700 tracking-wide">Digital Clock</h1>
         

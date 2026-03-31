@@ -168,9 +168,32 @@
             background: rgba(255, 0, 128, 0.3);
             border-color: #ff6b00;
         }
+
+        .hub-back-link {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 1000;
+            text-decoration: none;
+            color: #ffd1ee;
+            background: rgba(12, 0, 20, 0.86);
+            border: 2px solid #ff0080;
+            border-radius: 999px;
+            padding: 0.5rem 0.92rem;
+            font-size: 0.84rem;
+            font-weight: 700;
+            box-shadow: 0 0 14px rgba(255, 0, 128, 0.35);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .hub-back-link:hover {
+            transform: translateY(-1px) scale(1.02);
+            box-shadow: 0 0 24px rgba(255, 107, 0, 0.5);
+        }
     </style>
 </head>
 <body class="lightning-bg flex flex-col items-center justify-center min-h-screen text-white relative">
+    <a href="Index.html" class="hub-back-link" aria-label="Back to mood hub">&larr; Back to Hub</a>
     <!-- Add audio element -->
     <audio id="backgroundMusic" loop>
         <source src="MusicFile\Music_rock.mp3" type="audio/mpeg">

@@ -58,6 +58,9 @@ Born from a **"Study Game Challenge" between friends**, this project evolved fro
 - **PulseGrid.html**  
   Signature data-panel inspired mission-console clock with live time, countdown controls, and session log.
 
+- **alpha.html**  
+  Sigma mode with a discipline-focused interface, live clock, rotating brief lines, and focus sprint controls.
+
 - **Logic.html**  
   Interactive demo and code explanations for star/particle logic and effects.
 
@@ -72,7 +75,7 @@ Born from a **"Study Game Challenge" between friends**, this project evolved fro
   Animations, floating particles, confetti, music controls, and premium themed layouts.
 
 - **Timers & Stats:**  
-  Study, game, and signature modes include timers, stats, and focus/session tracking.
+  Study, game, signature, and Sigma modes include timers, stats, and focus/session tracking.
 
 - **Ambient Sounds:**  
   Study, Zen, Ocean, and Rock modes feature ambient or background music/sounds.
@@ -90,7 +93,7 @@ Born from a **"Study Game Challenge" between friends**, this project evolved fro
 Open any HTML file in your browser to experience that mode.  
 Start with **Index.html** to explore and navigate all available moods.
 
-For the newest signature modes, open **NoirLuxe.html** and **PulseGrid.html**.
+For the newest signature modes, open **NoirLuxe.html**, **PulseGrid.html**, and **alpha.html**.
 
 ---
 

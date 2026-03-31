@@ -152,9 +152,32 @@
                            inset 0 0 30px rgba(16, 185, 129, 0.2); 
             }
         }
+
+        .hub-back-link {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 70;
+            text-decoration: none;
+            color: #a7f3d0;
+            background: rgba(9, 24, 22, 0.86);
+            border: 1px solid rgba(52, 211, 153, 0.45);
+            border-radius: 999px;
+            padding: 0.5rem 0.9rem;
+            font-size: 0.84rem;
+            font-weight: 700;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 0 14px rgba(16, 185, 129, 0.2);
+        }
+
+        .hub-back-link:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 0 18px rgba(16, 185, 129, 0.34);
+        }
     </style>
 </head>
 <body class="overflow-hidden">
+    <a href="Index.html" class="hub-back-link" aria-label="Back to mood hub">&larr; Back to Hub</a>
     <!-- Floating Zen Particles -->
     <div id="particles-container" class="fixed inset-0 pointer-events-none z-0"></div>
     

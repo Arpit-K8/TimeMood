@@ -4,96 +4,331 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CLOCK-e-verse | Jolly Mode</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts for a playful vibe -->
-    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Comic Neue', Comic Sans MS, cursive, sans-serif;
+        :root {
+            --bg-1: #fff6dc;
+            --bg-2: #ffd2e5;
+            --bg-3: #d7f7ff;
+            --ink: #213149;
+            --ink-soft: #59708c;
+            --line: rgba(33, 49, 73, 0.16);
+            --card: rgba(255, 255, 255, 0.72);
+            --yellow: #ffcd40;
+            --pink: #ff78b8;
+            --mint: #57d6a5;
+            --sky: #63a9ff;
+            --radius: 26px;
         }
-        /* Animated rainbow gradient for clock text */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Nunito", sans-serif;
+            color: var(--ink);
+            background: linear-gradient(135deg, var(--bg-1), var(--bg-2) 48%, var(--bg-3));
+            display: grid;
+            place-items: center;
+            padding: 24px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .blob {
+            position: fixed;
+            width: 360px;
+            height: 360px;
+            border-radius: 50%;
+            filter: blur(44px);
+            opacity: 0.36;
+            pointer-events: none;
+            z-index: 0;
+            animation: floatBlob 9s ease-in-out infinite alternate;
+        }
+
+        .blob-a {
+            left: -90px;
+            top: -70px;
+            background: #ffd54f;
+        }
+
+        .blob-b {
+            right: -80px;
+            top: 10%;
+            background: #ff7ab8;
+            animation-delay: 0.8s;
+        }
+
+        .blob-c {
+            bottom: -90px;
+            left: 25%;
+            background: #67d9ff;
+            animation-delay: 1.4s;
+        }
+
+        @keyframes floatBlob {
+            from { transform: translateY(0px) scale(1); }
+            to { transform: translateY(-18px) scale(1.08); }
+        }
+
         .clock-gradient {
-            background-image: linear-gradient(90deg, #fbbf24, #f472b6, #34d399, #60a5fa, #fbbf24, #f472b6, #34d399, #60a5fa);
+            background-image: linear-gradient(90deg, #ffcd40, #ff78b8, #57d6a5, #63a9ff, #ffcd40, #ff78b8, #57d6a5, #63a9ff);
             background-size: 400% 400%;
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            animation: rainbow 5s ease-in-out infinite;
+            animation: rainbow 6s ease-in-out infinite;
         }
+
         @keyframes rainbow {
             0%,100% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
         }
-        /* Confetti */
+
         .confetti {
             position: fixed;
             pointer-events: none;
-            z-index: 1;
+            z-index: 3;
             width: 100vw;
             height: 100vh;
-            top: 0; left: 0;
+            top: 0;
+            left: 0;
             overflow: hidden;
         }
+
         .confetti-piece {
             position: absolute;
             width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            opacity: 0.8;
-            animation: confetti-fall 3s linear infinite;
+            height: 18px;
+            border-radius: 10px;
+            opacity: 0.86;
+            animation: confetti-fall 3.2s linear forwards;
         }
+
         @keyframes confetti-fall {
             0% { transform: translateY(-20px) rotate(0deg);}
-            100% { transform: translateY(100vh) rotate(360deg);}
+            100% { transform: translateY(108vh) rotate(520deg);}
         }
-        /* Glassy effect for clock container */
+
         .glass-effect {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            width: min(680px, 96vw);
+            border-radius: var(--radius);
+            background: var(--card);
+            border: 1px solid rgba(255, 255, 255, 0.45);
+            box-shadow: 0 18px 44px rgba(33, 49, 73, 0.26);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            position: relative;
+            z-index: 5;
+            overflow: hidden;
+        }
+
+        .top-strip {
+            height: 9px;
+            background: linear-gradient(90deg, var(--yellow), var(--pink), var(--mint), var(--sky));
+        }
+
+        .content {
+            padding: clamp(20px, 3.2vw, 34px);
+        }
+
+        .title {
+            margin: 0;
+            font-family: "Baloo 2", cursive;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+            font-size: clamp(1.8rem, 1.2rem + 2vw, 2.6rem);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .subtitle {
+            margin: 0.2rem 0 1.2rem;
+            text-align: center;
+            color: var(--ink-soft);
+            font-size: 0.95rem;
+        }
+
+        .clock-shell {
+            border-radius: 22px;
+            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.82);
+            padding: 18px;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+        }
+
+        .clock-time {
+            margin: 0;
+            text-align: center;
+            font-family: "Baloo 2", cursive;
+            font-size: clamp(2.2rem, 1.5rem + 3.6vw, 4.2rem);
+            letter-spacing: 0.06em;
+            line-height: 1.05;
+        }
+
+        .clock-date {
+            margin: 0.4rem 0 0;
+            text-align: center;
+            color: var(--ink-soft);
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .status-pill {
+            margin: 0.9rem auto 0;
+            width: fit-content;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            padding: 0.35rem 0.75rem;
+            font-size: 0.78rem;
+            color: var(--ink-soft);
+            background: rgba(255, 255, 255, 0.75);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .controls {
+            margin-top: 1rem;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.6rem;
+        }
+
+        button {
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 0.72rem 0.66rem;
+            font-family: inherit;
+            font-weight: 800;
+            font-size: 0.88rem;
+            color: var(--ink);
+            background: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            border-color: rgba(33, 49, 73, 0.28);
+            box-shadow: 0 8px 18px rgba(33, 49, 73, 0.12);
+        }
+
+        .btn-start { background: linear-gradient(120deg, #ffe07a, #ffc4e4); }
+        .btn-format { background: linear-gradient(120deg, #c8f8e2, #b8dbff); }
+        .btn-celebrate { background: linear-gradient(120deg, #ffd5aa, #ffd9f8); }
+
+        .footer-tip {
+            margin-top: 0.95rem;
+            text-align: center;
+            color: var(--ink-soft);
+            font-size: 0.82rem;
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 14px;
+            }
+
+            .controls {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hub-back-link {
+            position: fixed;
+            top: 14px;
+            left: 14px;
+            z-index: 15;
+            text-decoration: none;
+            color: #1f2d44;
+            background: rgba(255, 255, 255, 0.86);
+            border: 1px solid rgba(31, 45, 68, 0.2);
+            border-radius: 999px;
+            padding: 0.48rem 0.88rem;
+            font-size: 0.82rem;
+            font-weight: 800;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 8px 16px rgba(31, 45, 68, 0.12);
+        }
+
+        .hub-back-link:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 18px rgba(31, 45, 68, 0.2);
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-pink-200 via-yellow-100 to-blue-200 flex flex-col items-center justify-center min-h-screen p-4 relative overflow-hidden">
+<body>
+    <a href="Index.html" class="hub-back-link" aria-label="Back to mood hub">&larr; Back to Hub</a>
+    <div class="blob blob-a" aria-hidden="true"></div>
+    <div class="blob blob-b" aria-hidden="true"></div>
+    <div class="blob blob-c" aria-hidden="true"></div>
 
-    <!-- Confetti Layer -->
     <div class="confetti" id="confetti"></div>
 
-    <div class="glass-effect p-8 sm:p-12 rounded-3xl shadow-2xl w-full max-w-md text-center border-4 border-white border-opacity-60 transition-transform duration-300 hover:scale-105 relative z-10">
-        <h1 class="text-3xl sm:text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-yellow-400 to-green-400 drop-shadow-lg flex justify-center items-center gap-2">
-            Current Time
-        </h1>
-        <div id="clock" class="text-5xl sm:text-7xl font-extrabold bg-white/80 px-6 sm:px-8 py-4 sm:py-6 rounded-2xl shadow-inner mb-10 tracking-wider flex justify-center items-center h-24 sm:h-32 border border-yellow-200 animate-pulse">
-            <span class="clock-gradient">--:--:--</span>
+    <section class="glass-effect" role="region" aria-label="Jolly digital clock panel">
+        <div class="top-strip" aria-hidden="true"></div>
+        <div class="content">
+            <h1 class="title">Jolly Time <span aria-hidden="true">🎉</span></h1>
+            <p class="subtitle">Bright mood, smooth rhythm, better control.</p>
+
+            <div class="clock-shell">
+                <h2 id="clock" class="clock-time"><span class="clock-gradient">--:--:--</span></h2>
+                <p id="dateLabel" class="clock-date">Waiting for launch...</p>
+                <div id="statusPill" class="status-pill">Idle</div>
+            </div>
+
+            <div class="controls">
+                <button id="startBtn" class="btn-start" type="button">Start Clock</button>
+                <button id="formatBtn" class="btn-format" type="button">Switch to 12h</button>
+                <button id="burstBtn" class="btn-celebrate" type="button">Celebrate Burst</button>
+            </div>
+
+            <p class="footer-tip">Tip: press Space to start/pause and C for confetti.</p>
         </div>
-        <button onclick="startClock()" id="startBtn" class="px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-r from-yellow-400 via-pink-400 to-green-400 text-white font-bold text-lg rounded-xl shadow-lg hover:from-yellow-500 hover:to-green-500 transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-pink-400 focus:ring-opacity-75">
-            🎊 Show Current Time! 🎊
-        </button>
+    </section>
     </div>
     
     <script>
-        // Confetti generator
+        const confettiRoot = document.getElementById('confetti');
+        const clockText = document.querySelector('#clock span');
+        const dateLabel = document.getElementById('dateLabel');
+        const statusPill = document.getElementById('statusPill');
+        const startBtn = document.getElementById('startBtn');
+        const formatBtn = document.getElementById('formatBtn');
+        const burstBtn = document.getElementById('burstBtn');
+
+        let clockInterval = null;
+        let isRunning = false;
+        let is24Hour = true;
+
         function randomColor() {
             const colors = ['#FFD93D', '#FF6B6B', '#6BCB77', '#4D96FF', '#FFB800', '#FF61A6', '#A685E2'];
             return colors[Math.floor(Math.random() * colors.length)];
         }
-        function makeConfetti() {
-            const confetti = document.getElementById('confetti');
-            for (let i = 0; i < 35; i++) {
+
+        function makeConfetti(amount = 36) {
+            for (let i = 0; i < amount; i++) {
                 const piece = document.createElement('div');
                 piece.className = 'confetti-piece';
                 piece.style.left = Math.random() * 100 + 'vw';
-                piece.style.animationDelay = (Math.random() * 3) + 's';
+                piece.style.animationDelay = (Math.random() * 0.25) + 's';
                 piece.style.background = randomColor();
                 piece.style.top = (-Math.random() * 20) + 'px';
-                confetti.appendChild(piece);
+                piece.style.width = (8 + Math.random() * 10) + 'px';
+                piece.style.height = (10 + Math.random() * 14) + 'px';
+                confettiRoot.appendChild(piece);
+                setTimeout(() => piece.remove(), 3400);
             }
         }
-        makeConfetti();
-
-        let clockInterval = null;
 
         function updateClock() {
             const date = new Date();
@@ -101,24 +336,110 @@
             let minute = date.getMinutes();
             let second = date.getSeconds();
 
-            // Format to two digits
+            const weekday = date.toLocaleDateString('en-US', { weekday: 'long' });
+            const month = date.toLocaleDateString('en-US', { month: 'long' });
+            const day = date.getDate();
+            const year = date.getFullYear();
+
+            if (!is24Hour) {
+                hour = hour % 12 || 12;
+            }
+
             hour = hour < 10 ? '0' + hour : hour;
             minute = minute < 10 ? '0' + minute : minute;
             second = second < 10 ? '0' + second : second;
 
-            document.querySelector('#clock span').textContent = `${hour}:${minute}:${second}`;
+            const suffix = is24Hour ? '' : (date.getHours() >= 12 ? ' PM' : ' AM');
+            clockText.textContent = `${hour}:${minute}:${second}${suffix}`;
+            dateLabel.textContent = `${weekday}, ${month} ${day}, ${year}`;
+
+            if (isRunning && second === '00') {
+                makeConfetti(14);
+            }
+        }
+
+        function setStatus(label) {
+            statusPill.textContent = label;
         }
 
         function startClock() {
-            // Disable the button after starting
-            const btn = document.getElementById('startBtn');
-            btn.disabled = true;
-            btn.classList.add('opacity-50', 'cursor-not-allowed');
-            btn.classList.remove('hover:from-yellow-500', 'hover:to-green-500', 'hover:-translate-y-1', 'hover:shadow-xl');
+            if (isRunning) {
+                return;
+            }
 
-            updateClock(); // Show immediately
+            isRunning = true;
+            setStatus('Running');
+            startBtn.textContent = 'Pause Clock';
+            updateClock();
             clockInterval = setInterval(updateClock, 1000);
         }
+
+        function pauseClock() {
+            if (!isRunning) {
+                return;
+            }
+
+            isRunning = false;
+            clearInterval(clockInterval);
+            clockInterval = null;
+            setStatus('Paused');
+            startBtn.textContent = 'Start Clock';
+        }
+
+        function toggleClock() {
+            if (isRunning) {
+                pauseClock();
+            } else {
+                startClock();
+            }
+        }
+
+        function toggleFormat() {
+            is24Hour = !is24Hour;
+            formatBtn.textContent = is24Hour ? 'Switch to 12h' : 'Switch to 24h';
+            updateClock();
+        }
+
+        startBtn.addEventListener('click', toggleClock);
+        formatBtn.addEventListener('click', toggleFormat);
+        burstBtn.addEventListener('click', () => makeConfetti(46));
+
+        document.addEventListener('keydown', (event) => {
+            if (event.code === 'Space') {
+                event.preventDefault();
+                toggleClock();
+            }
+
+            if (event.key.toLowerCase() === 'c') {
+                makeConfetti(40);
+            }
+        });
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden && isRunning) {
+                pauseClock();
+                setStatus('Paused (Tab Hidden)');
+            }
+        });
+
+        updateClock();
+        makeConfetti(24);
+
+        setInterval(() => {
+            if (!isRunning) {
+                return;
+            }
+
+            const pulse = document.querySelector('.clock-shell');
+            pulse.animate(
+                [
+                    { transform: 'scale(1)' },
+                    { transform: 'scale(1.01)' },
+                    { transform: 'scale(1)' }
+                ],
+                { duration: 360, easing: 'ease-out' }
+            );
+        }, 3000);
     </script>
 </body>
 </html>

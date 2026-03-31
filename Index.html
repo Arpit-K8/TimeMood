@@ -758,7 +758,7 @@
                             <a href="#about" class="btn btn-ghost"><i class="fa-regular fa-circle-question"></i>About Project</a>
                         </div>
                         <div class="stat-row">
-                            <span class="stat-pill">16 themed experiences</span>
+                            <span class="stat-pill">17 themed experiences</span>
                             <span class="stat-pill">Responsive layouts</span>
                             <span class="stat-pill">Ambient audio support</span>
                         </div>
@@ -790,7 +790,7 @@
                         <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
                         <input id="moodSearch" class="search-input" type="search" placeholder="Search moods: ocean, study, dark, vintage..." autocomplete="off">
                     </label>
-                    <div id="resultCount" class="count-badge">Showing 16 moods</div>
+                    <div id="resultCount" class="count-badge">Showing 17 moods</div>
                 </div>
 
                 <div id="moodGrid" class="mood-grid"></div>
@@ -843,8 +843,9 @@
             { name: "Dark Mode", file: "Dark.html", desc: "Low-light friendly interface with sleek contrast.", type: "Night", icon: "fa-moon" },
             { name: "Analog Face", file: "Analog.html", desc: "Classic analog clock mechanics and timeless style.", type: "Classic", icon: "fa-clock" },
             { name: "Cosmic Clock", file: "Cosmic.html", desc: "Space-inspired visuals for a galactic time view.", type: "Cosmic", icon: "fa-meteor" },
+            { name: "Sigma Mode", file: "alpha.html", desc: "Discipline-first interface with strategic focus sprint controls.", type: "Sigma", icon: "fa-chess-king" },
             { name: "Noir Luxe", file: "NoirLuxe.html", desc: "Editorial black-tie interface concept with restrained motion and premium contrast.", type: "Signature", icon: "fa-gem", variant: "luxe" },
-            { name: "Pulse Grid", file: "PulseGrid.html", desc: "Data-panel inspired concept that blends dashboard precision with cinematic minimalism.", type: "Signature", icon: "fa-wave-square", variant: "split" },
+            { name: "Pulse Grid", file: "PulseGrid.html", desc: "Data-panel inspired concept that blends dashboard precision with cinematic minimalism.", type: "Signature", icon: "fa-wave-square" },
             { name: "More Incoming", file: "#", desc: "New moods are in progress and will arrive soon.", type: "Soon", icon: "fa-arrows-rotate", disabled: true }
         ];
 
@@ -878,19 +879,10 @@
 
                 const variantClass = mood.variant ? ` signature-${mood.variant}` : "";
 
-                const variantBody = mood.variant === "split"
-                    ? `
-                        <h3 class="mood-title">${mood.name}</h3>
-                        <p class="mood-desc">${mood.desc}</p>
-                        <div class="signature-metrics">
-                            <div class="signature-metric"><strong>Layout</strong> Grid Prime</div>
-                            <div class="signature-metric"><strong>Tone</strong> Premium Tech</div>
-                        </div>
-                    `
-                    : `
-                        <h3 class="mood-title">${mood.name}</h3>
-                        <p class="mood-desc">${mood.desc}</p>
-                    `;
+                const variantBody = `
+                    <h3 class="mood-title">${mood.name}</h3>
+                    <p class="mood-desc">${mood.desc}</p>
+                `;
 
                 return `
                     <article class="mood-card reveal${variantClass}">

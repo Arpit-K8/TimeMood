@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CLOCK-e-verse | SIGMA Mode</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            obsidian: '#060709',
+            vault: '#0c0e12',
+            surface: '#111318',
+            elevated: '#181b22',
+            border: '#1e2230',
+            'border-strong': '#2a3040',
+            gold: '#c9a84c',
+            'gold-bright': '#e4c46a',
+            'gold-dim': '#8a6e30',
+            'gold-glow': 'rgba(201,168,76,0.12)',
+            'gold-glow-strong': 'rgba(201,168,76,0.22)',
+            emerald: '#2ecc8e',
+            amber: '#e8a83a',
+            crimson: '#e05555',
+            text: '#edf0f4',
+            muted: '#7e8896',
+            subtle: '#454e5c',
+          },
+          fontFamily: {
+            display: ['"Bebas Neue"', 'sans-serif'],
+            mono: ['"IBM Plex Mono"', 'monospace'],
+            body: ['"DM Sans"', 'sans-serif'],
+          },
+          backgroundImage: {
+            'sigma-radial': 'radial-gradient(ellipse at 15% 0%, rgba(201,168,76,0.18) 0%, transparent 45%), radial-gradient(ellipse at 85% 5%, rgba(255,255,255,0.04) 0%, transparent 35%)',
+            'gold-line': 'linear-gradient(90deg, transparent, #c9a84c, transparent)',
+            'card-shine': 'linear-gradient(135deg, rgba(255,255,255,0.035) 0%, transparent 60%)',
+          },
+          boxShadow: {
+            'gold-sm': '0 0 0 1px rgba(201,168,76,0.2)',
+            'gold-md': '0 0 24px rgba(201,168,76,0.08), 0 0 0 1px rgba(201,168,76,0.2)',
+            'gold-lg': '0 0 48px rgba(201,168,76,0.12), 0 4px 24px rgba(0,0,0,0.6)',
+            'panel': '0 24px 48px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.04) inset',
+            'inner-top': 'inset 0 1px 0 rgba(255,255,255,0.06)',
+          },
+          keyframes: {
+            rise: { from: { opacity: '0', transform: 'translateY(20px)' }, to: { opacity: '1', transform: 'translateY(0)' } },
+            pulse_gold: { '0%,100%': { opacity: '1' }, '50%': { opacity: '0.5' } },
+            shimmer: { from: { backgroundPosition: '-200% center' }, to: { backgroundPosition: '200% center' } },
+          },
+          animation: {
+            rise: 'rise 0.7s ease forwards',
+            'rise-1': 'rise 0.7s 0.1s ease both',
+            'rise-2': 'rise 0.7s 0.2s ease both',
+            'rise-3': 'rise 0.7s 0.32s ease both',
+            pulse_gold: 'pulse_gold 2s ease-in-out infinite',
+            shimmer: 'shimmer 3s linear infinite',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background-color: #060709; }
+
+    .grid-overlay {
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black, transparent);
+    }
+
+    .gold-shimmer {
+      background: linear-gradient(90deg, #8a6e30 0%, #e4c46a 40%, #c9a84c 55%, #8a6e30 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 4s linear infinite;
+    }
+
+    .panel-glow::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(135deg, rgba(255,255,255,0.035) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .top-line::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 20%; right: 20%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(201,168,76,0.6), transparent);
+    }
+
+    .clock-glow {
+      text-shadow: 0 0 40px rgba(201,168,76,0.15);
+    }
+
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+    .status-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      animation: pulse_gold 2s ease-in-out infinite;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #2a3040; border-radius: 9px; }
+  </style>
+</head>
+<body class="min-h-screen font-body text-text overflow-x-hidden" style="background: #060709 radial-gradient(ellipse at 15% 0%, rgba(201,168,76,0.14) 0%, transparent 45%);">
+
+  <!-- Grid Overlay -->
+  <div class="grid-overlay fixed inset-0 pointer-events-none z-0 opacity-30" aria-hidden="true"></div>
+  <!-- Vignette -->
+  <div class="fixed inset-0 pointer-events-none z-0" style="background: radial-gradient(ellipse at 50% 50%, transparent 45%, rgba(0,0,0,0.65) 100%)" aria-hidden="true"></div>
+
+  <!-- Topbar -->
+  <header class="sticky top-0 z-50 border-b border-border" style="background: rgba(6,7,9,0.88); backdrop-filter: blur(16px);">
+    <div class="max-w-6xl mx-auto px-5 flex items-center justify-between" style="height: 72px;">
+
+      <div class="flex items-center gap-3.5">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center text-gold border border-gold/25 shadow-gold-sm" style="background: rgba(201,168,76,0.07);">
+          <i class="fa-solid fa-chess-king text-sm"></i>
+        </div>
+        <div>
+          <h1 class="font-display tracking-widest text-2xl leading-none text-text">SIGMA MODE</h1>
+          <p class="text-muted tracking-widest uppercase text-xs mt-0.5 hidden sm:block" style="font-size: 10px; letter-spacing: 0.16em;">Clock-e-verse · Signature Discipline Aesthetic</p>
+        </div>
+      </div>
+
+      <a href="Index.html" class="flex items-center gap-2 text-muted hover:text-text text-sm border border-border hover:border-gold/30 rounded-full px-4 py-2 transition-all duration-200 hover:-translate-y-px hover:shadow-gold-sm">
+        <i class="fa-solid fa-arrow-left text-xs"></i>
+        <span>Back to Hub</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Layout -->
+  <main class="relative z-10 max-w-6xl mx-auto px-5 py-6 grid gap-4" style="grid-template-columns: 1.25fr 0.75fr;">
+
+    <!-- LEFT COLUMN -->
+    <div class="flex flex-col gap-4 animate-rise">
+
+      <!-- Hero Panel -->
+      <section class="panel-glow top-line relative rounded-2xl border border-border overflow-hidden shadow-panel" style="background: rgba(17,19,24,0.88);">
+        <div class="p-6">
+
+          <!-- Tag -->
+          <div class="inline-flex items-center gap-2 font-mono text-gold border border-gold/25 rounded-full px-3 py-1 mb-4" style="background: rgba(201,168,76,0.08); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;">
+            <i class="fa-solid fa-bolt text-xs"></i>
+            Sigma Protocol Active
+          </div>
+
+          <!-- Title -->
+          <h2 class="font-display text-5xl sm:text-6xl leading-none tracking-wide mb-3">
+            <span class="gold-shimmer">Quiet Grind.</span><br>
+            <span class="text-text opacity-90">Sharp Time.</span>
+          </h2>
+          <p class="text-muted text-sm leading-relaxed max-w-lg">A high-focus interface for disciplined sessions. Minimal noise, clear rhythm, and measurable momentum for deep work.</p>
+
+          <!-- Metrics -->
+          <div class="mt-5 grid grid-cols-3 gap-3">
+            <article class="rounded-xl border border-border p-3.5" style="background: rgba(24,27,34,0.7);">
+              <p class="font-mono text-muted tracking-widest mb-1.5" style="font-size: 9px; text-transform: uppercase; letter-spacing: 0.13em;">Session Status</p>
+              <div class="flex items-center gap-2">
+                <div class="status-dot bg-gold" id="statusDot"></div>
+                <p id="sessionState" class="font-mono font-bold text-text" style="font-size: 0.9rem;">IDLE</p>
+              </div>
+            </article>
+            <article class="rounded-xl border border-border p-3.5" style="background: rgba(24,27,34,0.7);">
+              <p class="font-mono text-muted tracking-widest mb-1.5" style="font-size: 9px; text-transform: uppercase; letter-spacing: 0.13em;">Current Streak</p>
+              <p id="streak" class="font-mono font-bold text-text" style="font-size: 0.9rem;">0</p>
+            </article>
+            <article class="rounded-xl border border-border p-3.5" style="background: rgba(24,27,34,0.7);">
+              <p class="font-mono text-muted tracking-widest mb-1.5" style="font-size: 9px; text-transform: uppercase; letter-spacing: 0.13em;">Discipline Score</p>
+              <p id="disciplineScore" class="font-mono font-bold text-gold" style="font-size: 0.9rem;">000</p>
+            </article>
+          </div>
+
+          <!-- Quote -->
+          <div id="sigmaQuote" class="mt-4 rounded-xl border border-border p-4 text-sm leading-relaxed text-text/80 transition-opacity duration-200" style="background: rgba(14,16,20,0.8); min-height: 60px;">
+            Loading Sigma brief...
+          </div>
+        </div>
+      </section>
+
+      <!-- Sprint + Mission row -->
+      <div class="grid grid-cols-2 gap-4">
+
+        <!-- Focus Sprint -->
+        <section class="panel-glow top-line relative rounded-2xl border border-border overflow-hidden shadow-panel" style="background: rgba(17,19,24,0.88);">
+          <div class="p-5">
+            <div class="flex items-center gap-2 mb-4">
+              <i class="fa-solid fa-stopwatch text-gold text-sm"></i>
+              <h2 class="font-display text-2xl tracking-wide">Focus Sprint</h2>
+            </div>
+
+            <!-- Inputs -->
+            <div class="grid grid-cols-3 gap-2 mb-3">
+              <div class="rounded-xl border border-border p-2.5" style="background: rgba(24,27,34,0.7);">
+                <label for="minInput" class="block font-mono text-muted mb-1" style="font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;">Min</label>
+                <input id="minInput" type="number" min="0" max="180" value="25" class="w-full bg-transparent border-0 outline-0 text-text font-mono font-bold text-base">
+              </div>
+              <div class="rounded-xl border border-border p-2.5" style="background: rgba(24,27,34,0.7);">
+                <label for="secInput" class="block font-mono text-muted mb-1" style="font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;">Sec</label>
+                <input id="secInput" type="number" min="0" max="59" value="0" class="w-full bg-transparent border-0 outline-0 text-text font-mono font-bold text-base">
+              </div>
+              <div class="rounded-xl border border-border p-2.5" style="background: rgba(24,27,34,0.7);">
+                <label for="goalInput" class="block font-mono text-muted mb-1" style="font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;">Goal</label>
+                <input id="goalInput" type="number" min="1" max="20" value="4" class="w-full bg-transparent border-0 outline-0 text-text font-mono font-bold text-base">
+              </div>
+            </div>
+
+            <!-- Timer Display -->
+            <div class="rounded-xl border border-gold/20 p-4 mb-3 shadow-gold-sm" style="background: rgba(8,9,12,0.92);">
+              <p class="font-mono text-muted tracking-widest mb-1" style="font-size: 9px; text-transform: uppercase; letter-spacing: 0.14em;">Sprint Timer</p>
+              <strong id="timerDisplay" class="clock-glow font-mono font-bold text-gold block" style="font-size: clamp(1.8rem, 2.5vw + 1rem, 2.6rem); letter-spacing: 0.08em;">25:00</strong>
+            </div>
+
+            <!-- Buttons -->
+            <div class="grid grid-cols-3 gap-2">
+              <button id="startBtn" class="flex items-center justify-center gap-1.5 rounded-xl py-2.5 text-sm font-bold border transition-all duration-200 hover:-translate-y-px" style="background: rgba(46,204,142,0.1); border-color: rgba(46,204,142,0.35); color: #2ecc8e;">
+                <i class="fa-solid fa-play text-xs"></i> Start
+              </button>
+              <button id="pauseBtn" class="flex items-center justify-center gap-1.5 rounded-xl py-2.5 text-sm font-bold border transition-all duration-200 hover:-translate-y-px" style="background: rgba(232,168,58,0.08); border-color: rgba(232,168,58,0.35); color: #e8a83a;">
+                <i class="fa-solid fa-pause text-xs"></i> Pause
+              </button>
+              <button id="resetBtn" class="flex items-center justify-center gap-1.5 rounded-xl py-2.5 text-sm font-bold border transition-all duration-200 hover:-translate-y-px" style="background: rgba(224,85,85,0.08); border-color: rgba(224,85,85,0.35); color: #e05555;">
+                <i class="fa-solid fa-rotate-left text-xs"></i> Reset
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Mission Panel -->
+        <section class="panel-glow top-line relative rounded-2xl border border-border overflow-hidden shadow-panel" style="background: rgba(17,19,24,0.88);">
+          <div class="p-5">
+            <div class="flex items-center gap-2 mb-4">
+              <i class="fa-solid fa-crosshairs text-gold text-sm"></i>
+              <h2 class="font-display text-2xl tracking-wide">Mission Panel</h2>
+            </div>
+
+            <ul class="flex flex-col gap-2.5">
+              <li class="flex justify-between items-center rounded-xl border border-border px-3.5 py-3" style="background: rgba(24,27,34,0.7);">
+                <span class="text-muted text-sm">Target Sessions</span>
+                <strong id="targetSessions" class="font-mono text-sm font-bold text-text">4</strong>
+              </li>
+              <li class="flex justify-between items-center rounded-xl border border-border px-3.5 py-3" style="background: rgba(24,27,34,0.7);">
+                <span class="text-muted text-sm">Completed</span>
+                <strong id="completedSessions" class="font-mono text-sm font-bold text-emerald" style="color: #2ecc8e;">0</strong>
+              </li>
+              <li class="flex justify-between items-center rounded-xl border border-border px-3.5 py-3" style="background: rgba(24,27,34,0.7);">
+                <span class="text-muted text-sm">Time Focused</span>
+                <strong id="timeFocused" class="font-mono text-sm font-bold text-gold">00:00</strong>
+              </li>
+              <li class="flex justify-between items-center rounded-xl border border-border px-3.5 py-3" style="background: rgba(24,27,34,0.7);">
+                <span class="text-muted text-sm">Streak</span>
+                <strong id="streakMission" class="font-mono text-sm font-bold text-text">0</strong>
+              </li>
+            </ul>
+
+            <!-- Progress Bar -->
+            <div class="mt-4">
+              <div class="flex justify-between font-mono text-muted mb-1.5" style="font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;">
+                <span>Session Progress</span>
+                <span id="progressLabel">0 / 4</span>
+              </div>
+              <div class="h-1.5 rounded-full overflow-hidden" style="background: rgba(255,255,255,0.06);">
+                <div id="progressBar" class="h-full rounded-full transition-all duration-500" style="width: 0%; background: linear-gradient(90deg, #8a6e30, #e4c46a);"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <aside class="flex flex-col gap-4 animate-rise-1">
+
+      <!-- Clock -->
+      <section class="panel-glow top-line relative rounded-2xl border border-gold/25 overflow-hidden shadow-gold-lg" style="background: radial-gradient(ellipse at 50% -10%, rgba(201,168,76,0.18) 0%, rgba(17,19,24,0.92) 50%);">
+        <div class="p-5">
+          <div class="flex items-center gap-2 mb-3">
+            <i class="fa-regular fa-clock text-gold text-xs"></i>
+            <p class="font-mono text-muted tracking-widest" style="font-size: 9px; text-transform: uppercase; letter-spacing: 0.15em;">Local Command Time</p>
+          </div>
+          <h3 id="clockTime" class="clock-glow font-mono font-bold text-gold leading-none mb-1" style="font-size: clamp(2.2rem, 3.5vw + 1rem, 3.6rem); letter-spacing: 0.06em;">00:00:00</h3>
+          <p id="clockDate" class="text-muted text-xs leading-relaxed">Loading date...</p>
+
+          <!-- Decorative separator -->
+          <div class="mt-4 h-px" style="background: linear-gradient(90deg, transparent, rgba(201,168,76,0.3), transparent);"></div>
+
+          <div class="mt-3 flex gap-3">
+            <div class="flex-1">
+              <p class="font-mono text-muted mb-0.5" style="font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;">Unix Epoch</p>
+              <p id="epochTime" class="font-mono text-text/70 text-xs"></p>
+            </div>
+            <div class="flex-1">
+              <p class="font-mono text-muted mb-0.5" style="font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;">Week</p>
+              <p id="weekNum" class="font-mono text-text/70 text-xs"></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sigma Principle Cards -->
+      <section class="panel-glow top-line relative rounded-2xl border border-border overflow-hidden shadow-panel animate-rise-2" style="background: rgba(17,19,24,0.88);">
+        <div class="p-5">
+          <div class="flex items-center gap-2 mb-4">
+            <i class="fa-solid fa-shield-halved text-gold text-sm"></i>
+            <h2 class="font-display text-2xl tracking-wide">Sigma Codes</h2>
+          </div>
+          <ul class="flex flex-col gap-2" id="sigmaCodesList">
+            <!-- injected by JS -->
+          </ul>
+        </div>
+      </section>
+
+      <!-- System Status -->
+      <section class="panel-glow top-line relative rounded-2xl border border-border overflow-hidden shadow-panel animate-rise-3" style="background: rgba(17,19,24,0.88);">
+        <div class="p-5">
+          <div class="flex items-center gap-2 mb-4">
+            <i class="fa-solid fa-signal text-gold text-sm"></i>
+            <h2 class="font-display text-2xl tracking-wide">System</h2>
+          </div>
+          <ul class="flex flex-col gap-2">
+            <li class="flex justify-between items-center rounded-xl border border-border px-3.5 py-2.5" style="background: rgba(24,27,34,0.7);">
+              <span class="text-muted text-xs">Mode</span>
+              <span class="font-mono text-xs text-gold font-bold">SIGMA · ACTIVE</span>
+            </li>
+            <li class="flex justify-between items-center rounded-xl border border-border px-3.5 py-2.5" style="background: rgba(24,27,34,0.7);">
+              <span class="text-muted text-xs">Protocol</span>
+              <span class="font-mono text-xs text-text font-bold">DEEP WORK v2</span>
+            </li>
+            <li class="flex justify-between items-center rounded-xl border border-border px-3.5 py-2.5" style="background: rgba(24,27,34,0.7);">
+              <span class="text-muted text-xs">Noise Level</span>
+              <span class="font-mono text-xs font-bold" style="color: #2ecc8e;">ZERO</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+    </aside>
+  </main>
+
+  <script>
+    /* ── DOM refs ── */
+    const clockTime   = document.getElementById('clockTime');
+    const clockDate   = document.getElementById('clockDate');
+    const epochTime   = document.getElementById('epochTime');
+    const weekNum     = document.getElementById('weekNum');
+    const sigmaQuote  = document.getElementById('sigmaQuote');
+
+    const minInput  = document.getElementById('minInput');
+    const secInput  = document.getElementById('secInput');
+    const goalInput = document.getElementById('goalInput');
+    const timerDisplay = document.getElementById('timerDisplay');
+
+    const startBtn = document.getElementById('startBtn');
+    const pauseBtn = document.getElementById('pauseBtn');
+    const resetBtn = document.getElementById('resetBtn');
+
+    const sessionState    = document.getElementById('sessionState');
+    const statusDot       = document.getElementById('statusDot');
+    const streak          = document.getElementById('streak');
+    const streakMission   = document.getElementById('streakMission');
+    const disciplineScore = document.getElementById('disciplineScore');
+    const targetSessions  = document.getElementById('targetSessions');
+    const completedSessions = document.getElementById('completedSessions');
+    const timeFocused     = document.getElementById('timeFocused');
+    const progressBar     = document.getElementById('progressBar');
+    const progressLabel   = document.getElementById('progressLabel');
+
+    /* ── Data ── */
+    const sigmaCodes = [
+      { icon: 'fa-eye-slash', text: 'Move in silence' },
+      { icon: 'fa-bolt',      text: 'Execute, don\'t explain' },
+      { icon: 'fa-layer-group', text: 'Stack the hours' },
+      { icon: 'fa-brain',     text: 'Stay in your lane' },
+    ];
+
+    const sigmaLines = [
+      "No noise. No excuses. Execute the next hour with intent.",
+      "Control your minutes and your momentum compounds.",
+      "Discipline is a system, not a mood.",
+      "Stay unreadable. Stay consistent. Stay in motion.",
+      "Build quietly and let results announce you.",
+      "The grind doesn't stop when feelings do.",
+    ];
+
+    /* ── State ── */
+    let quoteIndex = 0;
+    let timerId = null;
+    let secondsRemaining = 25 * 60;
+    let completed = 0;
+    let totalFocusedSecs = 0;
+    let runStreak = 0;
+    let score = 0;
+
+    /* ── Clock ── */
+    function getWeekNumber(d) {
+      const date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+      date.setUTCDate(date.getUTCDate() + 4 - (date.getUTCDay() || 7));
+      const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
+      return Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
+    }
+
+    function updateClock() {
+      const now = new Date();
+      clockTime.textContent = now.toLocaleTimeString('en-GB', { hour12: false });
+      clockDate.textContent = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+      epochTime.textContent = Math.floor(now.getTime() / 1000).toLocaleString();
+      weekNum.textContent = 'W' + String(getWeekNumber(now)).padStart(2, '0') + ' · ' + now.getFullYear();
+    }
+
+    /* ── Quote ── */
+    function rotateQuote() {
+      sigmaQuote.style.opacity = '0';
+      setTimeout(() => {
+        quoteIndex = (quoteIndex + 1) % sigmaLines.length;
+        sigmaQuote.textContent = sigmaLines[quoteIndex];
+        sigmaQuote.style.opacity = '1';
+      }, 200);
+    }
+
+    /* ── Sigma Codes render ── */
+    function renderCodes() {
+      const list = document.getElementById('sigmaCodesList');
+      list.innerHTML = sigmaCodes.map(c => `
+        <li class="flex items-center gap-3 rounded-xl border px-3.5 py-2.5 transition-colors duration-200 hover:border-gold/20 cursor-default"
+            style="background: rgba(24,27,34,0.7); border-color: rgba(30,34,48,0.9);">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
+               style="background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.18);">
+            <i class="fa-solid ${c.icon} text-gold" style="font-size: 10px;"></i>
+          </div>
+          <span class="text-text/80 text-sm">${c.text}</span>
+        </li>`).join('');
+    }
+
+    /* ── Timer Helpers ── */
+    function fmt(s) {
+      return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+    }
+    function fmtFocused(s) {
+      const m = Math.floor(s / 60);
+      return String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0');
+    }
+
+    function syncTargets() {
+      const g = Math.max(1, Number(goalInput.value) || 1);
+      targetSessions.textContent = g;
+      updateProgress(g);
+    }
+
+    function updateProgress(goal) {
+      const g = goal || Math.max(1, Number(goalInput.value) || 1);
+      const pct = Math.min(100, (completed / g) * 100);
+      progressBar.style.width = pct + '%';
+      progressLabel.textContent = completed + ' / ' + g;
+    }
+
+    function applyInputToTimer() {
+      const m = Math.max(0, Math.min(180, Number(minInput.value) || 0));
+      const s = Math.max(0, Math.min(59, Number(secInput.value) || 0));
+      secondsRemaining = m * 60 + s;
+      if (secondsRemaining === 0) { secondsRemaining = 25 * 60; minInput.value = '25'; secInput.value = '0'; }
+      timerDisplay.textContent = fmt(secondsRemaining);
+    }
+
+    function setStateUI(label, dotColor) {
+      sessionState.textContent = label;
+      statusDot.style.backgroundColor = dotColor;
+      statusDot.style.boxShadow = `0 0 6px ${dotColor}`;
+    }
+
+    function updateStats() {
+      completedSessions.textContent = completed;
+      streak.textContent = runStreak;
+      streakMission.textContent = runStreak;
+      disciplineScore.textContent = String(score).padStart(3, '0');
+      timeFocused.textContent = fmtFocused(totalFocusedSecs);
+      updateProgress();
+    }
+
+    function stopTimer(label, dot) {
+      if (timerId) { clearInterval(timerId); timerId = null; }
+      setStateUI(label, dot);
+    }
+
+    function completeSession() {
+      completed++; runStreak++; score += 25;
+      updateStats();
+      stopTimer('COMPLETE', '#2ecc8e');
+      applyInputToTimer();
+    }
+
+    function startTimer() {
+      if (timerId) return;
+      if (secondsRemaining <= 0) applyInputToTimer();
+      setStateUI('LOCKED IN', '#c9a84c');
+      timerId = setInterval(() => {
+        secondsRemaining--; totalFocusedSecs++; score++;
+        timerDisplay.textContent = fmt(Math.max(0, secondsRemaining));
+        updateStats();
+        if (secondsRemaining <= 0) completeSession();
+      }, 1000);
+    }
+
+    function pauseTimer() {
+      if (!timerId) return;
+      stopTimer('PAUSED', '#e8a83a');
+      runStreak = Math.max(0, runStreak - 1);
+      updateStats();
+    }
+
+    function resetTimer() {
+      stopTimer('IDLE', '#c9a84c');
+      applyInputToTimer();
+      runStreak = 0;
+      updateStats();
+    }
+
+    /* ── Events ── */
+    minInput.addEventListener('input', () => { if (!timerId) applyInputToTimer(); });
+    secInput.addEventListener('input', () => { if (!timerId) applyInputToTimer(); });
+    goalInput.addEventListener('input', syncTargets);
+    startBtn.addEventListener('click', startTimer);
+    pauseBtn.addEventListener('click', pauseTimer);
+    resetBtn.addEventListener('click', resetTimer);
+
+    /* ── Responsive: stack on mobile ── */
+    function applyLayout() {
+      const main = document.querySelector('main');
+      if (window.innerWidth < 900) {
+        main.style.gridTemplateColumns = '1fr';
+      } else {
+        main.style.gridTemplateColumns = '1.25fr 0.75fr';
+      }
+    }
+    window.addEventListener('resize', applyLayout);
+
+    /* ── Init ── */
+    document.addEventListener('DOMContentLoaded', () => {
+      sigmaQuote.textContent = sigmaLines[0];
+      updateClock();
+      applyInputToTimer();
+      syncTargets();
+      updateStats();
+      renderCodes();
+      applyLayout();
+      setStateUI('IDLE', '#c9a84c');
+
+      setInterval(updateClock, 1000);
+      setInterval(rotateQuote, 4500);
+    });
+  </script>
+</body>
+</html>

@@ -186,9 +186,32 @@
             0% { transform: translateX(-50%) rotate(-15deg); }
             100% { transform: translateX(-50%) rotate(15deg); }
         }
+
+        .hub-back-link {
+            position: fixed;
+            top: 18px;
+            left: 18px;
+            z-index: 50;
+            text-decoration: none;
+            color: #f9e7bf;
+            background: rgba(69, 34, 18, 0.92);
+            border: 1px solid rgba(218, 165, 32, 0.5);
+            border-radius: 999px;
+            padding: 0.52rem 0.95rem;
+            font-size: 0.84rem;
+            letter-spacing: 0.04em;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 0 14px rgba(218, 165, 32, 0.2);
+        }
+
+        .hub-back-link:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 0 18px rgba(218, 165, 32, 0.34);
+        }
     </style>
 </head>
 <body class="flex flex-col items-center justify-center min-h-screen text-amber-100 p-4 old-paper-texture relative">
+    <a href="Index.html" class="hub-back-link" aria-label="Back to mood hub">&larr; Back to Hub</a>
     <!-- Vintage Background Decorations -->
     <div class="absolute top-10 left-10 vintage-decoration text-6xl">❦</div>
     <div class="absolute top-20 right-20 vintage-decoration text-4xl">✠</div>
